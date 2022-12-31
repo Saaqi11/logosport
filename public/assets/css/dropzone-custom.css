@@ -1,0 +1,53 @@
+.btn-delete {
+    color: red !important;
+    border-radius: 50%;
+    border: 1px solid red;
+    padding: 5px;
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+.dz-image-preview {
+    float: left;
+    width: 120px;
+    margin-left: 10px;
+}
+label.tg-fileuploadlabel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    line-height: 33px;
+}
+div#dropzone-area {
+    padding: 20px;
+    border: 1px dashed #4ac420 !important;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+div#dropzone-area:hover {
+    cursor: pointer;
+}
+span.btn.btn-common{
+    background-color: #4ac420;
+    color: white
+}
+h3 {
+    font-weight: bold;
+}
+.btn-del {
+    color: red !important;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: 1px solid red;
+    padding: 10px;
+    align-items: center;
+    margin: 10px auto 0 auto;
+}

@@ -13,17 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('logo_colors', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('user_type');
-            $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->unsignedBigInteger("user_id");
+            $table->unsignedBigInteger("contest_id");
+            $table->string("color_name");
             $table->timestamps();
+
+            $table->foreign('contest_id')->references('id')->on('contests');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('no action')->onDelete('no action');
         });
     }
 
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('logo_colors');
     }
 };

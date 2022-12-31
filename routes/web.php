@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ContestController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,8 +17,32 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post("/login", [UserController::class, 'doLogin'])->name("user.login");
+Route::get("/signup", [UserController::class, 'signUp'])->name("user.signup");
+Route::post("/do-signup", [UserController::class, 'doSignUp'])->name("user.doSignup");
 Route::get("/user-logout", [UserController::class, 'logout'])->name("user.logout");
+
+//Authenticated Routes
+Route::group(['middleware' => 'auth'], function () {
+
+    //Customer
+    Route::prefix('customer')->name('customer.')->group(function () {
+        Route::get("/", [CustomerController::class, 'index'])->name('view');
+
+        //Project
+        Route::prefix('contest')->name('contest.')->group(function () {
+            Route::get("/", [ContestController::class, 'index'])->name('view');
+            Route::get("/price/{id?}", [ContestController::class, 'price'])->name('price');
+            Route::post("/price-save/{id?}", [ContestController::class, 'priceSave'])->name('price.save');
+            Route::group(['middleware' => 'contest'], function ($id) {
+                Route::get("/type/{id}", [ContestController::class, 'type'])->name('type');
+                Route::post("/type-save/{id}", [ContestController::class, 'typeSave'])->name('type.save');
+                Route::get("/color/{id}", [ContestController::class, 'color'])->name('type');
+                Route::post("/color-save/{id}", [ContestController::class, 'colorSave'])->name('color.save');
+            });
+        });
+    });
+});
 
 Route::get('/', function () {
     return view('index');
-});
+})->name("home");
