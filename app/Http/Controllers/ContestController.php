@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Contest;
 use App\Http\Requests\StoreContestRequest;
 use App\Http\Requests\UpdateContestRequest;
+use App\Models\ContestStyle;
 use App\Models\DefaultLogo;
+use App\Models\LogoColor;
 use App\Models\Media;
 use App\Models\UserDefaultLogo;
 use Illuminate\Http\RedirectResponse;
@@ -40,6 +42,42 @@ class ContestController extends Controller
             return view("customer.contest.steps.price", compact("contest"));
         }
         return view("customer.contest.steps.price");
+    }
+
+    /**
+     * Save price form.
+     * @param $id
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function priceSave(Request $request, $id = null): RedirectResponse
+    {
+        $inputs = $request->only(['contest_price', 'business_level']);
+        $inputs['user_id'] = \auth()->user()->id;
+        if ($id) {
+            $contest = Contest::findOrFail($id);
+            if (!empty($contest)) {
+                $contest = $contest->update($inputs);
+            } else {
+                return redirect()->route("customer.project.create")->with("error", "Please create any contest!");
+            }
+        } else {
+            $inputs['score'] = 20;
+            $contest = Contest::create($inputs);
+        }
+        return redirect()->route("customer.contest.type", $contest->id);
+    }
+
+    /**
+     * Show type page.
+     * @param $id
+     * @return View | RedirectResponse
+     */
+    public function type($id): View | RedirectResponse
+    {
+        $contest = Contest::findOrFail($id);
+        $defaultLogos = DefaultLogo::all();
+        return view("customer.contest.steps.type", compact("contest", "defaultLogos"));
     }
 
     /**
@@ -90,103 +128,148 @@ class ContestController extends Controller
                 $media->save();
             }
         }
-        $contest = Contest::findOrFail($id);
-        if (!empty($contest)) {
-            $contest->score = 40;
-            $contest->update();
-        }
+        $this->updateContestScore($id, 40);
         return redirect()->route("customer.contest.color", $id)->with("success", "The type of contest has been saved!");
     }
 
     /**
-     * Save price form.
+     * show view of color page
      * @param $id
+     * @return View
+     */
+    public function color($id): View
+    {
+        return \view("customer.contest.steps.color", compact("id"));
+    }
+
+    /**
+     * Save color data
      * @param Request $request
+     * @param $id
      * @return RedirectResponse
      */
-    public function priceSave(Request $request, $id = null): RedirectResponse
+    public function colorSave(Request $request, $id): RedirectResponse
     {
-        $inputs = $request->only(['contest_price', 'business_level']);
-        $inputs['user_id'] = \auth()->user()->id;
-        if ($id) {
-            $contest = Contest::findOrFail($id);
-            if (!empty($contest)) {
-                $contest = $contest->update($inputs);
-            } else {
-                return redirect()->route("customer.project.create")->with("error", "Please create any contest!");
+        $request->validate([
+            'color' => 'required'
+        ]);
+        $inputs = $request->only(['color']);
+        if (!empty($inputs['color']) && count($inputs['color']) > 0)
+        {
+            foreach ($inputs['color'] as $colorCode) {
+                $color = new LogoColor();
+                $color->user_id = \auth()->user()->id;
+                $color->contest_id = $id;
+                $color->color_name = $colorCode;
+                $color->save();
             }
-        } else {
-            $inputs['score'] = 20;
-            $contest = Contest::create($inputs);
         }
-        return redirect()->route("customer.contest.type", $contest->id);
+        $this->updateContestScore($id, 50);
+        return redirect()->route("customer.contest.style", $id)->with("success", "The Color of contest has been saved!");
     }
 
     /**
-     * Show type page.
+     * Show customer contest style
      * @param $id
-     * @return View | RedirectResponse
+     * @return View
      */
-    public function type($id): View | RedirectResponse
+    public function style($id): View
+    {
+        return \view("customer.contest.steps.style", compact("id"));
+    }
+
+    /**
+     * Save style of contest
+     * @param Request $request
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function styleSave(Request $request, $id): RedirectResponse
+    {
+        $request->validate([
+            "style" => "required"
+        ]);
+        $inputs = [];
+        $inputs['style_json'] = json_encode($request->only(['style']));
+        $inputs["user_id"] = \auth()->user()->id;
+        $inputs["contest_id"] = (int) $id;
+        ContestStyle::create($inputs);
+        $this->updateContestScore($id, 60);
+        return redirect()->route("customer.contest.brief", $id)->with("success", "The style of contest has been saved!");
+    }
+
+    /**
+     * Show brief page
+     * @param $id
+     * @return View
+     */
+    public function brief($id): View
+    {
+        return \view("customer.contest.steps.brief", compact("id"));
+    }
+
+    /**
+     * Brief save option
+     * @param Request $request
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function briefSave(Request $request, $id): RedirectResponse
+    {
+        $inputs = $request->only([
+            "company_name",
+            "slogan",
+            "website",
+            "company_employees_range",
+            "industry_type",
+            "company_about",
+            "company_features",
+            "logo_type_likes",
+            "logo_type_unlikes",
+            "company_advantages",
+        ]);
+
+        $contest = Contest::findOrFail($id);
+        if (!empty($contest)) {
+            if ($request->hasFile("doc_file")){
+                $userAttachmentPath = "/storage/app/public/contests-attachments/".Auth::id()."/";
+                //create dynamic directory
+                if (!File::isDirectory($userAttachmentPath)) {
+                    File::makeDirectory($userAttachmentPath, 0755, true);
+                }
+                $filePath = Storage::disk('local')->put($userAttachmentPath, $request->doc_file);
+                $inputs["doc_file"] = $filePath;
+            }
+            $inputs["score"] = 80;
+            $contest->update($inputs);
+        } else {
+            return redirect()->route("customer.contest.brief.save", $id)->with("error", "Something went wrong, Please try again!");
+        }
+        return redirect()->route("customer.contest.condition", $id)->with("success", "The brief of contest has been saved!");
+    }
+
+    /**
+     * Show condition page
+     * @param $id
+     * @return View
+     */
+    public function condition($id): View
+    {
+        return \view("customer.contest.steps.condition", compact("id"));
+    }
+
+    /**
+     * Update the score of contest
+     * @param $id
+     * @param $score
+     * @return void
+     */
+    public function updateContestScore($id, $score): void
     {
         $contest = Contest::findOrFail($id);
-        $defaultLogos = DefaultLogo::all();
-        return view("customer.contest.steps.type", compact("contest", "defaultLogos"));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param StoreContestRequest $request
-     * @return Response
-     */
-    public function store(StoreContestRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Contest $contest
-     * @return Response
-     */
-    public function show(Contest $contest)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Contest $contest
-     * @return Response
-     */
-    public function edit(Contest $contest)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param UpdateContestRequest $request
-     * @param Contest $contest
-     * @return Response
-     */
-    public function update(UpdateContestRequest $request, Contest $contest)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Contest $contest
-     * @return Response
-     */
-    public function destroy(Contest $contest)
-    {
-        //
+        if (!empty($contest)) {
+            $contest->score = $score;
+            $contest->update();
+        }
     }
 }

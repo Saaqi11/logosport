@@ -10,4 +10,5 @@
     <link rel="stylesheet" href="{{ asset("assets/css/app.min.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/css/dropzone.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/css/dropzone-custom.css") }}">
+    <link rel="stylesheet" href="{{ asset("assets/css/toastr.min.css") }}">
 </head>

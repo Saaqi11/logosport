@@ -17,12 +17,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("user_id");
             $table->string("business_level");
-            $table->string('slug')->unique();
+            $table->string('slug')->unique()->nullable();
             $table->string("contest_price");
             $table->string("company_name")->nullable();
             $table->string("industry_type")->nullable();
             $table->string("slogan")->nullable();
-            $table->string("start_date")->nullable();
             $table->string("logo_type_likes")->nullable();
             $table->string("logo_type_unlikes")->nullable();
             $table->string("website")->nullable();
@@ -30,8 +29,10 @@ return new class extends Migration
             $table->string("company_advantages")->nullable();
             $table->string("company_employees_range")->nullable();
             $table->string("company_features")->nullable();
+            $table->string("doc_file")->nullable();
             $table->string("contest_format")->nullable();
             $table->string("duration")->nullable();
+            $table->string("start_date")->nullable();
             $table->string("score")->nullable();
             $table->softDeletes();
             $table->timestamps();

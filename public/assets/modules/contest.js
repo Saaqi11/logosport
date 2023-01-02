@@ -53,6 +53,80 @@ let contest = {
             $("#type-form").submit();
         })
 
+        $(".add-color").on("click", () => {
+            $("#color-section .col:last").before(`<div class="col-lg-3 col-md-6 col-sm-12 col">
+                                                            <button class="delete-color"><i class="fas fa-trash"></i></button>
+                                                            <div class="color-content">
+                                                                <input type="text" class="color-text" value="#4ac420" style="height: 100%">
+                                                                <input type="color" class="color-name color-name--f" name="color[]" value="#4ac420" style="height: 100%">
+                                                            </div>
+                                                        </div>`);
+        });
+
+        $(document).on("keyup", ".color-text", (e) => {
+            $(e.target).next().val($(e.target).val())
+        })
+
+        $(document).on("change", ".color-name", (e) => {
+            $(e.target).prev().val($(e.target).val())
+        })
+
+        $(document).on("click",".delete-color", (e) => {
+            $(e.target).parents(".col").remove();
+        })
+
+        $(".contest-slider").on("click", (e) => {
+            let elem = e.target;
+            let percentageStyle = $(elem).next().attr("style");
+            let perStyleArr = percentageStyle.split(" ");
+            let percentage = perStyleArr[1].replace("%;", "")
+            $(elem).next().next().val(percentage);
+        })
+
+        $("#attach-file").on("click", () => {
+            let docFile = $("#doc_file");
+            docFile.click();
+            docFile.val("");
+            let elemName = $("#file-name");
+            elemName.hide();
+            elemName.text("");
+        });
+
+        $("#file-name").on("click", (e) => {
+            $(e.target).hide();
+            $("#doc_file").val("");
+            let elemName = $("#file-name");
+            elemName.hide();
+            elemName.text("");
+            toastr.success("File has been detached.");
+        })
+
+        $("#doc_file").on("change", (e) => {
+            let fileLocation = $(e.target).val();
+            let locationArr = fileLocation.split("\\");
+            let fileName = locationArr[locationArr.length - 1];
+            let fileExtension = ['doc', 'docx', 'pdf'];
+            let elemName = $("#file-name");
+            if ($.inArray(fileLocation.split('.').pop().toLowerCase(), fileExtension) === -1) {
+                toastr.error("Please attach only doc, docx or pdf file.");
+            } else {
+                elemName.show();
+                elemName.text(fileName);
+            }
+        });
+
+        $(".brief-save-button").on("click", () => {
+            $("#brief-form").submit();
+        })
+
+        $(".style-form-save").on("click", () => {
+            $("#style-form").submit();
+        });
+
+        $(".save-color-content").on("click", () => {
+            $("#color-form").submit();
+        })
+
         $(".wrp-block--like").on("click", () => {
             let defaultLogoArr = [];
             $(".wrp-block--like.activ").each((index , node) => {

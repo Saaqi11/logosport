@@ -7,4 +7,5 @@ integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0
 @if(request()->route()->getPrefix() === "customer/contest")
     <script src="{{ asset("assets/modules/contest.js") }}"></script>
 @endif
+<script src="{{ asset("assets/js/toastr.min.js") }}"></script>
 <script src="{{ asset("assets/js/app.min.js") }}"></script>

@@ -38,6 +38,12 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post("/type-save/{id}", [ContestController::class, 'typeSave'])->name('type.save');
                 Route::get("/color/{id}", [ContestController::class, 'color'])->name('type');
                 Route::post("/color-save/{id}", [ContestController::class, 'colorSave'])->name('color.save');
+                Route::get("/style/{id}", [ContestController::class, 'style'])->name('style');
+                Route::post("/style-save/{id}", [ContestController::class, 'styleSave'])->name('style.save');
+                Route::get("/brief/{id}", [ContestController::class, 'brief'])->name('brief');
+                Route::post("/brief-save/{id}", [ContestController::class, 'briefSave'])->name('brief.save');
+                Route::get("/condition/{id}", [ContestController::class, 'condition'])->name('condition');
+                Route::post("/condition-save/{id}", [ContestController::class, 'conditionSave'])->name('condition.save');
             });
         });
     });

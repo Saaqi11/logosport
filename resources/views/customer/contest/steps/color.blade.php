@@ -1,9 +1,45 @@
 @extends("layouts.main")
 @section("content")
+    <style>
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none !important;
+            padding: 0 !important;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0 !important;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border: none !important;
+        }
+        input[type="color"]:hover {
+            cursor: pointer;
+        }
+        .delete-color {
+            line-height: 12px;
+            width: 25px;
+            font-size: 8pt;
+            font-family: tahoma;
+            margin-top: 1px;
+            margin-right: 2px;
+            position: absolute;
+            top: 0px;
+            border: 1px solid;
+            right: -5px;
+            color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            padding: 5px;
+            height: 25px;
+            background-color: white;
+        }
+    </style>
     <div class="row">
         <div class="col-12">
             <div class="title">
-                <h1>Сonstruct the project</h1>
+                <h1>LAUNCH THE CONTEST</h1>
             </div>
             <div class="wrp-step">
                 <div class="step activ"><span class="step-text">1. Price</span></div>
@@ -29,55 +65,33 @@
             </div>
         </div>
         <div class="col-12">
-					<span class="cnst-subtitle">
-						Choose colours
-					</span>
+            <span class="cnst-subtitle">
+                CHOOSE OR SELECT TO PICK COLORS <span style="font-size: 14px !important;">(If you will add wrong hex code of colour, it will mark it black as default)</span>
+            </span>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-3 col-md-6 col-sm-12">
-            <div class="wrp-block wrp-block--thr">
-            </div>
-            <div class="color-content">
-                <input class="color-text" name="color" placeholder="#FFAD17">
-                <div class="color-name color-name--f"></div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
-            <div class="wrp-block wrp-block--thr">
-            </div>
-            <div class="color-content">
-                <input class="color-text" name="color"  placeholder="#FFAD17">
-                <div class="color-name color-name--se"></div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
-            <div class="wrp-block wrp-block--thr">
-            </div>
-            <div class="color-content">
-                <input class="color-text" name="color"  placeholder="#FFAD17">
-                <div class="color-name color-name--th"></div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
-            <div class="wrp-block wrp-block--thr">
-                <div class="cnt-block">
-                    <i class="fas fa-plus"></i>
+    <form action="{{ route("customer.contest.color.save", $id) }}" method="post" id="color-form">
+        @csrf
+        <div class="row" id="color-section">
+            <div class="col-lg-3 col-md-6 col-sm-12 col">
+                <div class="color-content">
+                    <input type="text" class="color-text" value="#4ac420" style="height: 100%">
+                    <input type="color" class="color-name color-name--f" name="color[]" value="#4ac420" style="height: 100%">
                 </div>
-                <span class="cnt-text">
-							Add<br>one
-						</span>
             </div>
-            <div class="color-content">
-                <input class="color-text" name="color" placeholder="#FFFFFF">
-                <div class="color-name color-name--fo"></div>
+            <div class="col-lg-3 col-md-6 col-sm-12 col">
+                <div class="color-content add-color">
+                    <div class="cnt-block">
+                        <i class="fas fa-plus"></i>
+                        Add One
+                    </div>
+                </div>
             </div>
         </div>
-
-    </div>
+    </form>
     <div class="row">
         <div class="col-12 d-flex justify-content-end">
-            <button class="cnstr-next">Next</button>
+            <button class="cnstr-next save-color-content">Next</button>
         </div>
     </div>
 @endsection

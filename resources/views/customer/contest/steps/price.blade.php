@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-12">
             <div class="title">
-                <h1>Launch the Contest</h1>
+                <h1>LAUNCH THE CONTEST</h1>
             </div>
             <div class="wrp-step">
                 <div class="step activ"><span class="step-text">1. Price</span></div>
