@@ -119,6 +119,23 @@ let contest = {
             $("#brief-form").submit();
         })
 
+        $("#condition-save-skip").on("click", () => {
+            let limit = $('[name="duration"]').val()
+            if (parseInt(limit) < 7 || parseInt(limit) > 21) {
+                toastr.error("Please add duration between 7-21 days!");
+                return;
+            }
+
+            let today = contest.getTodayDate();
+            let startDate = $('[name="start_date"]').val();
+
+            if (contest.compareDate(today, startDate)){
+                toastr.error("Please add date current or future date!");
+                return;
+            }
+            $("#condition-form").submit();
+        })
+
         $(".style-form-save").on("click", () => {
             $("#style-form").submit();
         });
@@ -285,6 +302,25 @@ let contest = {
                 '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
             return !!pattern.test(str);
         }
+    },
+    compareDate: (from, to) => {
+        //Generate an array where the first element is the year, second is month and third is day
+        let splitFrom = from.split('-');
+        let splitTo = to.split('-');
+
+        //Create a date object from the arrays
+        let fromDate = new Date(splitFrom[2], splitFrom[1] - 1, splitFrom[0]);
+        let toDate = new Date(splitTo[0], splitTo[1] - 1, splitTo[2]);
+
+        //Return the result of the comparison
+        return fromDate > toDate;
+    },
+    getTodayDate: () => {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+        return dd + '-' + mm + '-' + yyyy;
     }
 }
 

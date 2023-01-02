@@ -23,11 +23,12 @@ class ContestController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
-        //
+        $contests = Contest::all();
+        return \view("customer.contest.index", compact("contests"));
     }
 
     /**
@@ -256,6 +257,22 @@ class ContestController extends Controller
     public function condition($id): View
     {
         return \view("customer.contest.steps.condition", compact("id"));
+    }
+
+    public function conditionSave(Request $request, $id): RedirectResponse
+    {
+        $request->validate([
+            "duration" => "required",
+            "contest_format" => "required",
+            "start_date" => "required"
+        ]);
+        $inputs = $request->only(["duration", "contest_format", "start_date"]);
+        $contest = Contest::findOrFail($id);
+        if (!empty($contest)) {
+            $inputs["score"] = 100;
+            $contest->update($inputs);
+        }
+        return redirect()->route("customer.contest.view")->with("success", "The Contest has been saved Successfully!");
     }
 
     /**
