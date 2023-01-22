@@ -68,10 +68,10 @@
                                     <a class="btn-crea">I am Designer</a>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <a href="" class="btn-google">Sign up with Google</a>
+                                    <a href="{{ route("auth.social.login", ["type" => "google"]) }}" class="btn-google">Sign up with Google</a>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <a href="" class="btn-facebook">Sign up with Facebook</a>
+                                    <a href="{{ route("auth.social.login", ["type" => "facebook"]) }}" class="btn-facebook">Sign up with Facebook</a>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <span class="form-text">Or</span>

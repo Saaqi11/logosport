@@ -10,6 +10,7 @@ use App\Models\DefaultLogo;
 use App\Models\LogoColor;
 use App\Models\Media;
 use App\Models\UserDefaultLogo;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -60,21 +61,21 @@ class ContestController extends Controller
             if (!empty($contest)) {
                 $contest = $contest->update($inputs);
             } else {
-                return redirect()->route("customer.project.create")->with("error", "Please create any contest!");
+                return redirect()->route("customer.contest.price")->with("error", "Please create any contest!");
             }
         } else {
             $inputs['score'] = 20;
             $contest = Contest::create($inputs);
         }
-        return redirect()->route("customer.contest.type", $contest->id);
+        return redirect()->route("customer.contest.type", $contest->id)->with("success", "The contest price has been saved successfully!");;
     }
 
     /**
      * Show type page.
      * @param $id
-     * @return View | RedirectResponse
+     * @return View
      */
-    public function type($id): View | RedirectResponse
+    public function type($id): View
     {
         $contest = Contest::findOrFail($id);
         $defaultLogos = DefaultLogo::all();
@@ -90,7 +91,6 @@ class ContestController extends Controller
     public function typeSave(Request $request, $id): RedirectResponse
     {
         $request->validate([
-            "default_logos" => "required",
             "base64_images" => "required"
         ]);
         $inputs = $request->only(['default_logos', 'base64_images']);

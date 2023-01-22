@@ -23,7 +23,7 @@ let contest = {
                 $(".price-label").text("Price (1400$+)");
                 $("#contest-price").attr("min", 1400);
                 $("#contest-price").val(1400);
-                $("#contest-price").removeAttribute("max");
+                $("#contest-price").removeAttr("max");
             }
             $(".p-title").text($(e.delegateTarget).find('[name="business_name"]').val());
             $("#business_level").val($(e.delegateTarget).find('[name="business_name"]').val());

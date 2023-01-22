@@ -17,12 +17,20 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('user_type');
-            $table->string('username')->unique();
+            $table->string('user_type')->nullable();
+            $table->string('username')->unique()->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('dribble')->nullable();
+            $table->string('behance')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('about_me')->nullable();
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
+            $table->string('telephone')->nullable();
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

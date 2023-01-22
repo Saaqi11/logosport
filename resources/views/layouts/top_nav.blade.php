@@ -47,14 +47,20 @@
                             <img src="{{ asset("images/user-icon.png") }}" alt="user icon">
                         </div>
                         <div class="info">
-                        <span class="user-name">
-                            {{ auth()->user()->name }}
-                        </span>
+                            <span class="user-name">
+                                <details class="dropdown">
+                                    <summary role="button">
+                                      <a class="button">{{ auth()->user()->first_name }}</a>
+                                    </summary>
+                                    <ul>
+                                      <li><a href="#">Profile</a></li>
+                                      <li><a href="{{ route("user.logout") }}">Logout</a></li>
+                                    </ul>
+                                </details>
+                            </span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                     </div>
-                    &#160;&#160;&#160;
-                    <a href="{{ route("user.logout") }}" class="btn btn-sg">Logout</a>
                 </div>
             @else
                 <div class="col-lg-4 col-md-4 col-sm-8 d-flex justify-content-end">
@@ -68,10 +74,10 @@
                                         <div class="container">
                                             <div class="row">
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                                    <a href="" class="btn-google">Sign up with Google</a>
+                                                    <a href="{{ route("auth.social.login", ["type" => "google"]) }}" class="btn-google">Sign up with Google</a>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                                    <a href="" class="btn-facebook">Sign up with Facebook</a>
+                                                    <a href="{{ route("auth.social.login", ["type" => "facebook"]) }}" class="btn-facebook">Sign up with Facebook</a>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <span class="form-text">Or</span>
