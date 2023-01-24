@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SignUpRequest;
+use App\Models\City;
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -10,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use Laravel\Socialite\Facades\Socialite;
@@ -43,7 +46,7 @@ class UserController extends Controller
         Session::flush();
         Auth::logout();
         Session::flash('success', 'You are logged out.');
-        return redirect("/");
+        return redirect()->route("home");
     }
 
     /**
@@ -72,9 +75,6 @@ class UserController extends Controller
             $user->behance = $request->behance;
             $user->dribble = $request->dribble;
             $user->other = $request->other;
-        } else if ($request->user_type === "Customer") {
-            $user->assignRole("Customer");
-            $route = "customer.contest.price";
         }
         $user->save();
 
@@ -82,7 +82,7 @@ class UserController extends Controller
         Auth::attempt($credentials);
         if ($request->user_type === "Designer") {
             $user->assignRole("Designer");
-            $route = "designer.dashboard";
+            $route = "home";
         } else if($request->user_type === "Customer") {
             $user->assignRole("Customer");
             $route = "customer.contest.price";
@@ -152,11 +152,103 @@ class UserController extends Controller
                 $newUser->password = encrypt('logosporte@123');
                 $newUser->save();
                 Auth::login($newUser);
-                return \view("user_type")->with("success", "Your account has been created and Please Select One Option to continue!");
+                return \view("user.user_type")->with("success", "Your account has been created and Please Select One Option to continue!");
             }
             return redirect()->route('home')->with("success", "You have been logged in!");
         } catch (\Exception $e) {
             return redirect()->route('home')->with("success", "Something went wrong. Please login with email and password at the moment!");
         }
+    }
+
+    /**
+     * Show general view
+     * @return View
+     */
+    public function general(): View
+    {
+        $countries = Country::all();
+        $user = Auth::user();
+        $cities = [];
+        if (!empty($user->country)) {
+            $cities = City::where("country_id", $user->country)->get();
+        }
+        return \view("user.general", compact("user", "countries", "cities"));
+    }
+
+    /**
+     * Delete user
+     * @return RedirectResponse
+     */
+    public function delete(): RedirectResponse
+    {
+        $user = User::find(Auth::id());
+        $user->delete();
+
+        //remove user from login session
+        Session::flush();
+        Auth::logout();
+        return redirect()->route("home")->with("success", "Your account has been deleted successfully.");
+    }
+
+    /**
+     * Get cities against country
+     * @param $id
+     * @return string
+     */
+    public function getCities($id): string
+    {
+        $response = [
+            "message" => "Please choose any country first"
+        ];
+        if (!empty($id)) {
+            $cities = City::where("country_id", $id)->get();
+            if ($cities->count() > 0){
+                $response = [
+                    "message" => "Cities found for this country",
+                    "cities" => $cities
+                ];
+            } else {
+                $response = [
+                    "message" => "No city found for this country",
+                    "cities" => []
+                ];
+            }
+        }
+        return json_encode($response);
+    }
+
+    /**
+     * Update general data of user
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function generalSave(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'email' => 'unique:users,email,'.Auth::id(),
+            'username' => 'unique:users,username,'.Auth::id(),
+            "first_name" => "required",
+            "last_name" => "required",
+        ]);
+        $inputs = $request->all();
+        unset($inputs["_token"]);
+        $user = User::find(Auth::id());
+        if (!empty($user)) {
+            $user->first_name = $inputs['first_name'];
+            $user->last_name = $inputs['last_name'];
+            $user->username = $inputs['username'];
+            $user->country = $inputs['country'];
+            $user->city = $inputs['city'];
+            $user->behance = $inputs['behance'];
+            $user->about_me = $inputs['about_me'];
+            $user->gender = $inputs['gender'];
+            $user->telephone = $inputs['telephone'];
+            $user->email = $inputs['email'];
+            $user->dribble = $inputs['dribble'];
+            $user->other = $inputs['other'];
+            $user->update();
+        }
+
+        return redirect()->route("user.general")->with("success", "Your general data has been updated");
     }
 }

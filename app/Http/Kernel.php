@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\CheckContestStep;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Spatie\Permission\Middlewares\RoleMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -65,5 +66,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'contest' => CheckContestStep::class,
+        'role' => RoleMiddleware::class,
     ];
 }

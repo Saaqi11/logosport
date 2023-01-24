@@ -5,7 +5,10 @@ integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0
 <script src="{{ asset("assets/js/jquery.min.js") }}"></script>
 <script src="{{ asset("assets/js/jquery-validation.min.js") }}"></script>
 @if(request()->route()->getPrefix() === "customer/contest")
-    <script src="{{ asset("assets/modules/contest.js") }}"></script>
+    <script src="{{ asset("assets/js-modules/contest.js") }}"></script>
+@endif
+@if(request()->route()->getPrefix() === "/user")
+    <script src="{{ asset("assets/js-modules/profile.js") }}"></script>
 @endif
 <script src="{{ asset("assets/js/toastr.min.js") }}"></script>
 <script src="{{ asset("assets/js/app.min.js") }}"></script>

@@ -53,7 +53,7 @@
                                       <a class="button">{{ auth()->user()->first_name }}</a>
                                     </summary>
                                     <ul>
-                                      <li><a href="#">Profile</a></li>
+                                      <li><a href="{{ route("user.general") }}">Profile</a></li>
                                       <li><a href="{{ route("user.logout") }}">Logout</a></li>
                                     </ul>
                                 </details>

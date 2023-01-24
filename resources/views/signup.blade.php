@@ -89,17 +89,32 @@
                                     <input type="text" name="username" placeholder="Username*" value="{{ old("username") }}" required>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <span class="input-text">Email adress*</span>
+                                    <span class="input-text">Email address*</span>
                                     <input type="email" name="email" placeholder="Email adress*" value="{{ old("email") }}" required>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <span class="input-text">Password*</span>
                                     <input type="password" name="password" id="password" placeholder="Password*" required>
                                 </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 mb">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
                                     <span class="input-text">Confirm password*</span>
                                     <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm password*" class="is-invalid" required>
-                                    <span style="color: red" id="confirm_error"></span>
+                                    <span style="color: red" class="error-message" id="confirm_error"></span>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 designer-fields" style="display: none">
+                                    <span class="input-text">Behance*</span>
+                                    <input type="text" name="behance" id="behance" placeholder="" required>
+                                    <span style="color: red" class="error-message"></span>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 designer-fields" style="display: none">
+                                    <span class="input-text">Dribble*</span>
+                                    <input type="text" name="dribble" id="dribble" placeholder="" class="is-invalid" required>
+                                    <span style="color: red" class="error-message"></span>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 mb designer-fields" style="display: none">
+                                    <span class="input-text">Other*</span>
+                                    <input type="text" name="other" id="other" placeholder="" class="is-invalid" required>
+                                    <span style="color: red" class="error-message"></span>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-center">
                                     <button class="btn-start" id="submit-btn" type="submit" >Get started</button>
@@ -273,11 +288,21 @@
         $(".btn-crea").addClass("activ")
         $(".btn-cost").removeClass("activ")
         $("#user_type").val("Designer")
+        $(".designer-fields").show()
     })
     $(".btn-cost").on("click", function () {
         $(".btn-cost").addClass("activ")
         $(".btn-crea").removeClass("activ")
         $("#user_type").val("Customer");
+        $(".designer-fields").hide()
+    })
+    $(".designer-fields").on("keyup paste blur change", function (e) {
+        let check = validURL($(e.target).val());
+        if(!check) {
+            $(e.target).next().text("Please enter a valid URL");
+        } else {
+            $(e.target).next().text("");
+        }
     })
     $("#confirm_password").on("keyup", function () {
         if($("#confirm_password").val() !== $("#password").val()) {
@@ -288,29 +313,15 @@
             $("#submit-btn").disabled(false)
         }
     })
-    $('#signup-form').validate({ // initialize the plugin
-        rules: {
-            email: {
-                required: true,
-                email: true
-            },
-            username: {
-                required: true,
-            },
-            first_name: {
-                required: true,
-            },
-            last_name: {
-                required: true,
-            },
-            password: {
-                required: true,
-            },
-            confirm_password: {
-                required: true,
-            }
-        }
-    });
+    function validURL(str) {
+        let pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+            '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        return !!pattern.test(str);
+    }
 </script>
 <script src="{{ asset("assets/js/app.min.js") }}"></script>
 </body>

@@ -24,11 +24,13 @@ return new class extends Migration
             $table->string('password');
             $table->string('dribble')->nullable();
             $table->string('behance')->nullable();
+            $table->string('other')->nullable();
             $table->string('gender')->nullable();
             $table->string('about_me')->nullable();
             $table->string('country')->nullable();
             $table->string('city')->nullable();
             $table->string('telephone')->nullable();
+            $table->string('profile_score')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

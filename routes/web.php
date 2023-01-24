@@ -27,10 +27,26 @@ Route::get("/signup", [UserController::class, 'signUp'])->name("user.signup");
 Route::post("/do-signup", [UserController::class, 'doSignUp'])->name("user.doSignup");
 Route::get("/user-logout", [UserController::class, 'logout'])->name("user.logout");
 
-//Authenticated Routes
-Route::group(['middleware' => 'auth'], function () {
+Route::get("get-city/{id}", [UserController::class, 'getCities']);
+Route::get("states-city/{id}", [UserController::class, 'getStates']);
 
-    Route::post("/user-type", [UserController::class, 'userType'])->name("user.userType");
+
+Route::group(['middleware' => 'auth'], function () {
+    //User
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::post("/type", [UserController::class, 'userType'])->name("type");
+        Route::get("/general", [UserController::class, 'general'])->name("general");
+        Route::post("/general/save", [UserController::class, 'generalSave'])->name("general.save");
+        Route::get("/notification", [UserController::class, 'notification'])->name("notification");
+        Route::get("/password", [UserController::class, 'password'])->name("password");
+        Route::get("/verification", [UserController::class, 'verification'])->name("verification");
+        //soft delete
+        Route::get("/delete", [UserController::class, 'delete'])->name("delete");
+    });
+});
+
+//Authenticated Routes
+Route::group(['middleware' => ['auth', 'role:Customer']], function () {
 
     //Customer
     Route::prefix('customer')->name('customer.')->group(function () {
@@ -41,7 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get("/", [ContestController::class, 'index'])->name('view');
             Route::get("/price/{id?}", [ContestController::class, 'price'])->name('price');
             Route::post("/price-save/{id?}", [ContestController::class, 'priceSave'])->name('price.save');
-//            Route::group(['middleware' => 'contest'], function ($id) {
+            Route::group(['middleware' => 'contest'], function ($id) {
                 Route::get("/type/{id}", [ContestController::class, 'type'])->name('type');
                 Route::post("/type-save/{id}", [ContestController::class, 'typeSave'])->name('type.save');
                 Route::get("/color/{id}", [ContestController::class, 'color'])->name('color');
@@ -52,10 +68,11 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post("/brief-save/{id}", [ContestController::class, 'briefSave'])->name('brief.save');
                 Route::get("/condition/{id}", [ContestController::class, 'condition'])->name('condition');
                 Route::post("/condition-save/{id}", [ContestController::class, 'conditionSave'])->name('condition.save');
-//            });
+            });
         });
     });
 });
+
 
 Route::get('/', function () {
     return view('index');
