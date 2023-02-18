@@ -36,10 +36,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('user')->name('user.')->group(function () {
         Route::post("/type", [UserController::class, 'userType'])->name("type");
         Route::get("/general", [UserController::class, 'general'])->name("general");
-        Route::post("/general/save", [UserController::class, 'generalSave'])->name("general.save");
-        Route::get("/notification", [UserController::class, 'notification'])->name("notification");
+        Route::post("/general/update", [UserController::class, 'updateGeneral'])->name("general.update");
         Route::get("/password", [UserController::class, 'password'])->name("password");
+        Route::post("/password/update", [UserController::class, 'updatePassword'])->name("password.update");
+        Route::get("/notification", [UserController::class, 'notification'])->name("notification");
+        Route::post("/notification/update", [UserController::class, 'updateNotification'])->name("notification.update");
         Route::get("/verification", [UserController::class, 'verification'])->name("verification");
+        Route::post("/verification/save", [UserController::class, 'saveVerification'])->name("verification.save");
         //soft delete
         Route::get("/delete", [UserController::class, 'delete'])->name("delete");
     });

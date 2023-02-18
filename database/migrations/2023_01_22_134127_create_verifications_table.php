@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('verifications', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger("user_id");
             $table->string("country");
-            $table->string("city");
             $table->string("document_type");
             $table->json("document_file_json");
-            $table->tinyInteger("is_verified")->default(0);
+            $table->tinyInteger("is_verified")->default(0)->comment("0 => unverified, 1 => verified");
             $table->timestamps();
         });
     }

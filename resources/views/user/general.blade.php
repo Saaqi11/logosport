@@ -13,7 +13,7 @@
         </span>
         </div>
     </div>
-    <form action="{{ route("user.general.save") }}" class="setting-gnr row" method="post">
+    <form action="{{ route("user.general.update") }}" class="setting-gnr row" method="post">
         @csrf
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="wrp-brief">

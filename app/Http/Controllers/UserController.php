@@ -5,17 +5,22 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SignUpRequest;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Notification;
 use App\Models\User;
+use App\Models\Verification;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Laravel\Socialite\Facades\Socialite;
+use PHPUnit\Framework\Constraint\Count;
 
 class UserController extends Controller
 {
@@ -222,7 +227,7 @@ class UserController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function generalSave(Request $request): RedirectResponse
+    public function updateGeneral(Request $request): RedirectResponse
     {
         $request->validate([
             'email' => 'unique:users,email,'.Auth::id(),
@@ -239,16 +244,144 @@ class UserController extends Controller
             $user->username = $inputs['username'];
             $user->country = $inputs['country'];
             $user->city = $inputs['city'];
-            $user->behance = $inputs['behance'];
+            $user->behance = @$inputs['behance'];
             $user->about_me = $inputs['about_me'];
             $user->gender = $inputs['gender'];
             $user->telephone = $inputs['telephone'];
             $user->email = $inputs['email'];
-            $user->dribble = $inputs['dribble'];
-            $user->other = $inputs['other'];
+            $user->dribble = @$inputs['dribble'];
+            $user->other = @$inputs['other'];
             $user->update();
         }
 
         return redirect()->route("user.general")->with("success", "Your general data has been updated");
+    }
+
+    /**
+     * Show password view
+     * @return View
+     */
+    public function password(): View
+    {
+        return \view("user.password");
+    }
+
+    /**
+     * Save updated password
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $inputs = $request->all();
+        if (Hash::check($inputs['old_password'], auth()->user()->password)) {
+            $request->validate([
+                "password" => "required_with:confirm_password|same:confirm_password",
+                "confirm_password" => "required"
+            ]);
+            $user = User::find(Auth::id());
+            $user->password = Hash::make($inputs['password']);
+            $user->update();
+            return redirect()->route("user.password")->with("success", "Your Password has been changed successfully");
+        } else {
+            return redirect()->route("user.password")->with("error", "Your old Password is incorrect");
+        }
+    }
+
+    /**
+     * show user notifications
+     * @return View
+     */
+    public function notification(): View {
+        $notification = Notification::where("user_id", Auth::id())->first();
+        $notificationArray = [];
+        if (!empty($notification)) {
+            $notificationArray = json_decode($notification->notifications, true);
+            $notificationArray["active"] = explode(",",$notificationArray["active"]);
+            $notificationArray["inactive"] = explode(",",$notificationArray["inactive"]);
+            unset($notificationArray["active"][count($notificationArray["active"])-1]);
+            unset($notificationArray["inactive"][count($notificationArray["inactive"])-1]);
+        }
+        return \view("user.notification", compact("notificationArray"));
+    }
+
+    /**
+     * Update notification data
+     * @param Request $request
+     * @return string
+     */
+    public function updateNotification(Request $request): string {
+        $notification = Notification::where("user_id", Auth::id())->first();
+        $response = "";
+        if (!empty($notification) && $notification->count() > 0) {
+            $notification->notifications = $request->notification_json;
+            $notification->update();
+            $response = "Your notifications setting has been updated!";
+        } else {
+            $notification = new Notification();
+            $notification->notifications = $request->notification_json;
+            $notification->user_id = Auth::id();
+            $notification->save();
+            $response = "Your notifications setting has been saved!";
+        }
+        return $response;
+    }
+
+    /**
+     * Show verification module
+     * @return View
+     */
+    public function verification(): View {
+        $countries = Country::all();
+        $verification = Verification::where("user_id", Auth::id())->first();
+        return \view("user.verification", compact("verification", "countries"));
+    }
+
+    /**
+     * Save Verification data
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function saveVerification(Request $request): RedirectResponse
+    {
+        $request->validate([
+            "country" => "required",
+            "document_type" => "required",
+            "first_image" => "required",
+            "second_image" => "required"
+        ]);
+        $inputs = $request->all();
+        $documentArr = [];
+        if (!empty($inputs['first_image']) && !empty($inputs["second_image"])) {
+            $documentArr = [
+                "firstImage" => $this->imageUpload($inputs['first_image']),
+                "secondImage" => $this->imageUpload($inputs['second_image'])
+            ];
+        }
+        $verification = new Verification();
+        $verification->user_id = Auth::id();
+        $verification->country = $inputs['country'];
+        $verification->document_type = $inputs["document_type"];
+        $verification->document_file_json = json_encode($documentArr);
+        $verification->save();
+        return  redirect()->route("user.general")->with("success", "Your documents has been submitted for approval");
+    }
+
+    /**
+     * upload image
+     * @param $image
+     * @return string
+     */
+    private function imageUpload($image): string
+    {
+        $userAdsImagesBasePath = "/storage/app/public/images/verification/".Auth::id()."/";
+        //create dynamic directory
+        if (!File::isDirectory($userAdsImagesBasePath)) {
+            File::makeDirectory($userAdsImagesBasePath, 0755, true);
+        }
+        $fileName = "contest_".Auth::id()."_".time().'.'.$image->getClientOriginalName();
+        $imagePath = $userAdsImagesBasePath.$fileName;
+        Storage::disk('local')->put($imagePath, $image);
+        return $imagePath;
     }
 }
