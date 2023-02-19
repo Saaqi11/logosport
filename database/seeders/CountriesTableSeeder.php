@@ -19,8 +19,7 @@ class CountriesTableSeeder extends Seeder
         \DB::table('countries')->delete();
         
         \DB::table('countries')->insert(array (
-            0 => 
-            array (
+            0 => array (
                 'id' => 1,
                 'name' => 'Afghanistan',
                 'iso3' => 'AFG',
