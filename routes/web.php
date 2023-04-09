@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\ContestController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
@@ -55,7 +56,7 @@ Route::group(['middleware' => ['auth', 'role:Customer']], function () {
     Route::prefix('customer')->name('customer.')->group(function () {
         Route::get("/", [CustomerController::class, 'index'])->name('view');
 
-        //Project
+        //Contest
         Route::prefix('contest')->name('contest.')->group(function () {
             Route::get("/", [ContestController::class, 'index'])->name('view');
             Route::get("/price/{id?}", [ContestController::class, 'price'])->name('price');
@@ -74,6 +75,17 @@ Route::group(['middleware' => ['auth', 'role:Customer']], function () {
             });
         });
     });
+
+    //Competition
+    Route::prefix('competition')->name('competition.')->group(function () {
+        Route::get("/show-contest-brief/{id}", [CompetitionController::class, 'showBrief'])->name('show');
+        Route::get("/round-one/{id}", [CompetitionController::class, 'roundOne'])->name('round.one');
+        Route::get("/round-two/{id}", [CompetitionController::class, 'roundTwo'])->name('round.two');
+        Route::post("/save-work/{id}", [CompetitionController::class, 'saveWork'])->name('save.work');
+        Route::get("/decline-work/{id}", [CompetitionController::class, 'declineWork'])->name('decline.work');
+        Route::get("/winners/{id}", [CompetitionController::class, 'winners'])->name('winners');
+    });
+
 });
 
 

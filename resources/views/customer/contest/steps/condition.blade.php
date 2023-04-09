@@ -39,7 +39,7 @@
         <div class="col-lg-4 col-md-12 col-sm-12">
             <div class="wrp-brief">
                 <span class="title-brief">
-                    How long will the contest take place
+                    How long will the contest take place (Days)
                 </span>
                 <div class="select-wrapper">
                     <input type="number" name="duration" class="form-control" min="7" max="21">
@@ -62,6 +62,7 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" id="selected-designers-json" name="selected_designers_json">
         <div class="col-lg-4 col-md-12 col-sm-12">
             <div class="wrp-brief">
                 <span class="title-brief">
@@ -85,294 +86,115 @@
         @csrf
         <div class="col-6 col-lg-2 col-md-6 col-sm-6">
             <div class="wrp-brief">
-						<span class="title-brief">
-							Designers
-						</span>
+                <span class="title-brief">
+                    Works
+                </span>
                 <div class="select-wrapper">
                     <i class="fas fa-angle-down"></i>
-                    <select name="name_designer" class="select-brief">
-                        <option>Сhoose</option>
-                        <option>Andy</option>
+                    <select name="works" class="select-brief" id="works">
+                        <option selected disabled>Select any option</option>
+                        <option value="1">1+</option>
+                        <option value="10">10+</option>
+                        <option value="50">50+</option>
+                        <option value="100">100+</option>
                     </select>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-lg-2 col-md-6 col-sm-6">
+        <div class="col-6 col-lg-3 col-md-6 col-sm-6">
             <div class="wrp-brief">
-						<span class="title-brief">
-							Works
-						</span>
+                <span class="title-brief">
+                    Winner
+                </span>
                 <div class="select-wrapper">
                     <i class="fas fa-angle-down"></i>
-                    <select name="name_works" class="select-brief">
-                        <option>None</option>
-                        <option>None</option>
+                    <select name="winners" class="select-brief" id="winners">
+                        <option selected disabled>Select any option</option>
+                        <option value="1">1+</option>
+                        <option value="10">10+</option>
+                        <option value="50">50+</option>
+                        <option value="100">100+</option>
                     </select>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-lg-2 col-md-6 col-sm-6">
+        <div class="col-6 col-lg-3 col-md-6 col-sm-6">
             <div class="wrp-brief">
-						<span class="title-brief">
-							Winner
-						</span>
+                <span class="title-brief">
+                    Liked
+                </span>
                 <div class="select-wrapper">
                     <i class="fas fa-angle-down"></i>
-                    <select name="name_winner" class="select-brief">
-                        <option>None</option>
-                        <option>None</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-lg-2 col-md-6 col-sm-6">
-            <div class="wrp-brief">
-						<span class="title-brief">
-							Liked
-						</span>
-                <div class="select-wrapper">
-                    <i class="fas fa-angle-down"></i>
-                    <select name="name_liked" class="select-brief">
-                        <option>1 000</option>
-                        <option>None</option>
+                    <select name="likes" class="select-brief" id="likes">
+                        <option selected disabled>Select any option</option>
+                        <option value="1">1+</option>
+                        <option value="10">10+</option>
+                        <option value="50">50+</option>
+                        <option value="100">100+</option>
                     </select>
                 </div>
             </div>
         </div>
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="wrp-brief">
-						<span class="title-brief">
-							Search
-						</span>
+                <span class="title-brief">
+                    Search
+                </span>
                 <div class="select-wrapper">
                     <i class="fas fa-search"></i>
-                    <input type="text" name="name_search" class="input-brief input-brief--search"
-                           placeholder="">
+                    <input type="text" name="name_search" class="input-brief input-brief--search" placeholder="Search designer by name" id="designer_name">
                 </div>
             </div>
         </div>
     </form>
-{{--    <div class="row mb-p">--}}
-{{--        <div class="col-8 d-flex align-items-center justify-content-start">--}}
-{{--            <img src="images/profile-icon.png" alt="" class="profile-img">--}}
-{{--            <div class="profile-content">--}}
-{{--						<span class="profile-name">--}}
-{{--							dmitryburnos--}}
-{{--						</span>--}}
-{{--                <div class="wrp-info">--}}
-{{--							<span class="profile-folowers">--}}
-{{--								1241--}}
-{{--							</span>--}}
-{{--                    <span class="profile-works">--}}
-{{--								21 works--}}
-{{--							</span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-4 d-flex align-items-center justify-content-end">--}}
-{{--            <i class="far fa-check-circle activ"></i>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="row">--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
 
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
+    <!-- User detail -->
+    @if(!empty($users))
+        @foreach($users as $user)
+            <div class="row mb-p designer-block">
+                <div class="col-8 d-flex align-items-center justify-content-start">
+                    <img src="{{ asset("default-images/avatar.png") }}" alt="" class="profile-img">
+                    <div class="profile-content">
+						<span class="profile-name" data-name="{{ $user->first_name." ".$user->last_name }}">
+							{{ $user->first_name." ".$user->last_name }}
+						</span>
+                        <div class="wrp-info">
+							<span class="profile-folowers" data-reactions="{{ count($user->reactions) > 0 ? $user->reactions->sum("count") : 0 }}">
+								{{ count($user->reactions) > 0 ? $user->reactions->sum("count") : 0 }}
+							</span>
+                            <span class="profile-works" data-works="{{ count($user->works) }}">
+								{{ count($user->works) }} works
+							</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 d-flex align-items-center justify-content-end">
+                    <i class="far fa-check-circle" data-id="{{ $user->id }}"></i>
+                </div>
+            </div>
 
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
 
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
+            <!-- Designer Works -->
+            @if(count($user->works) > 5)
+                <div class="row">
+                    @foreach($user->works as $work)
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="info-block">
 
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="my-row my-row__stp-6">--}}
-{{--        <div class="wrp-plz wrp-plz__stp-6">--}}
-{{--            <input type="range" id="r1" value="20">--}}
-{{--            <div id="color" class="color"></div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="row mb-p">--}}
-{{--        <div class="col-8 d-flex align-items-center justify-content-start">--}}
-{{--            <img src="images/profile-icon.png" alt="" class="profile-img">--}}
-{{--            <div class="profile-content">--}}
-{{--						<span class="profile-name">--}}
-{{--							dmitryburnos--}}
-{{--						</span>--}}
-{{--                <div class="wrp-info">--}}
-{{--							<span class="profile-folowers">--}}
-{{--								1241--}}
-{{--							</span>--}}
-{{--                    <span class="profile-works">--}}
-{{--								21 works--}}
-{{--							</span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-4 d-flex align-items-center justify-content-end">--}}
-{{--            <i class="far fa-check-circle"></i>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="row">--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="row designer-contest-listing">
+                    <h5>This designer didn't work on any contest before.</h5>
+                </div>
+            @endif
+        @endforeach
 
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
+    @endif
 
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="row mb-p">--}}
-{{--        <div class="col-8 d-flex align-items-center justify-content-start">--}}
-{{--            <img src="images/profile-icon.png" alt="" class="profile-img">--}}
-{{--            <div class="profile-content">--}}
-{{--						<span class="profile-name">--}}
-{{--							dmitryburnos--}}
-{{--						</span>--}}
-{{--                <div class="wrp-info">--}}
-{{--							<span class="profile-folowers">--}}
-{{--								1241--}}
-{{--							</span>--}}
-{{--                    <span class="profile-works">--}}
-{{--								21 works--}}
-{{--							</span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-4 d-flex align-items-center justify-content-end">--}}
-{{--            <i class="far fa-check-circle"></i>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="row">--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="row mb-p">--}}
-{{--        <div class="col-8 d-flex align-items-center justify-content-start">--}}
-{{--            <img src="images/profile-icon.png" alt="" class="profile-img">--}}
-{{--            <div class="profile-content">--}}
-{{--						<span class="profile-name">--}}
-{{--							dmitryburnos--}}
-{{--						</span>--}}
-{{--                <div class="wrp-info">--}}
-{{--							<span class="profile-folowers">--}}
-{{--								1241--}}
-{{--							</span>--}}
-{{--                    <span class="profile-works">--}}
-{{--								21 works--}}
-{{--							</span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-4 d-flex align-items-center justify-content-end">--}}
-{{--            <i class="far fa-check-circle"></i>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="row">--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="row mb-p">--}}
-{{--        <div class="col-8 d-flex align-items-center justify-content-start">--}}
-{{--            <img src="images/profile-icon.png" alt="" class="profile-img">--}}
-{{--            <div class="profile-content">--}}
-{{--						<span class="profile-name">--}}
-{{--							dmitryburnos--}}
-{{--						</span>--}}
-{{--                <div class="wrp-info">--}}
-{{--							<span class="profile-folowers">--}}
-{{--								1241--}}
-{{--							</span>--}}
-{{--                    <span class="profile-works">--}}
-{{--								21 works--}}
-{{--							</span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-4 d-flex align-items-center justify-content-end">--}}
-{{--            <i class="far fa-check-circle"></i>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="row">--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3 col-md-6 col-sm-12">--}}
-{{--            <div class="info-block">--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    <!-- Pagination -->
 {{--    <div class="row mb-p">--}}
 {{--        <div class="col-lg-12 d-flex justify-content-center align-items-center">--}}
 {{--            <div class="page">--}}
@@ -396,103 +218,20 @@
 {{--            <span class="selected">Selected 12 <span>designers</span></span>--}}
 {{--        </div>--}}
 {{--    </div>--}}
-{{--    <div class="row">--}}
-{{--        <div class="col-12">--}}
-{{--					<span class="cnst-subtitle">--}}
-{{--						Selected designers--}}
-{{--					</span>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="row">--}}
-{{--        <div class="col-12">--}}
-{{--            <div id="owl-design" class="owl-carousel slider-designer">--}}
-{{--                <div class="design">--}}
-{{--                    <img src="images/design-photo.png" alt="" class="design-img">--}}
-{{--                    <span class="profile-name">--}}
-{{--								dmitryburnos--}}
-{{--							</span>--}}
-{{--                    <div class="wrp-info">--}}
-{{--								<span class="profile-folowers">--}}
-{{--									1241--}}
-{{--								</span>--}}
-{{--                        <span class="profile-works">--}}
-{{--									20 works--}}
-{{--								</span>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="design">--}}
-{{--                    <img src="images/design-photo.png" alt="" class="design-img">--}}
-{{--                    <span class="profile-name">--}}
-{{--								dmitryburnos--}}
-{{--							</span>--}}
-{{--                    <div class="wrp-info">--}}
-{{--								<span class="profile-folowers">--}}
-{{--									1241--}}
-{{--								</span>--}}
-{{--                        <span class="profile-works">--}}
-{{--									20 works--}}
-{{--								</span>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="design">--}}
-{{--                    <img src="images/design-photo.png" alt="" class="design-img">--}}
-{{--                    <span class="profile-name">--}}
-{{--								dmitryburnos--}}
-{{--							</span>--}}
-{{--                    <div class="wrp-info">--}}
-{{--								<span class="profile-folowers">--}}
-{{--									1241--}}
-{{--								</span>--}}
-{{--                        <span class="profile-works">--}}
-{{--									20 works--}}
-{{--								</span>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="design">--}}
-{{--                    <img src="images/design-photo.png" alt="" class="design-img">--}}
-{{--                    <span class="profile-name">--}}
-{{--								dmitryburnos--}}
-{{--							</span>--}}
-{{--                    <div class="wrp-info">--}}
-{{--								<span class="profile-folowers">--}}
-{{--									1241--}}
-{{--								</span>--}}
-{{--                        <span class="profile-works">--}}
-{{--									20 works--}}
-{{--								</span>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="design">--}}
-{{--                    <img src="images/design-photo.png" alt="" class="design-img">--}}
-{{--                    <span class="profile-name">--}}
-{{--								dmitryburnos--}}
-{{--							</span>--}}
-{{--                    <div class="wrp-info">--}}
-{{--								<span class="profile-folowers">--}}
-{{--									1241--}}
-{{--								</span>--}}
-{{--                        <span class="profile-works">--}}
-{{--									20 works--}}
-{{--								</span>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="design">--}}
-{{--                    <img src="images/design-photo.png" alt="" class="design-img">--}}
-{{--                    <span class="profile-name">--}}
-{{--								dmitryburnos--}}
-{{--							</span>--}}
-{{--                    <div class="wrp-info">--}}
-{{--								<span class="profile-folowers">--}}
-{{--									1241--}}
-{{--								</span>--}}
-{{--                        <span class="profile-works">--}}
-{{--									20 works--}}
-{{--								</span>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+
+    <!-- Selected Designers -->
+    <div class="row">
+        <div class="col-12">
+            <span class="cnst-subtitle">
+                Selected designers
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex align-items-center justify-content-center" id="selected-designer">
+            <h4>There is no designer selected yet. </h4>
+        </div>
+    </div>
     <div class="row ">
         <div class="col-12 d-flex justify-content-end align-items-center">
             <button class="brf-file" id="condition-save-skip">Skip payment</button>

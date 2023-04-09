@@ -40,7 +40,7 @@ let contest = {
             let imageElems = $(".dz-image-preview .dz-image img");
             if ($(imageElems).length > 0) {
                 $(imageElems).each(function (index, val) {
-                    if (!validURL($(val).attr('src'))){
+                    if (!contest.validURL($(val).attr('src'))){
                         imagesArray[index] = ($(val).attr('src'));
                     }
                 });
@@ -275,7 +275,7 @@ let contest = {
             $(this).parent().parent().remove();
             let imageValues = [];
             $('.delete-image').each(function(index, node) {
-                if (validURL($(node).data('image_src'))) {
+                if (contest.validURL($(node).data('image_src'))) {
                     imageValues[index] = $(node).data('image_id');
                 }
             });
@@ -293,15 +293,15 @@ let contest = {
                 $(".dotted-dropzone").removeAttr('style');
             }
         });
-        function validURL(str) {
-            var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-                '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-                '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-                '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-            return !!pattern.test(str);
-        }
+    },
+    validURL: (str) => {
+        var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+            '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        return !!pattern.test(str);
     },
     compareDate: (from, to) => {
         //Generate an array where the first element is the year, second is month and third is day
@@ -322,8 +322,46 @@ let contest = {
         let yyyy = today.getFullYear();
         return dd + '-' + mm + '-' + yyyy;
     }
+
 }
 
 $(document).ready(() => {
     contest.init();
 })
+
+$(".fa-check-circle").on("click", (e) =>{
+    if ($(e.target).hasClass("activ")) {
+        $(e.target).removeClass("activ");
+    } else {
+        $(e.target).addClass("activ");
+    }
+    let designers = [];
+    $("#selected-designer").html("")
+    setTimeout(() => {
+        $(".fa-check-circle.activ").each((index, item)=> {
+            designers[index] = $(item).data("id");
+            $("#selected-designer").append(`
+                <div class="row">
+                    <div class="col-12">
+                        <div id="owl-design" class="owl-carousel slider-designer">
+                            <div class="design">
+                                <img src="{{ asset("images/design-photo.png") }}" alt="" class="design-img">
+                                <span class="profile-name">`+ $(item).parents(".designer-block").find(".profile-name").data("name") +`</span>
+                                <div class="wrp-info">
+                                    <span class="profile-folowers">
+                                        `+ $(item).parents(".designer-block").find(".profile-folowers").data("reactions") +`
+                                    </span>
+                                    <span class="profile-works">
+                                        `+ $(item).parents(".designer-block").find(".profile-works").data("works") +` Works
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `)
+        });
+        $("#selected-designers-json").val(JSON.stringify(designers));
+
+    }, 50);
+});

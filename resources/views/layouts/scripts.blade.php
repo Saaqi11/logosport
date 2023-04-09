@@ -12,3 +12,10 @@ integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0
 @endif
 <script src="{{ asset("assets/js/toastr.min.js") }}"></script>
 <script src="{{ asset("assets/js/app.min.js") }}"></script>
+
+@if(request()->route()->getPrefix() === "/competition")
+    <script src="{{ asset("assets/js/competition-app.min.js") }}"></script>
+    <script src="{{ asset("assets/js/competition.js") }}"></script>
+
+@else
+@endif

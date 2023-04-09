@@ -50,7 +50,10 @@
                             <span class="user-name">
                                 <details class="dropdown">
                                     <summary role="button">
-                                      <a class="button">{{ auth()->user()->first_name }}</a>
+                                          <a class="button">
+                                              {{ auth()->user()->first_name }} &#160;
+                                              <i class="fas fa-chevron-down"></i>
+                                          </a>
                                     </summary>
                                     <ul>
                                       <li><a href="{{ route("user.general") }}">Profile</a></li>
@@ -58,7 +61,6 @@
                                     </ul>
                                 </details>
                             </span>
-                            <i class="fas fa-chevron-down"></i>
                         </div>
                     </div>
                 </div>
