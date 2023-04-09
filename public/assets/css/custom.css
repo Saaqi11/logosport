@@ -1,0 +1,11 @@
+.designer-contest-listing {
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 5px;
+}
+.designer-block {
+    margin: 15px;
+}
