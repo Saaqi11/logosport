@@ -21,7 +21,7 @@
 						</span>
                 </p>
             </div>
-            <form action="{{ route("competition.save.work", ["id" => $contest->id]) }}" class="popup__form" method="post">
+            <form action="{{ route("competition.save.work", ["id" => $contest->id]) }}" class="popup__form" method="post" enctype="multipart/form-data">
                 @csrf
                 <label for="upload" class="block-brief__download-link popup-upload">
                     <input type="file" id="upload-work" name="work" required class="popup-upload__input" hidden>

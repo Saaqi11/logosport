@@ -50,6 +50,23 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 //Authenticated Routes
+Route::group(['middleware' => ['auth']], function () {
+    //Competition
+    Route::prefix('competition')->name('competition.')->group(function () {
+        Route::get("/show-contest-brief/{id}", [CompetitionController::class, 'showBrief'])->name('show');
+        Route::get("/round-one/{id}", [CompetitionController::class, 'roundOne'])->name('round.one');
+        Route::get("/round-two/{id}", [CompetitionController::class, 'roundTwo'])->name('round.two');
+        Route::post("/save-work/{id}", [CompetitionController::class, 'saveWork'])->name('save.work');
+        Route::get("/decline-work/{id}", [CompetitionController::class, 'declineWork'])->name('decline.work');
+        Route::get("/winners/{id}", [CompetitionController::class, 'winners'])->name('winners');
+        Route::get("/change-work-status/{id}/{status}", [CompetitionController::class, 'changeWorkStatus']);
+        Route::get("/declare-position/{id}/{position}/{contestId}", [CompetitionController::class, 'declarePosition']);
+        Route::get("/get-current-user-works/{id}", [CompetitionController::class, 'getCurrentUserWorks']);
+        Route::get("/get-all-works/{id}", [CompetitionController::class, 'getAllWorks']);
+        Route::get("/get-declined-works/{id}", [CompetitionController::class, 'getDeclinedWorks']);
+        Route::get("/sort-works/{id}", [CompetitionController::class, 'sortWorks']);
+    });
+});
 Route::group(['middleware' => ['auth', 'role:Customer']], function () {
 
     //Customer
@@ -75,17 +92,6 @@ Route::group(['middleware' => ['auth', 'role:Customer']], function () {
             });
         });
     });
-
-    //Competition
-    Route::prefix('competition')->name('competition.')->group(function () {
-        Route::get("/show-contest-brief/{id}", [CompetitionController::class, 'showBrief'])->name('show');
-        Route::get("/round-one/{id}", [CompetitionController::class, 'roundOne'])->name('round.one');
-        Route::get("/round-two/{id}", [CompetitionController::class, 'roundTwo'])->name('round.two');
-        Route::post("/save-work/{id}", [CompetitionController::class, 'saveWork'])->name('save.work');
-        Route::get("/decline-work/{id}", [CompetitionController::class, 'declineWork'])->name('decline.work');
-        Route::get("/winners/{id}", [CompetitionController::class, 'winners'])->name('winners');
-    });
-
 });
 
 

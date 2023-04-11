@@ -103,17 +103,17 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 designer-fields" style="display: none">
                                     <span class="input-text">Behance*</span>
-                                    <input type="text" name="behance" id="behance" placeholder="" required>
+                                    <input type="text" name="behance" id="behance" placeholder="">
                                     <span style="color: red" class="error-message"></span>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 designer-fields" style="display: none">
                                     <span class="input-text">Dribble*</span>
-                                    <input type="text" name="dribble" id="dribble" placeholder="" class="is-invalid" required>
+                                    <input type="text" name="dribble" id="dribble" placeholder="" class="is-invalid">
                                     <span style="color: red" class="error-message"></span>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 mb designer-fields" style="display: none">
                                     <span class="input-text">Other*</span>
-                                    <input type="text" name="other" id="other" placeholder="" class="is-invalid" required>
+                                    <input type="text" name="other" id="other" placeholder="" class="is-invalid">
                                     <span style="color: red" class="error-message"></span>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-center">
@@ -310,7 +310,7 @@
         } else {
             $("#confirm_password").removeAttr("style")
             $("#confirm_error").text("")
-            $("#submit-btn").disabled(false)
+            $("#submit-btn").attr("disabled", false)
         }
     })
     function validURL(str) {

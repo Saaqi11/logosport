@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("designer_user_id");
             $table->unsignedBigInteger("contest_id");
+            $table->integer("status")->nullable();
             $table->string("place")->nullable();
             $table->string("reward")->nullable();
             $table->string("feedback")->nullable();
