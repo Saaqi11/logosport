@@ -32,7 +32,7 @@
                                                 <div class="card-view__items">
                                                     <div class="card-view__item">
                                                         <i class="fa fa-heart"></i>
-                                                        <span>{{ $work->reactions->sum("count") }}</span>
+                                                        <span>{{ $work->reactions ? $work->reactions : 0 }}</span>
                                                     </div>
                                                 </div>
                                             </div>

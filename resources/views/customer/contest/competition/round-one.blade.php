@@ -37,7 +37,13 @@
                                                 <svg class="card-view__icon">
                                                     <use href="{{ asset("images/img/icons/icons.svg#folder") }}"></use>
                                                 </svg>
-                                                <span>View</span>
+                                                @if($work->status === 0)
+                                                    <span>Pending</span>
+                                                @elseif($work->status === 1)
+                                                    <span>Selected for Round 2</span>
+                                                @elseif($work->status === 2)
+                                                    <span>Rejected</span>
+                                                @endif
                                             </a>
                                             <picture>
                                                 <source srcset="{{ asset("images/img/other-img/logo.webp") }}" type="image/webp">

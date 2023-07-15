@@ -86,7 +86,11 @@ $.ajax({
 	contentType: false,
 	success: (response) => {
 		if (response.status) {
-			$("#designer-works").text(response.work.files.length)
+			if (response.work.files.length) {
+				$("#designer-works").text(response.work.files.length ? response.work.files.length : "0")
+			} else {
+				$("#designer-works").text("0")
+			}
 		}
 	},
 	error: (response) => {

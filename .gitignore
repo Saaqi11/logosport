@@ -17,3 +17,5 @@ yarn-error.log
 /.idea
 /.vscode
 /public/work/
+/public/contests-attachments/*.pdf
+/public/images/contests/*
