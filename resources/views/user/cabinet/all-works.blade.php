@@ -51,18 +51,18 @@
                         <div class="wrp-few">
                             <div class="first-image">
                                 <a href="#">
-                                    <img src="images/ex-1.png" alt="">
+                                    <img src="/images/ex-1.png" alt="">
                                 </a>
                             </div>
                             <div class="second-image">
                                 <a href="#">
-                                    <img src="images/ex-2.png" alt="">
+                                    <img src="/images/ex-2.png" alt="">
                                 </a>
                             </div>
                         </div>
                         <div class="third-image">
                             <a href="#">
-                                <img src="images/ex-3.png" alt="">
+                                <img src="/images/ex-3.png" alt="">
                             </a>
                         </div>
                     </div>
@@ -84,18 +84,18 @@
                         <div class="wrp-few">
                             <div class="first-image">
                                 <a href="#">
-                                    <img src="images/ex-1.png" alt="">
+                                    <img src="/images/ex-1.png" alt="">
                                 </a>
                             </div>
                             <div class="second-image">
                                 <a href="#">
-                                    <img src="images/ex-2.png" alt="">
+                                    <img src="/images/ex-2.png" alt="">
                                 </a>
                             </div>
                         </div>
                         <div class="third-image">
                             <a href="#">
-                                <img src="images/ex-3.png" alt="">
+                                <img src="/images/ex-3.png" alt="">
                             </a>
                         </div>
                     </div>
@@ -117,18 +117,18 @@
                         <div class="wrp-few">
                             <div class="first-image">
                                 <a href="#">
-                                    <img src="images/ex-1.png" alt="">
+                                    <img src="/images/ex-1.png" alt="">
                                 </a>
                             </div>
                             <div class="second-image">
                                 <a href="#">
-                                    <img src="images/ex-2.png" alt="">
+                                    <img src="/images/ex-2.png" alt="">
                                 </a>
                             </div>
                         </div>
                         <div class="third-image">
                             <a href="#">
-                                <img src="images/ex-3.png" alt="">
+                                <img src="/images/ex-3.png" alt="">
                             </a>
                         </div>
                     </div>
@@ -150,18 +150,18 @@
                         <div class="wrp-few">
                             <div class="first-image">
                                 <a href="#">
-                                    <img src="images/ex-1.png" alt="">
+                                    <img src="/images/ex-1.png" alt="">
                                 </a>
                             </div>
                             <div class="second-image">
                                 <a href="#">
-                                    <img src="images/ex-2.png" alt="">
+                                    <img src="/images/ex-2.png" alt="">
                                 </a>
                             </div>
                         </div>
                         <div class="third-image">
                             <a href="#">
-                                <img src="images/ex-3.png" alt="">
+                                <img src="/images/ex-3.png" alt="">
                             </a>
                         </div>
                     </div>
@@ -183,18 +183,18 @@
                         <div class="wrp-few">
                             <div class="first-image">
                                 <a href="#">
-                                    <img src="images/ex-1.png" alt="">
+                                    <img src="/images/ex-1.png" alt="">
                                 </a>
                             </div>
                             <div class="second-image">
                                 <a href="#">
-                                    <img src="images/ex-2.png" alt="">
+                                    <img src="/images/ex-2.png" alt="">
                                 </a>
                             </div>
                         </div>
                         <div class="third-image">
                             <a href="#">
-                                <img src="images/ex-3.png" alt="">
+                                <img src="/images/ex-3.png" alt="">
                             </a>
                         </div>
                     </div>
@@ -216,18 +216,18 @@
                         <div class="wrp-few">
                             <div class="first-image">
                                 <a href="#">
-                                    <img src="images/ex-1.png" alt="">
+                                    <img src="/images/ex-1.png" alt="">
                                 </a>
                             </div>
                             <div class="second-image">
                                 <a href="#">
-                                    <img src="images/ex-2.png" alt="">
+                                    <img src="/images/ex-2.png" alt="">
                                 </a>
                             </div>
                         </div>
                         <div class="third-image">
                             <a href="#">
-                                <img src="images/ex-3.png" alt="">
+                                <img src="/images/ex-3.png" alt="">
                             </a>
                         </div>
                     </div>
@@ -249,18 +249,18 @@
                         <div class="wrp-few">
                             <div class="first-image">
                                 <a href="#">
-                                    <img src="images/ex-1.png" alt="">
+                                    <img src="/images/ex-1.png" alt="">
                                 </a>
                             </div>
                             <div class="second-image">
                                 <a href="#">
-                                    <img src="images/ex-2.png" alt="">
+                                    <img src="/images/ex-2.png" alt="">
                                 </a>
                             </div>
                         </div>
                         <div class="third-image">
                             <a href="#">
-                                <img src="images/ex-3.png" alt="">
+                                <img src="/images/ex-3.png" alt="">
                             </a>
                         </div>
                     </div>
@@ -282,18 +282,18 @@
                         <div class="wrp-few">
                             <div class="first-image">
                                 <a href="#">
-                                    <img src="images/ex-1.png" alt="">
+                                    <img src="/images/ex-1.png" alt="">
                                 </a>
                             </div>
                             <div class="second-image">
                                 <a href="#">
-                                    <img src="images/ex-2.png" alt="">
+                                    <img src="/images/ex-2.png" alt="">
                                 </a>
                             </div>
                         </div>
                         <div class="third-image">
                             <a href="#">
-                                <img src="images/ex-3.png" alt="">
+                                <img src="/images/ex-3.png" alt="">
                             </a>
                         </div>
                     </div>

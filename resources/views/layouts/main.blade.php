@@ -3,7 +3,7 @@
     @include('layouts.header')
     <body>
         @include('layouts.top_nav')
-        <section class="constructor">
+        <section class="constructor profile">
             <div class="container">
                 @include("layouts.flashMessages")
                 @yield('content')
