@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('user_type')->nullable();
             $table->string('username')->unique()->nullable();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('dribble')->nullable();
             $table->string('behance')->nullable();
@@ -31,6 +30,9 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('telephone')->nullable();
             $table->string('profile_score')->nullable();
+            $table->string('code')->nullable();
+            $table->string('code_expires_at')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

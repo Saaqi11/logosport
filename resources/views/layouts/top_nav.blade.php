@@ -57,6 +57,7 @@
                                     </summary>
                                     <ul>
                                       <li><a href="{{ route("user.general") }}">Profile</a></li>
+                                      <li><a href="{{ route("user.cabinet.my-all-works") }}">Personal Cabinet</a></li>
                                       <li><a href="{{ route("user.logout") }}">Logout</a></li>
                                     </ul>
                                 </details>

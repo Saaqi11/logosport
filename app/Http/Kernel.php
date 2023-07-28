@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\CheckContestStep;
+use App\Http\Middleware\VerifiedUser;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Spatie\Permission\Middlewares\RoleMiddleware;
 
@@ -67,5 +68,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'contest' => CheckContestStep::class,
         'role' => RoleMiddleware::class,
+        'verified-user' => VerifiedUser::class,
     ];
 }

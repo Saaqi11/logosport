@@ -3,6 +3,7 @@
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\ContestController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DesignerWorkController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,41 +34,47 @@ Route::get("states-city/{id}", [UserController::class, 'getStates']);
 
 
 Route::group(['middleware' => 'auth'], function () {
-    //User
-    Route::prefix('user')->name('user.')->group(function () {
-        Route::post("/type", [UserController::class, 'userType'])->name("type");
-        Route::get("/general", [UserController::class, 'general'])->name("general");
-        Route::post("/general/update", [UserController::class, 'updateGeneral'])->name("general.update");
-        Route::get("/password", [UserController::class, 'password'])->name("password");
-        Route::post("/password/update", [UserController::class, 'updatePassword'])->name("password.update");
-        Route::get("/notification", [UserController::class, 'notification'])->name("notification");
-        Route::post("/notification/update", [UserController::class, 'updateNotification'])->name("notification.update");
-        Route::get("/verification", [UserController::class, 'verification'])->name("verification");
-        Route::post("/verification/save", [UserController::class, 'saveVerification'])->name("verification.save");
-        //soft delete
-        Route::get("/delete", [UserController::class, 'delete'])->name("delete");
-    });
-});
+    Route::get('/send-email-verification', [UserController::class, 'reSendVerificationEmail'])->name("send-email-verification")
+        ->middleware('throttle:1,1');
+    Route::post('/verify-email', [UserController::class, 'verifyEmail'])->name('verify-email');
+    Route::get('/verify-user', [UserController::class, 'verifyUser'])->name('verify-user');
 
-//Authenticated Routes
-Route::group(['middleware' => ['auth']], function () {
-    //Competition
-    Route::prefix('competition')->name('competition.')->group(function () {
-        Route::get("/show-contest-brief/{id}", [CompetitionController::class, 'showBrief'])->name('show');
-        Route::get("/round-one/{id}", [CompetitionController::class, 'roundOne'])->name('round.one');
-        Route::get("/round-two/{id}", [CompetitionController::class, 'roundTwo'])->name('round.two');
-        Route::post("/save-work/{id}", [CompetitionController::class, 'saveWork'])->name('save.work');
-        Route::get("/decline-work/{id}", [CompetitionController::class, 'declineWork'])->name('decline.work');
-        Route::get("/winners/{id}", [CompetitionController::class, 'winners'])->name('winners');
-        Route::get("/change-work-status/{id}/{status}", [CompetitionController::class, 'changeWorkStatus']);
-        Route::get("/declare-position/{id}/{position}/{contestId}", [CompetitionController::class, 'declarePosition']);
-        Route::get("/get-current-user-works/{id}", [CompetitionController::class, 'getCurrentUserWorks']);
-        Route::get("/get-all-works/{id}", [CompetitionController::class, 'getAllWorks']);
-        Route::get("/get-declined-works/{id}", [CompetitionController::class, 'getDeclinedWorks']);
-        Route::get("/sort-works/{id}", [CompetitionController::class, 'sortWorks']);
+    Route::group(['middleware' => 'verified-user'], function () {
+        //User
+        Route::prefix('user')->name('user.')->group(function () {
+            Route::post("/type", [UserController::class, 'userType'])->name("type");
+            Route::get("/general", [UserController::class, 'general'])->name("general");
+            Route::post("/general/update", [UserController::class, 'updateGeneral'])->name("general.update");
+            Route::get("/password", [UserController::class, 'password'])->name("password");
+            Route::post("/password/update", [UserController::class, 'updatePassword'])->name("password.update");
+            Route::get("/notification", [UserController::class, 'notification'])->name("notification");
+            Route::post("/notification/update", [UserController::class, 'updateNotification'])->name("notification.update");
+            Route::get("/verification", [UserController::class, 'verification'])->name("verification");
+            Route::post("/verification/save", [UserController::class, 'saveVerification'])->name("verification.save");
+            //soft delete
+            Route::get("/delete", [UserController::class, 'delete'])->name("delete");
+            Route::prefix('cabinet')->name('cabinet.')->group(function () {
+                Route::get("/my-all-works", [DesignerWorkController::class, 'myAllWorks'])->name("my-all-works");
+            });
+        });
+        //Competition
+        Route::prefix('competition')->name('competition.')->group(function () {
+            Route::get("/show-contest-brief/{id}", [CompetitionController::class, 'showBrief'])->name('show');
+            Route::get("/round-one/{id}", [CompetitionController::class, 'roundOne'])->name('round.one');
+            Route::get("/round-two/{id}", [CompetitionController::class, 'roundTwo'])->name('round.two');
+            Route::post("/save-work/{id}", [CompetitionController::class, 'saveWork'])->name('save.work');
+            Route::get("/decline-work/{id}", [CompetitionController::class, 'declineWork'])->name('decline.work');
+            Route::get("/winners/{id}", [CompetitionController::class, 'winners'])->name('winners');
+            Route::get("/change-work-status/{id}/{status}", [CompetitionController::class, 'changeWorkStatus']);
+            Route::get("/declare-position/{id}/{position}/{contestId}", [CompetitionController::class, 'declarePosition']);
+            Route::get("/get-current-user-works/{id}", [CompetitionController::class, 'getCurrentUserWorks']);
+            Route::get("/get-all-works/{id}", [CompetitionController::class, 'getAllWorks']);
+            Route::get("/get-declined-works/{id}", [CompetitionController::class, 'getDeclinedWorks']);
+            Route::get("/sort-works/{id}", [CompetitionController::class, 'sortWorks']);
+        });
     });
 });
-Route::group(['middleware' => ['auth', 'role:Customer']], function () {
+Route::group(['middleware' => ['auth', 'role:Customer', 'verified-user']], function () {
 
     //Customer
     Route::prefix('customer')->name('customer.')->group(function () {

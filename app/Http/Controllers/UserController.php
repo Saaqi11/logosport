@@ -8,19 +8,23 @@ use App\Models\Country;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\Verification;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Laravel\Socialite\Facades\Socialite;
 use PHPUnit\Framework\Constraint\Count;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class UserController extends Controller
 {
@@ -81,18 +85,28 @@ class UserController extends Controller
             $user->dribble = $request->dribble;
             $user->other = $request->other;
         }
+        $user->code = rand(1000,9999);
+        $user->code_expires_at = Carbon::now()->addHour();
         $user->save();
+        $this->sendVerificationEmail($user);
 
         $credentials = $request->only(['email', 'password']);
         Auth::attempt($credentials);
         if ($request->user_type === "Designer") {
             $user->assignRole("Designer");
-            $route = "home";
         } else if($request->user_type === "Customer") {
             $user->assignRole("Customer");
-            $route = "customer.contest.price";
         }
-        return redirect()->route($route)->with("success", "Your account has been created!");
+        return redirect()->route("verify-user")->with("success", "Your account has been created!");
+    }
+
+    /**
+     * Verify user
+     * @return View
+     */
+    public function verifyUser(): View
+    {
+        return \view("verify-user");
     }
 
     /**
@@ -383,5 +397,66 @@ class UserController extends Controller
         $imagePath = $userAdsImagesBasePath.$fileName;
         Storage::disk('local')->put($imagePath, $image);
         return $imagePath;
+    }
+
+
+
+    /**
+     * @param $user
+     */
+    private function sendVerificationEmail($user) {
+        $user = json_decode(json_encode($user), true);
+        $user['name'] = $user['first_name']." ".$user['last_name'];
+        // send email with the template
+        Mail::send('emails.user-verification', $user, function ($message) use ($user) {
+            $message->to($user['email'], $user['name'])
+                ->subject('Please Verify your Account')
+                ->from(env("MAIL_USERNAME"), env("MAIL_FROM_NAME"));
+        });
+    }
+
+    /**
+     * @return RedirectResponse
+     */
+    public function reSendVerificationEmail(): RedirectResponse
+    {
+        $user = User::where('email', Auth::user()->email)->first();
+        $user->code = rand(1000, 9999);
+        $user->code_expires_at = Carbon::now()->addHour();
+        $user->update();
+        $this->sendVerificationEmail($user);
+        return redirect("verify-user");
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function verifyEmail(Request $request): RedirectResponse
+    {
+        if (Auth::check()) {
+            $user = User::where('email', Auth::user()->email)->first();
+            if (!Auth::user()->email_verified_at) {
+                if ($user->code_expires_at > Carbon::now()){
+                    if ($user->code === $request->code) {
+                        $user->email_verified_at = date('Y-m-d H:i:s');
+                        $user->code = null;
+                        $user->code_expires_at = null;
+                        $user->update();
+                        $message = 'Your account has been verified';
+                        return redirect()->route("home")->with("success", $message);
+                    } else {
+                        $message = 'Wrong Code Entered.';
+                    }
+                } else {
+                    $message = 'Time Expired for code. Please resend verification email';
+                }
+            } else {
+                $message = 'User is already verified.';
+            }
+            return redirect()->back()->with("error", $message);
+        } else {
+            return redirect()->back()->with("error", "The OTP you entered is incorrect");
+        }
     }
 }

@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{ asset("assets/css/app.min.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/css/top.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/css/competition.min.css") }}">
-@if(request()->route()->getPrefix() === "/competition")
+    @if(request()->route()->getPrefix() === "/competition")
     @else
         <link rel="stylesheet" href="{{ asset("assets/css/dropzone.css") }}">
         <link rel="stylesheet" href="{{ asset("assets/css/dropzone-custom.css") }}">
