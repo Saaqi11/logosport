@@ -70,7 +70,7 @@
                                             </a>
                                         @php } @endphp
                                         @php
-                                            if ($contest->status !== 3 && !$contest->is_paid && $contest->score) {
+                                            if ($contest->status !== 3 && !$contest->is_paid && $contest->score === 100) {
                                         @endphp
                                             <a href="{{route("customer.contest.type", ['id' => $contest->id."is-edit=1"])}}" data-id="{{ $contest->id }}" class="spollers-head__link cancel-popup">
                                                 Edit

@@ -231,7 +231,6 @@
                                     Type
                                 </h4>
                             </div>
-                            @dd($contest->mediaFiles)
                             <div data-gallery class="block-brief__grid-layout big">
                                 @if(!empty($contest->mediaFiles) && count($contest->mediaFiles) > 0)
                                     @foreach($contest->mediaFiles as $file)
