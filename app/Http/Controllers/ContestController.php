@@ -147,7 +147,7 @@ class ContestController extends Controller
                 $imagePath = public_path() . "/" .$userAdsImagesBasePath . $fileName;
 
                 File::put($imagePath, $imageBase64);
-                $media->src = $imagePath;
+                $media->src = $userAdsImagesBasePath . $fileName;
                 $media->contest_id = $id;
                 $media->user_id = Auth::id();
                 $media->save();

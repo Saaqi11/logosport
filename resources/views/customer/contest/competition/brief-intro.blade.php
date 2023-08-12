@@ -204,10 +204,9 @@
                             <div data-gallery class="block-brief__grid-layout big">
                                 @if(!empty($contest->mediaFiles) && count($contest->mediaFiles) > 0)
                                     @foreach($contest->mediaFiles as $file)
-                                            <a href="{{ env('APP_URL').'/'.$file->src }}" class="block-brief__image">
-                                                <img src="{{ env('APP_URL').'/'.$file->src }}" alt="">
-                                            </a>
-                                        </div>
+                                        <a href="{{ env('APP_URL').'/'.$file->src }}" class="block-brief__image">
+                                            <img src="{{ env('APP_URL').'/'.$file->src }}" alt="">
+                                        </a>
                                     @endforeach
                                 @else
                                     There are no image type available for it.
