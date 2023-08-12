@@ -71,7 +71,7 @@
                                         @php
                                             if ($contest->status !== 3 && !$contest->is_paid && $contest->score) {
                                         @endphp
-                                            <a href="{{route("customer.contest.type", ['id' => $contest->id])}}" data-id="{{ $contest->id }}" class="spollers-head__link cancel-popup">
+                                            <a href="{{route("customer.contest.type", ['id' => $contest->id."is-edit=1"])}}" data-id="{{ $contest->id }}" class="spollers-head__link cancel-popup">
                                                 Edit
                                             </a>
                                         @php

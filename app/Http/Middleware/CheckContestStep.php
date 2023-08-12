@@ -22,6 +22,29 @@ class CheckContestStep
         $id = request()->segment(count(request()->segments()));
         if (!empty($id)) {
             $contest = Contest::find($id);
+            $route = "";
+            if ($request->get("is-edit")) {
+                switch ($contest->score) {
+                    case 20:
+                        $route = "customer.contest.type";
+                        break;
+                    case 40:
+                        $route = "customer.contest.color";
+                        break;
+                    case 50:
+                        $route = "customer.contest.style";
+                        break;
+                    case 60:
+                        $route = "customer.contest.brief";
+                        break;
+                    case 80:
+                        $route = "customer.contest.condition";
+                        break;
+                }
+                if ($route) {
+                    return redirect()->route($route, [$contest->id]);
+                }
+            }
             if (!empty($contest)) {
                 return $next($request);
             }
