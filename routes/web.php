@@ -59,6 +59,8 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get("/my-all-works", [DesignerWorkController::class, 'myAllWorks'])->name("my-all-works");
             });
         });
+
+        Route::get("/listing", [ContestController::class, 'contestListing'])->name("contest.listing");
         //Competition
         Route::prefix('competition')->name('competition.')->group(function () {
             Route::get("/show-contest-brief/{id}", [CompetitionController::class, 'showBrief'])->name('show');
@@ -74,38 +76,37 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get("/get-declined-works/{id}", [CompetitionController::class, 'getDeclinedWorks']);
             Route::get("/sort-works/{id}", [CompetitionController::class, 'sortWorks']);
         });
-    });
-    Route::group(['middleware' => ['role:Customer', 'verified-user']], function () {
+        Route::group(['middleware' => ['role:Customer', 'verified-user']], function () {
 
-        //Customer
-        Route::prefix('customer')->name('customer.')->group(function () {
-            Route::get("/", [CustomerController::class, 'index'])->name('view');
+            //Customer
+            Route::prefix('customer')->name('customer.')->group(function () {
+                Route::get("/", [CustomerController::class, 'index'])->name('view');
 
-            //Contest
-            Route::prefix('contest')->name('contest.')->group(function () {
-                Route::get("/", [ContestController::class, 'index'])->name('view');
-                Route::get("/listing", [ContestController::class, 'contestListing'])->name("listing");
-                Route::get("/finished", [ContestController::class, 'finished'])->name('finished');
-                Route::get("/price/{id?}", [ContestController::class, 'price'])->name('price');
-                Route::post("/price-save/{id?}", [ContestController::class, 'priceSave'])->name('price.save');
-                Route::group(['middleware' => 'contest'], function () {
-                    Route::get("/cancel/{id}", [ContestController::class, 'cancel'])->name('cancel');
-                    Route::get("/promote/{id}", [ContestController::class, 'promote'])->name('promote');
-                    Route::prefix('payment')->name('payment.')->group(function () {
-                        Route::post("/paypal-checkout/{id}", [PaymentController::class, 'paypalCheckout'])->name('paypal-checkout');
-                        Route::get('/payment-success/{data}', [PaymentController::class, 'paypalSuccess'])->name('paypal-success');
-                        Route::get('/payment-error/{data}', [PaymentController::class, 'paymentError'])->name('payment-error');
+                //Contest
+                Route::prefix('contest')->name('contest.')->group(function () {
+                    Route::get("/", [ContestController::class, 'index'])->name('view');
+                    Route::get("/finished", [ContestController::class, 'finished'])->name('finished');
+                    Route::get("/price/{id?}", [ContestController::class, 'price'])->name('price');
+                    Route::post("/price-save/{id?}", [ContestController::class, 'priceSave'])->name('price.save');
+                    Route::group(['middleware' => 'contest'], function () {
+                        Route::get("/cancel/{id}", [ContestController::class, 'cancel'])->name('cancel');
+                        Route::get("/promote/{id}", [ContestController::class, 'promote'])->name('promote');
+                        Route::prefix('payment')->name('payment.')->group(function () {
+                            Route::post("/paypal-checkout/{id}", [PaymentController::class, 'paypalCheckout'])->name('paypal-checkout');
+                            Route::get('/payment-success/{data}', [PaymentController::class, 'paypalSuccess'])->name('paypal-success');
+                            Route::get('/payment-error/{data}', [PaymentController::class, 'paymentError'])->name('payment-error');
+                        });
+                        Route::get("/type/{id}", [ContestController::class, 'type'])->name('type');
+                        Route::post("/type-save/{id}", [ContestController::class, 'typeSave'])->name('type.save');
+                        Route::get("/color/{id}", [ContestController::class, 'color'])->name('color');
+                        Route::post("/color-save/{id}", [ContestController::class, 'colorSave'])->name('color.save');
+                        Route::get("/style/{id}", [ContestController::class, 'style'])->name('style');
+                        Route::post("/style-save/{id}", [ContestController::class, 'styleSave'])->name('style.save');
+                        Route::get("/brief/{id}", [ContestController::class, 'brief'])->name('brief');
+                        Route::post("/brief-save/{id}", [ContestController::class, 'briefSave'])->name('brief.save');
+                        Route::get("/condition/{id}", [ContestController::class, 'condition'])->name('condition');
+                        Route::post("/condition-save/{id}", [ContestController::class, 'conditionSave'])->name('condition.save');
                     });
-                    Route::get("/type/{id}", [ContestController::class, 'type'])->name('type');
-                    Route::post("/type-save/{id}", [ContestController::class, 'typeSave'])->name('type.save');
-                    Route::get("/color/{id}", [ContestController::class, 'color'])->name('color');
-                    Route::post("/color-save/{id}", [ContestController::class, 'colorSave'])->name('color.save');
-                    Route::get("/style/{id}", [ContestController::class, 'style'])->name('style');
-                    Route::post("/style-save/{id}", [ContestController::class, 'styleSave'])->name('style.save');
-                    Route::get("/brief/{id}", [ContestController::class, 'brief'])->name('brief');
-                    Route::post("/brief-save/{id}", [ContestController::class, 'briefSave'])->name('brief.save');
-                    Route::get("/condition/{id}", [ContestController::class, 'condition'])->name('condition');
-                    Route::post("/condition-save/{id}", [ContestController::class, 'conditionSave'])->name('condition.save');
                 });
             });
         });

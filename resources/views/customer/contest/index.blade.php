@@ -26,9 +26,9 @@
                                     <span class="spollers-head__button">
                                     </span>
                                 <div class="spollers-head__left">
-                                    <h4 class="spollers-head__title">
+                                    <a href="{{route("competition.show", [$contest->id])}}"><h4 class="spollers-head__title">
                                         {{ $contest->company_name }}
-                                    </h4>
+                                    </h4></a>
                                     <div class="spollers-head__items">
                                             <span>
                                                 @php
@@ -48,6 +48,7 @@
                                 <div class="spollers-head__right">
                                     <div class="spollers-head__links">
                                         @php
+                                        if ($contest->status !== 4) {
                                             if ($contest->status === 3) {
                                                 echo "Contest Canceled";
                                             } else {
@@ -76,6 +77,9 @@
                                             </a>
                                         @php
                                             }
+                                        } else {
+                                            echo "Finished Contest.";
+                                        }
                                         @endphp
                                     </div>
                                 </div>
@@ -83,7 +87,7 @@
                         </div>
                     @endforeach
                 @else
-                    You have not created any contest yet.
+                    You have not any contest yet.
                 @endif
             </div>
         </div>

@@ -144,9 +144,18 @@ class CompetitionController extends Controller
             }
             $work->place = $position;
             $work->update();
-            Contest::where("id", $contestId)->update([
-                "status" => 2
-            ]);
+            $works = Work::where("id", $id)
+                ->whereIn("place", [1,2,3])
+                ->get();
+            if (count($works) === 3) {
+                Contest::where("id", $contestId)->update([
+                    "status" => 4
+                ]);
+            } else {
+                Contest::where("id", $contestId)->update([
+                    "status" => 2
+                ]);
+            }
             return response()->json(["message" => "The designer has been rewarded with ".$position." position", "status" => true]);
         }
         return response()->json(["message" => "This action is not allowed", "status" => false]);

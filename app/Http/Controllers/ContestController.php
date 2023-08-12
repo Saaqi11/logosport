@@ -133,7 +133,7 @@ class ContestController extends Controller
             foreach ($images as $image) {
                 $media = new Media();
 
-                $userAdsImagesBasePath = public_path() . "/images/contests/" . Auth::id() . "/";
+                $userAdsImagesBasePath = "/images/contests/" . Auth::id() . "/";
                 //create dynamic directory
 
                 if (!File::isDirectory($userAdsImagesBasePath)) {
@@ -144,7 +144,7 @@ class ContestController extends Controller
                 $imageType = $imageTypeAux[1];
                 $imageBase64 = base64_decode($imageParts[1]);
                 $fileName = "contest_" . Auth::id() . "_" . time() . '.' . $imageType;
-                $imagePath = $userAdsImagesBasePath . $fileName;
+                $imagePath = public_path() . $userAdsImagesBasePath . $fileName;
 
                 File::put($imagePath, $imageBase64);
                 $media->src = $imagePath;
@@ -353,5 +353,34 @@ class ContestController extends Controller
             return redirect()->back()->with("success", "The project has been cancelled");
         }
         return redirect()->back()->with("error", "Something went wrong");
+    }
+
+    public function contestListing() {
+
+    }
+
+    /**
+     * Get finished contests
+     * @return View
+     */
+    public function finished(): View
+    {
+        $user_id = Auth::id();
+        $contests = Contest::select(
+            'id',
+            'company_name',
+            'contest_price',
+            'status',
+            'is_paid',
+            'score',
+            DB::raw('(SELECT COUNT(*) FROM works WHERE contest_id = contests.id) as total_works'),
+            DB::raw('(SELECT COUNT(*) FROM works WHERE contest_id = contests.id AND status = 1) as selected_works')
+        )
+            ->where([
+                'user_id' => $user_id,
+                'status' => 4
+            ])
+            ->get();
+        return \view("customer.contest.index", compact("contests"));
     }
 }

@@ -231,6 +231,7 @@
                                     Type
                                 </h4>
                             </div>
+                            @dd($contest->mediaFiles)
                             <div data-gallery class="block-brief__grid-layout big">
                                 @if(!empty($contest->mediaFiles) && count($contest->mediaFiles) > 0)
                                     @foreach($contest->mediaFiles as $file)
@@ -273,15 +274,17 @@
                                 </h4>
                             </div>
                             <div data-gallery class="block-brief__grid-layout">
-                                <a href="{{ asset($contest->doc_file) }}" class="block-brief__download-link">
-                                    <svg class="block-brief__download-icon">
-                                        <use href="img/icons/icons.svg#arrow-down"></use>
-                                    </svg>
-                                    @php
-                                        $docFile = explode("/", @$contest->doc_file);
-                                    @endphp
-                                    <span>{{ @$docFile[count($docFile) - 1] }}</span>
-                                </a>
+                                @php if (!empty($contest->doc_file)) { @endphp
+                                    <a href="{{ asset($contest->doc_file) }}" class="block-brief__download-link">
+                                        <svg class="block-brief__download-icon">
+                                            <use href="img/icons/icons.svg#arrow-down"></use>
+                                        </svg>
+                                        @php
+                                            $docFile = explode("/", @$contest->doc_file);
+                                        @endphp
+                                        <span>{{ @$docFile[count($docFile) - 1] }}</span>
+                                    </a>
+                                @php } else { echo "There is not any additional file attached to the contest."; }@endphp
                             </div>
                         </div>
                         <div class="brief__block block-brief">
