@@ -34,6 +34,8 @@ return new class extends Migration
             $table->string("duration")->nullable();
             $table->string("start_date")->nullable();
             $table->string("score")->nullable();
+            $table->integer("status")->default(0);
+            $table->integer("is_paid")->default(0);
             $table->softDeletes();
             $table->timestamps();
 

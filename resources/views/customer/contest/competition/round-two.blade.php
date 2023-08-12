@@ -60,7 +60,7 @@
                                             <div class="sliders-brief__wrapper swiper-wrapper">
                                                 @foreach($work->files as $file)
                                                     <div class="sliders-brief__slide swiper-slide">
-                                                        <a href="{{ asset($file->src) }}" data-gallery class="card-logo">
+                                                        <a href="{{ asset($file->src) }}" data-gallery class="card-logo" style="background-color: #6a6a6a;">
                                                             <img src="{{ asset($file->src) }}" alt="">
                                                         </a>
                                                     </div>
@@ -114,4 +114,5 @@
             </section>
         </main>
     </div>
+@include("customer.contest.competition.image");
 @endsection

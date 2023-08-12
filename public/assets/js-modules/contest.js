@@ -152,122 +152,123 @@ let contest = {
             $("#default_logos").val(defaultLogoArr.join(","))
         });
 
-        let dropzone = new Dropzone('#dropzone-area', {
-            previewTemplate: document.querySelector('#preview-template').innerHTML,
-            url: "/upload/files",
-            parallelUploads: 2,
-            thumbnailHeight: 120,
-            thumbnailWidth: 120,
-            maxFilesize: 1,
-            maxFiles: 3,
-            filesizeBase: 1000,
-            acceptedFiles: ".jpeg,.jpg,.png",
-            thumbnail: function(file, dataUrl) {
-
-                if (file.previewElement) {
-                    file.previewElement.classList.remove("dz-file-preview");
-                    var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
-                    for (var i = 0; i < images.length; i++) {
-                        var thumbnailElement = images[i];
-                        thumbnailElement.alt = file.name;
-                        thumbnailElement.src = dataUrl;
+        if ($("#dropzone-area").length > 0) {
+            let dropzone = new Dropzone('#dropzone-area', {
+                previewTemplate: document.querySelector('#preview-template').innerHTML,
+                url: "/upload/files",
+                parallelUploads: 2,
+                thumbnailHeight: 120,
+                thumbnailWidth: 120,
+                maxFilesize: 1,
+                maxFiles: 3,
+                filesizeBase: 1000,
+                acceptedFiles: ".jpeg,.jpg,.png",
+                thumbnail: function(file, dataUrl) {
+            
+                    if (file.previewElement) {
+                        file.previewElement.classList.remove("dz-file-preview");
+                        var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
+                        for (var i = 0; i < images.length; i++) {
+                            var thumbnailElement = images[i];
+                            thumbnailElement.alt = file.name;
+                            thumbnailElement.src = dataUrl;
+                        }
+                        setTimeout(function() { file.previewElement.classList.add("dz-image-preview"); }, 1);
                     }
-                    setTimeout(function() { file.previewElement.classList.add("dz-image-preview"); }, 1);
-                }
-                if ($(".dz-image-preview").length < 1) {
-                    $(".tg-fileuploadlabel").html(`
+                    if ($(".dz-image-preview").length < 1) {
+                        $(".tg-fileuploadlabel").html(`
                 <span>Drop files anywhere to upload</span>
                 <span>Or</span>
                 <span class="btn btn-common">Select Files</span>
                 <span>Maximum upload file size: 1000 KB</span>`
-                    );
-                }
-            },
-
-            maxfilesexceeded: function(file, response) {
-                toastr.error("You can only uploads 3 files at a time.");
-                this.removeFile(file);
-            },
-
-            error: function (file) {
-                if (file.size > 1000000) {
-                    toastr.error("File size is: "+file.previewElement.innerText+ " Allowed size is 1 MB");
-                }
-                if (file.previewElement) {
-                    this.removeFile(file)
-                }
-                return;
-            },
-
-
-            removedfile: function (file) {
-                if (file.previewElement){
-                    $(file.previewElement).remove();
-                }
-                if ($(".dz-image-preview").length < 1) {
-                    $(".append-area").html(
-                        `<label class="tg-fileuploadlabel" for="tg-photogallery">
+                        );
+                    }
+                },
+        
+                maxfilesexceeded: function(file, response) {
+                    toastr.error("You can only uploads 3 files at a time.");
+                    this.removeFile(file);
+                },
+        
+                error: function (file) {
+                    if (file.size > 1000000) {
+                        toastr.error("File size is: "+file.previewElement.innerText+ " Allowed size is 1 MB");
+                    }
+                    if (file.previewElement) {
+                        this.removeFile(file)
+                    }
+                    return;
+                },
+        
+        
+                removedfile: function (file) {
+                    if (file.previewElement){
+                        $(file.previewElement).remove();
+                    }
+                    if ($(".dz-image-preview").length < 1) {
+                        $(".append-area").html(
+                            `<label class="tg-fileuploadlabel" for="tg-photogallery">
                     <span>Drop files anywhere to upload</span>
                     <span>Or</span>
                     <span class="btn btn-common">Select Files</span>
                     <span>Maximum upload file size: 1000 KB</span>
                 </label>`
-                    );
-                    $(".dropzone-text-area").css('display', 'none');
-                    $(".dotted-dropzone").removeAttr('style');
+                        );
+                        $(".dropzone-text-area").css('display', 'none');
+                        $(".dotted-dropzone").removeAttr('style');
+                    }
+                    return;
+                },
+        
+                success: function (file) {
+                    console.log('here')
+                },
+        
+                complete: function(file) {
+                    if ($(".dz-image-preview").length > 0) {
+                        $(".append-area").html('');
+                        $("#dropzone-area").css("height", "250px");
+                        $(".dropzone-text-area").css('display', 'block');
+                        $(".dotted-dropzone").css("border-radius", "8px");
+                        $(".dotted-dropzone").css("padding", "10px");
+                    }
                 }
-                return;
-            },
-
-            success: function (file) {
-                console.log('here')
-            },
-
-            complete: function(file) {
-                if ($(".dz-image-preview").length > 0) {
-                    $(".append-area").html('');
-                    $("#dropzone-area").css("height", "250px");
-                    $(".dropzone-text-area").css('display', 'block');
-                    $(".dotted-dropzone").css("border-radius", "8px");
-                    $(".dotted-dropzone").css("padding", "10px");
-                }
-            }
-
-        });
-
-        let minSteps = 6,
-            maxSteps = 60,
-            timeBetweenSteps = 100,
-            bytesPerStep = 100000;
-
-        dropzone.uploadFiles = function(files) {
-            var self = this;
-
-            for (var i = 0; i < files.length; i++) {
-
-                var file = files[i];
-                totalSteps = Math.round(Math.min(maxSteps, Math.max(minSteps, file.size / bytesPerStep)));
-
-                for (var step = 0; step < totalSteps; step++) {
-                    var duration = timeBetweenSteps * (step + 1);
-                    setTimeout(function(file, totalSteps, step) {
-                        return function() {
-                            file.upload = {
-                                progress: 100 * (step + 1) / totalSteps,
-                                total: file.size,
-                                bytesSent: (step + 1) * file.size / totalSteps
+        
+            });
+            let minSteps = 6,
+                maxSteps = 60,
+                timeBetweenSteps = 100,
+                bytesPerStep = 100000;
+    
+            dropzone.uploadFiles = function(files) {
+                var self = this;
+        
+                for (var i = 0; i < files.length; i++) {
+            
+                    var file = files[i];
+                    totalSteps = Math.round(Math.min(maxSteps, Math.max(minSteps, file.size / bytesPerStep)));
+            
+                    for (var step = 0; step < totalSteps; step++) {
+                        var duration = timeBetweenSteps * (step + 1);
+                        setTimeout(function(file, totalSteps, step) {
+                            return function() {
+                                file.upload = {
+                                    progress: 100 * (step + 1) / totalSteps,
+                                    total: file.size,
+                                    bytesSent: (step + 1) * file.size / totalSteps
+                                };
+                        
+                                self.emit('uploadprogress', file, file.upload.progress, file.upload.bytesSent);
+                                if (file.upload.progress == 100) {
+                                    file.status = Dropzone.SUCCESS;
+                                    self.emit("success", file, 'success', null);
+                                    self.emit("complete", file);
+                                    self.processQueue();
+                                    //document.getElementsByClassName("dz-success-mark").style.opacity = "1";
+                                }
                             };
-
-                            self.emit('uploadprogress', file, file.upload.progress, file.upload.bytesSent);
-                            if (file.upload.progress == 100) {
-                                file.status = Dropzone.SUCCESS;
-                                self.emit("success", file, 'success', null);
-                                self.emit("complete", file);
-                                self.processQueue();
-                                //document.getElementsByClassName("dz-success-mark").style.opacity = "1";
-                            }
-                        };
-                    }(file, totalSteps, step), duration);
+                        }(file, totalSteps, step), duration);
+                    }
                 }
             }
         }

@@ -61,4 +61,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(WorkReaction::class, "designer_user_id", "id");
     }
+
+    public function contests()
+    {
+        return $this->belongsTo(Contest::class);
+    }
 }

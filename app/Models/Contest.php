@@ -49,4 +49,12 @@ class Contest extends Model
     {
         return $this->hasMany(LogoColor::class, "contest_id", "id");
     }
+
+    /**
+     * get count
+     */
+    public function works()
+    {
+        return $this->hasMany(Work::class, "contest_id", "id");
+    }
 }

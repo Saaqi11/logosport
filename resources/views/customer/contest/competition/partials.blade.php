@@ -9,11 +9,11 @@
                     <use href="img/icons/icons.svg#star"></use>
                 </svg>
             </button>
-            <select name="form[]" data-class-modif="lang" class="form">
-                <option value="1" selected>ENG</option>
-                <option value="2">RU</option>
-                <option value="3">UA</option>
-            </select>
+{{--            <select name="form[]" data-class-modif="lang" class="form">--}}
+{{--                <option value="1" selected>ENG</option>--}}
+{{--                <option value="2">RU</option>--}}
+{{--                <option value="3">UA</option>--}}
+{{--            </select>--}}
         </div>
         <div class="head-brief__items">
             <div class="head-brief__item">
@@ -25,9 +25,9 @@
                     <div class="profile-head__main">
                         <div class="profile-head__top">
                             <div class="profile-head__avatar-ibg">
-                                <div class="profile-head__online-time">
+{{--                                <div class="profile-head__online-time">
                                     Was online 30 minuteas ago
-                                </div>
+                                </div>--}}
                                 <span class="profile-head__status online">
 
 													</span>
@@ -84,7 +84,7 @@
     </div>
     <div data-da=".head-brief__items,768,1" class="head-brief__price price-head">
         <div class="price-head__title">
-            Price : <span>{{ $contest->contest_price }}$</span>
+            Price ({{ $contest->is_amount_verified ? "Verified" : "Not Verified" }}): <span>{{ $contest->contest_price }}$</span>
         </div>
         <div class="price-head__info">
             <div class="price-head__item">

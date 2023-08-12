@@ -113,6 +113,12 @@ class CompetitionController extends Controller
         if (!empty($work)) {
             $work->status = $status;
             $work->update();
+            $contestWorks = Work::where(["contest_id" => $work->contest_id, "status" => 1])->count();
+            if ($contestWorks > 0) {
+                Contest::where("id", $work->contest_id)->update([
+                    "status" => 1
+                ]);
+            }
             return true;
         }
         return false;
@@ -138,6 +144,9 @@ class CompetitionController extends Controller
             }
             $work->place = $position;
             $work->update();
+            Contest::where("id", $contestId)->update([
+                "status" => 2
+            ]);
             return response()->json(["message" => "The designer has been rewarded with ".$position." position", "status" => true]);
         }
         return response()->json(["message" => "This action is not allowed", "status" => false]);
@@ -213,15 +222,14 @@ class CompetitionController extends Controller
         $contest = Contest::with("customer", "style", "mediaFiles", "colors")->findOrFail($id);
         if ($contest) {
             $query = Work::with("files", "reactions", "totalWorks", "designer");
-
-            if ($request->workTypeFilter === "declined-works") {
+            if ($request->get("workTypeFilter") === "declined-works") {
                 $query = $query->where(["contest_id" => $id, "status" => 2]);
-            } else if ($request->workTypeFilter === "all-works") {
+            } else {
                 $query = $query->where("contest_id", $id);
             }
             $collection = $query->get();
             $works = new Collection($collection);
-            $works = $works->sortBy("reactions", SORT_NATURAL|SORT_FLAG_CASE);
+            $works = $works->sortBy("reactions", $request->get("sortBy"));
             return response()->json(["status" => true, "contest" => $contest, "works" => $works]);
         }
         return response()->json(["status" => false]);

@@ -11,14 +11,17 @@ use App\Models\LogoColor;
 use App\Models\Media;
 use App\Models\User;
 use App\Models\UserDefaultLogo;
+use App\Models\Work;
 use App\Models\WorkParticipants;
 use Dflydev\DotAccessData\Data;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -35,7 +38,21 @@ class ContestController extends Controller
      */
     public function index(): View
     {
-        $contests = Contest::all();
+        $user_id = Auth::id();
+
+
+        $contests = Contest::select(
+            'id',
+            'company_name',
+            'contest_price',
+            'status',
+            'is_paid',
+            'score',
+            DB::raw('(SELECT COUNT(*) FROM works WHERE contest_id = contests.id) as total_works'),
+            DB::raw('(SELECT COUNT(*) FROM works WHERE contest_id = contests.id AND status = 1) as selected_works')
+        )
+            ->where('user_id', $user_id)
+            ->get();
         return \view("customer.contest.index", compact("contests"));
     }
 
@@ -48,9 +65,9 @@ class ContestController extends Controller
     {
         if ($id) {
             $contest = Contest::findOrFail($id);
-            return view($this->contestSteps."price", compact("contest"));
+            return view($this->contestSteps . "price", compact("contest"));
         }
-        return view($this->contestSteps."price");
+        return view($this->contestSteps . "price");
     }
 
     /**
@@ -86,7 +103,7 @@ class ContestController extends Controller
     {
         $contest = Contest::findOrFail($id);
         $defaultLogos = DefaultLogo::all();
-        return view($this->contestSteps."type", compact("contest", "defaultLogos"));
+        return view($this->contestSteps . "type", compact("contest", "defaultLogos"));
     }
 
     /**
@@ -116,8 +133,9 @@ class ContestController extends Controller
             foreach ($images as $image) {
                 $media = new Media();
 
-                $userAdsImagesBasePath = "/images/contests/".Auth::id()."/";
+                $userAdsImagesBasePath = public_path() . "/images/contests/" . Auth::id() . "/";
                 //create dynamic directory
+
                 if (!File::isDirectory($userAdsImagesBasePath)) {
                     File::makeDirectory($userAdsImagesBasePath, 0755, true);
                 }
@@ -125,10 +143,10 @@ class ContestController extends Controller
                 $imageTypeAux = explode("image/", $imageParts[0]);
                 $imageType = $imageTypeAux[1];
                 $imageBase64 = base64_decode($imageParts[1]);
-                $fileName = "contest_".Auth::id()."_".time().'.'.$imageType;
-                $imagePath = $userAdsImagesBasePath.$fileName;
+                $fileName = "contest_" . Auth::id() . "_" . time() . '.' . $imageType;
+                $imagePath = $userAdsImagesBasePath . $fileName;
 
-                File::put(public_path($imagePath), $imageBase64);
+                File::put($imagePath, $imageBase64);
                 $media->src = $imagePath;
                 $media->contest_id = $id;
                 $media->user_id = Auth::id();
@@ -146,7 +164,7 @@ class ContestController extends Controller
      */
     public function color($id): View
     {
-        return \view($this->contestSteps."color", compact("id"));
+        return \view($this->contestSteps . "color", compact("id"));
     }
 
     /**
@@ -161,8 +179,7 @@ class ContestController extends Controller
             'color' => 'required'
         ]);
         $inputs = $request->only(['color']);
-        if (!empty($inputs['color']) && count($inputs['color']) > 0)
-        {
+        if (!empty($inputs['color']) && count($inputs['color']) > 0) {
             foreach ($inputs['color'] as $colorCode) {
                 $color = new LogoColor();
                 $color->user_id = \auth()->user()->id;
@@ -182,7 +199,7 @@ class ContestController extends Controller
      */
     public function style($id): View
     {
-        return \view($this->contestSteps."style", compact("id"));
+        return \view($this->contestSteps . "style", compact("id"));
     }
 
     /**
@@ -199,7 +216,7 @@ class ContestController extends Controller
         $inputs = [];
         $inputs['style_json'] = json_encode($request->only(['style']));
         $inputs["user_id"] = \auth()->user()->id;
-        $inputs["contest_id"] = (int) $id;
+        $inputs["contest_id"] = (int)$id;
         ContestStyle::create($inputs);
         $this->updateContestScore($id, 60);
         return redirect()->route("customer.contest.brief", $id)->with("success", "The style of contest has been saved!");
@@ -212,7 +229,7 @@ class ContestController extends Controller
      */
     public function brief($id): View
     {
-        return \view($this->contestSteps."brief", compact("id"));
+        return \view($this->contestSteps . "brief", compact("id"));
     }
 
     /**
@@ -238,16 +255,16 @@ class ContestController extends Controller
 
         $contest = Contest::findOrFail($id);
         if (!empty($contest)) {
-            if ($request->hasFile("doc_file")){
-                $userAttachmentPublicPath = public_path("/contests-attachments/".Auth::id()."/");
+            if ($request->hasFile("doc_file")) {
+                $userAttachmentPublicPath = public_path("/contests-attachments/" . Auth::id() . "/");
                 //create dynamic directory
                 if (!File::isDirectory($userAttachmentPublicPath)) {
                     File::makeDirectory($userAttachmentPublicPath, 0755, true);
                 }
-                $userAttachmentPath = "/contests-attachments/".Auth::id()."/".$request->doc_file->getClientOriginalName();
+                $userAttachmentPath = "/contests-attachments/" . Auth::id() . "/" . $request->doc_file->getClientOriginalName();
 //                dd($request->doc_file->getClientOriginalName());
 //                $filePath = Storage::disk('local')->put($userAttachmentPath, $request->doc_file);
-                File::put($userAttachmentPublicPath.$request->doc_file->getClientOriginalName(), $request->doc_file);
+                File::put($userAttachmentPublicPath . $request->doc_file->getClientOriginalName(), $request->doc_file);
                 $inputs["doc_file"] = $userAttachmentPath;
             }
             $inputs["score"] = 80;
@@ -265,12 +282,12 @@ class ContestController extends Controller
      */
     public function condition($id): View
     {
-        $users = User::with("works.reactions", "reactions" )->whereHas(
-            'roles', function($q){
+        $users = User::with("works.reactions", "reactions")->whereHas(
+            'roles', function ($q) {
             $q->where('name', 'Designer');
         })->orderBy("id", "Desc")->take(5)->get();
 
-        return \view($this->contestSteps."condition", compact("id", "users"));
+        return \view($this->contestSteps . "condition", compact("id", "users"));
     }
 
     /**
@@ -288,7 +305,7 @@ class ContestController extends Controller
         ]);
         $inputs = $request->only(["duration", "contest_format", "start_date", "selected_designers_json"]);
         $invitedDesigners = json_decode($inputs['selected_designers_json'], true);
-        if (!empty($invitedDesigners) ){
+        if (!empty($invitedDesigners)) {
             foreach ($invitedDesigners as $user) {
                 $workParticipant = array(
                     "contest_id" => $id,
@@ -320,5 +337,21 @@ class ContestController extends Controller
             $contest->score = $score;
             $contest->update();
         }
+    }
+
+    /**
+     * Cancel the project
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function cancel($id): RedirectResponse
+    {
+        $contest = Contest::where("id", $id)->first();
+        if (!empty($contest)) {
+            $contest->status = 3;
+            $contest->update();
+            return redirect()->back()->with("success", "The project has been cancelled");
+        }
+        return redirect()->back()->with("error", "Something went wrong");
     }
 }

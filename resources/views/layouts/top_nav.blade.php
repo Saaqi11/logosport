@@ -20,7 +20,7 @@
                                     <a href="" class="menu__link">designers</a>
                                 </li>
                                 <li class="menu__items">
-                                    <a href="" class="menu__link">contests</a>
+                                    <a href="{{ auth()->user() && auth()->user()->hasRole("Customer") ? route("customer.contest.view") : route("contest.listing") }}" class="menu__link">contests</a>
                                 </li>
                             </ul>
                         </nav>

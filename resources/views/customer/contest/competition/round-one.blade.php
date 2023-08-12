@@ -1,5 +1,19 @@
 @extends("layouts.competition-main")
 @section("content")
+    <style>
+        .filter__link {
+            cursor: pointer;
+        }
+        a.filter__link.active {
+            background-color: green;
+            padding: 5px;
+            color: white;
+            border-radius: 6px;
+        }
+        a.filter__link.active:hover {
+            color: white;
+        }
+    </style>
 <div class="wrapper">
     <main class="page">
         <section class="brief">
@@ -7,7 +21,7 @@
                 @include("customer.contest.competition.partials")
                 <div class="brief__round">
                     <div class="brief__filter filter">
-                        <div class="filter__items">
+                        <div class="filter__items" style="justify-content: center; align-items: center">
                             <div class="filter__item">
                                 <a data-id="{{ $contest->id }}" id="all-works" class="filter__link active">
                                     All works
@@ -20,7 +34,7 @@
                             </div>
                         </div>
                         <div class="filter__select">
-                            <label>Sort by:</label>
+                            <label>Sort by Likes:</label>
                             <label for="ascending">Ascending</label>
                             <input type="radio" id="ascending" class="sort-by" data-id="{{ $contest->id }}" name="sort-by" value="asc">
                             <label for="descending">Descending</label>
@@ -33,7 +47,7 @@
                                 <div class="card-view {{ $work->status === 2 ? "hidden" : "" }}">
                                     <div class="card-view__top">
                                         <div class="card-view__image-ibg">
-                                            <a href="" class="card-view__to-folder">
+                                            <a class="card-view__to-folder">
                                                 <svg class="card-view__icon">
                                                     <use href="{{ asset("images/img/icons/icons.svg#folder") }}"></use>
                                                 </svg>
