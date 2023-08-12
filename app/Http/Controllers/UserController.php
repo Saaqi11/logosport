@@ -408,11 +408,15 @@ class UserController extends Controller
         $user = json_decode(json_encode($user), true);
         $user['name'] = $user['first_name']." ".$user['last_name'];
         // send email with the template
-        Mail::send('emails.user-verification', $user, function ($message) use ($user) {
-            $message->to($user['email'], $user['name'])
-                ->subject('Please Verify your Account')
-                ->from(env("MAIL_USERNAME"), env("MAIL_FROM_NAME"));
-        });
+        try {
+            Mail::send('emails.user-verification', $user, function ($message) use ($user) {
+                $message->to($user['email'], $user['name'])
+                    ->subject('Please Verify your Account')
+                    ->from(env("MAIL_USERNAME"), env("MAIL_FROM_NAME"));
+            });
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
     }
 
     /**
