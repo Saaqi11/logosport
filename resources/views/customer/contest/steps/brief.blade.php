@@ -69,8 +69,46 @@
                     <i class="fas fa-angle-down"></i>
                     <select name="industry_type" class="select-brief" value="">
                         <option value="" selected disabled hidden> </option>
-                        <option value="Hard work">Hard work</option>
-                        <option value="Easy work">Easy work</option>
+                        <option value="Accounting & Financial">Accounting & Financial</option>
+                        <option value="Agriculture">Agriculture</option>
+                        <option value="Animal & Pet">Animal & Pet</option>
+                        <option value="Architectural">Architectural</option>
+                        <option value="Art & Design">Art & Design</option>
+                        <option value="Attorney & Law">Attorney & Law</option>
+                        <option value="Automotive">Automotive</option>
+                        <option value="Bar & Nightclub">Bar & Nightclub</option>
+                        <option value="Business & Consulting">Business & Consulting</option>
+                        <option value="Cleaning & Maintenance">Cleaning & Maintenance</option>
+                        <option value="Communications">Communications</option>
+                        <option value="Community & Non-Profit">Community & Non-Profit</option>
+                        <option value="Computer">Computer</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Cosmetics & Beauty">Cosmetics & Beauty</option>
+                        <option value="Dating">Dating</option>
+                        <option value="Education">Education</option>
+                        <option value="Entertainment & The Arts">Entertainment & The Arts</option>
+                        <option value="Environmental">Environmental</option>
+                        <option value="Fashion">Fashion</option>
+                        <option value="Floral">Floral</option>
+                        <option value="Food & Drink">Food & Drink</option>
+                        <option value="Games & Recreational">Games & Recreational</option>
+                        <option value="Home Furnishing">Home Furnishing</option>
+                        <option value="Industrial">Industrial</option>
+                        <option value="Internet">Internet</option>
+                        <option value="Medical & Pharmaceutical">Medical & Pharmaceutical</option>
+                        <option value="Photography">Photography</option>
+                        <option value="Physical Fitness">Physical Fitness</option>
+                        <option value="Political">Political</option>
+                        <option value="Real Estate & Mortgage">Real Estate & Mortgage</option>
+                        <option value="Religious">Religious</option>
+                        <option value="Restaurant">Restaurant</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Security">Security</option>
+                        <option value="Spa & Esthetics">Spa & Esthetics</option>
+                        <option value="Sport">Sport</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Travel & Hotel">Travel & Hotel</option>
+                        <option value="Wedding Service">Wedding Service</option>
                     </select>
                 </div>
             </div>
