@@ -144,7 +144,7 @@ class ContestController extends Controller
                 $imageType = $imageTypeAux[1];
                 $imageBase64 = base64_decode($imageParts[1]);
                 $fileName = "contest_" . Auth::id() . "_" . time() . '.' . $imageType;
-                $imagePath = public_path() . $userAdsImagesBasePath . $fileName;
+                $imagePath = public_path() . "/" .$userAdsImagesBasePath . $fileName;
 
                 File::put($imagePath, $imageBase64);
                 $media->src = $imagePath;
