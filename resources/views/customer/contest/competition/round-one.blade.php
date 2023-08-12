@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="brief__card-grid-layout grid" id="works-section">
-                        @if(!empty($works))
+                        @if(count($works) > 0)
                             @foreach($works as $work)
                                 <div class="card-view {{ $work->status === 2 ? "hidden" : "" }}">
                                     <div class="card-view__top">

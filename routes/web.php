@@ -38,7 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('throttle:1,1');
     Route::post('/verify-email', [UserController::class, 'verifyEmail'])->name('verify-email');
     Route::get('/verify-user', [UserController::class, 'verifyUser'])->name('verify-user');
-    Route::get('/contest-listing', [UserController::class, 'contestListing'])->name('contest.listing');
+    Route::get('/contest-listing', [ContestController::class, 'contestListing'])->name('contest.listing');
     Route::get("/user-logout", [UserController::class, 'logout'])->name("user.logout");
 
     Route::group(['middleware' => 'verified-user'], function () {

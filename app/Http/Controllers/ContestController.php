@@ -133,7 +133,7 @@ class ContestController extends Controller
             foreach ($images as $image) {
                 $media = new Media();
 
-                $userAdsImagesBasePath = "/images/contests/" . Auth::id() . "/";
+                $userAdsImagesBasePath = "images/contests/" . Auth::id() . "/";
                 //create dynamic directory
 
                 if (!File::isDirectory($userAdsImagesBasePath)) {
@@ -356,7 +356,6 @@ class ContestController extends Controller
     }
 
     public function contestListing() {
-
     }
 
     /**
