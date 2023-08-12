@@ -87,8 +87,8 @@ class UserController extends Controller
         }
         $user->code = rand(1000,9999);
         $user->code_expires_at = Carbon::now()->addHour();
-        $user->save();
         $this->sendVerificationEmail($user);
+        $user->save();
 
         $credentials = $request->only(['email', 'password']);
         Auth::attempt($credentials);
