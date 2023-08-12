@@ -36,7 +36,7 @@
     </div>
     <form action="{{ route("customer.contest.condition.save", $id) }}" id="condition-form" class="row mb" method="post">
         @csrf
-        <div class="col-lg-4 col-md-12 col-sm-12">
+        <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="wrp-brief">
                 <span class="title-brief">
                     How long will the contest take place (Days)
@@ -47,23 +47,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-12 col-sm-12">
-            <div class="wrp-brief">
-                <span class="title-brief">
-                    What format in the contest
-                </span>
-                <div class="select-wrapper">
-                    <i class="fas fa-angle-down"></i>
-                    <select name="contest_format" class="select-brief">
-                        <option value="Grant">Grant</option>
-                        <option value="Part-Grant">Part-Grant</option>
-                        <option value="No-Grant">No-Grant</option>
-                    </select>
-                </div>
-            </div>
-        </div>
         <input type="hidden" id="selected-designers-json" name="selected_designers_json">
-        <div class="col-lg-4 col-md-12 col-sm-12">
+        <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="wrp-brief">
                 <span class="title-brief">
                     When to start the project

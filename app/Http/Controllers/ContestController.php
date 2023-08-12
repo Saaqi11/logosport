@@ -244,13 +244,10 @@ class ContestController extends Controller
             "company_name",
             "slogan",
             "website",
-            "company_employees_range",
             "industry_type",
-            "company_about",
             "company_features",
             "logo_type_likes",
             "logo_type_unlikes",
-            "company_advantages",
         ]);
 
         $contest = Contest::findOrFail($id);
@@ -300,10 +297,9 @@ class ContestController extends Controller
     {
         $request->validate([
             "duration" => "required",
-            "contest_format" => "required",
             "start_date" => "required"
         ]);
-        $inputs = $request->only(["duration", "contest_format", "start_date", "selected_designers_json"]);
+        $inputs = $request->only(["duration", "start_date", "selected_designers_json"]);
         $invitedDesigners = json_decode($inputs['selected_designers_json'], true);
         if (!empty($invitedDesigners)) {
             foreach ($invitedDesigners as $user) {

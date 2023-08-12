@@ -35,16 +35,6 @@
                                 <div class="block-brief__info-row">
 
                                     <div class="block-brief__left">
-                                        People
-                                    </div>
-                                    <div class="block-brief__right">
-                                        {{ $contest->company_employees_range }}
-                                    </div>
-
-                                </div>
-                                <div class="block-brief__info-row">
-
-                                    <div class="block-brief__left">
                                         Industry
                                     </div>
                                     <div class="block-brief__right">
@@ -77,16 +67,6 @@
                                 </div>
 
                             </div>
-                            <div class="block-brief__info-row">
-
-                                <div class="block-brief__left">
-                                    What you company
-                                    do?
-                                </div>
-                                <div class="block-brief__right">
-                                    {{ $contest->company_about }}
-                                </div>
-                            </div>
 
                             <div class="block-brief__info-row">
 
@@ -98,16 +78,6 @@
                                     {{ $contest->company_features }}
                                 </div>
 
-                            </div>
-                            <div class="block-brief__info-row">
-
-                                <div class="block-brief__left">
-                                    What the advantages
-                                    of your company?
-                                </div>
-                                <div class="block-brief__right">
-                                    {{ $contest->company_advantages }}
-                                </div>
                             </div>
                             <div class="block-brief__info-row">
 
@@ -234,9 +204,10 @@
                             <div data-gallery class="block-brief__grid-layout big">
                                 @if(!empty($contest->mediaFiles) && count($contest->mediaFiles) > 0)
                                     @foreach($contest->mediaFiles as $file)
-                                        <a href="{{ $file->src }}" class="block-brief__image">
-                                            <img src="{{ $file->src }}" alt="">
-                                        </a>
+                                            <a href="{{ env('APP_URL').'/'.$file->src }}" class="block-brief__image">
+                                                <img src="{{ env('APP_URL').'/'.$file->src }}" alt="">
+                                            </a>
+                                        </div>
                                     @endforeach
                                 @else
                                     There are no image type available for it.

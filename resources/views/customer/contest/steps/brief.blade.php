@@ -55,26 +55,6 @@
 						</span>
                 <textarea name="website" class="input-brief"></textarea>
             </div>
-            <div class="wrp-brief">
-						<span class="title-brief">
-							How much people in your company
-						</span>
-                <span class="my-tooltip">
-							<i class="far fa-question-circle" data-title="How much people in your company works?"></i>
-						</span>
-                <div class="select-wrapper">
-                    <i class="fas fa-angle-down"></i>
-                    <select name="company_employees_range" class="select-brief" value="">
-                        <option value="" selected disabled hidden> </option>
-                        <option value="1">1</option>
-                        <option value="1-10">1-10</option>
-                        <option value="10-50">10-50</option>
-                        <option value="50-100">50-100</option>
-                        <option value="100-500">100-500</option>
-                        <option value="500+">500+</option>
-                    </select>
-                </div>
-            </div>
         </div>
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="wrp-brief">
@@ -93,16 +73,6 @@
                         <option value="Easy work">Easy work</option>
                     </select>
                 </div>
-            </div>
-            <div class="wrp-brief">
-						<span class="title-brief">
-							What your company do?
-						</span>
-                <span class="my-tooltip">
-							<i class="far fa-question-circle"
-                               data-title="What your company do?"></i>
-						</span>
-                <textarea name="company_about" class="input-brief"></textarea>
             </div>
             <div class="wrp-brief">
 						<span class="title-brief">
@@ -135,16 +105,6 @@
                                data-title="What logotype you don’t like?"></i>
 						</span>
                 <textarea name="logo_type_unlikes" class="input-brief"></textarea>
-            </div>
-            <div class="wrp-brief">
-						<span class="title-brief">
-							What are the advantages of your company?
-						</span>
-                <span class="my-tooltip">
-							<i class="far fa-question-circle"
-                               data-title="What are the advantages of your company?"></i>
-						</span>
-                <textarea name="company_advantages" class="input-brief"></textarea>
             </div>
             <input type="file" name="doc_file" style="display: none" id="doc_file">
         </div>

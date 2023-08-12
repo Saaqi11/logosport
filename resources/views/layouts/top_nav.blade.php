@@ -57,7 +57,7 @@
                                     </summary>
                                     <ul>
                                       <li><a href="{{ route("user.general") }}">Profile</a></li>
-                                      {!! auth()->user()->hasRole("Designer") ? '<li><a href="{{ route("user.cabinet.my-all-works") }}">Personal Cabinet</a></li>' : "" !!}
+                                      @php if(auth()->user()->hasRole('Designer')){ @endphp <li><a href="{{ route("user.cabinet.my-all-works") }}">Personal Cabinet</a></li> @php } @endphp
                                       <li><a href="{{ route("user.logout") }}">Logout</a></li>
                                     </ul>
                                 </details>
