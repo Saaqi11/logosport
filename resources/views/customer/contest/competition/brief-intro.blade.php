@@ -78,17 +78,6 @@
 
                                 <div class="block-brief__left">
                                     What logotype you
-                                    like to get?
-                                </div>
-                                <div class="block-brief__right">
-                                    {{ $contest->logo_type_likes }}
-                                </div>
-
-                            </div>
-                            <div class="block-brief__info-row">
-
-                                <div class="block-brief__left">
-                                    What logotype you
                                     don't like?
                                 </div>
                                 <div class="block-brief__right">

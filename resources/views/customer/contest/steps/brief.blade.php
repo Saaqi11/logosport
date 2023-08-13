@@ -128,10 +128,6 @@
 						<span class="title-brief">
 							What logotype you like to get?
 						</span>
-                <span class="my-tooltip">
-							<i class="far fa-question-circle"
-                               data-title="What logotype you like to get?"></i>
-						</span>
                 <textarea name="logo_type_likes" class="input-brief"></textarea>
             </div>
             <div class="wrp-brief">
