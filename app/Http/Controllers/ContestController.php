@@ -3,32 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contest;
-use App\Http\Requests\StoreContestRequest;
-use App\Http\Requests\UpdateContestRequest;
 use App\Models\ContestStyle;
 use App\Models\DefaultLogo;
 use App\Models\LogoColor;
 use App\Models\Media;
 use App\Models\User;
 use App\Models\UserDefaultLogo;
-use App\Models\Work;
 use App\Models\WorkParticipants;
-use Dflydev\DotAccessData\Data;
-use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ContestController extends Controller
 {
-    private string $briefCompetition = "customer.contest.competition.";
     private string $contestSteps = "customer.contest.steps.";
 
     /**
@@ -374,6 +364,55 @@ class ContestController extends Controller
             ->where([
                 'user_id' => $user_id,
                 'status' => 4
+            ])
+            ->get();
+        return \view("customer.contest.index", compact("contests"));
+    }
+
+    /**
+     * Get active contests
+     * @return View
+     */
+    public function active(): View
+    {
+        $user_id = Auth::id();
+        $contests = Contest::select(
+            'id',
+            'company_name',
+            'contest_price',
+            'status',
+            'is_paid',
+            'score',
+            DB::raw('(SELECT COUNT(*) FROM works WHERE contest_id = contests.id) as total_works'),
+            DB::raw('(SELECT COUNT(*) FROM works WHERE contest_id = contests.id AND status = 1) as selected_works')
+        )
+            ->where('user_id',$user_id)
+            ->where('status', '!=', 3)
+            ->where('status', '!=', 4)
+            ->get();
+        return \view("customer.contest.index", compact("contests"));
+    }
+
+    /**
+     * Get Cancelled contests
+     * @return View
+     */
+    public function cancelled(): View
+    {
+        $user_id = Auth::id();
+        $contests = Contest::select(
+            'id',
+            'company_name',
+            'contest_price',
+            'status',
+            'is_paid',
+            'score',
+            DB::raw('(SELECT COUNT(*) FROM works WHERE contest_id = contests.id) as total_works'),
+            DB::raw('(SELECT COUNT(*) FROM works WHERE contest_id = contests.id AND status = 1) as selected_works')
+        )
+            ->where([
+                'user_id' => $user_id,
+                'status' => 3
             ])
             ->get();
         return \view("customer.contest.index", compact("contests"));

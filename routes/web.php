@@ -84,7 +84,9 @@ Route::group(['middleware' => 'auth'], function () {
                 //Contest
                 Route::prefix('contest')->name('contest.')->group(function () {
                     Route::get("/", [ContestController::class, 'index'])->name('view');
+                    Route::get("/active", [ContestController::class, 'active'])->name('active');
                     Route::get("/finished", [ContestController::class, 'finished'])->name('finished');
+                    Route::get("/cancelled", [ContestController::class, 'cancelled'])->name('cancelled');
                     Route::get("/price/{id?}", [ContestController::class, 'price'])->name('price');
                     Route::post("/price-save/{id?}", [ContestController::class, 'priceSave'])->name('price.save');
                     Route::group(['middleware' => 'contest'], function () {

@@ -2,22 +2,7 @@
 @section("content")
     <div class="wrapper">
         <div class="contest__container">
-            <div class="contest__head">
-                <h1 class="title contest__title">
-                    My contest
-                </h1>
-                <a href="{{ route("customer.contest.price") }}" class="contest__add-button button button_border">
-                    Add new contest
-                </a>
-            </div>
-            <div class="contest__navigation">
-                <a class="contest__navigation-link active" href="{{ route("customer.contest.view") }}" >
-                    All
-                </a>
-                <a class="contest__navigation-link " href="{{{ route("customer.contest.finished") }}}">
-                    Finished
-                </a>
-            </div>
+            @include("customer.contest.partials.customer_contest_listing_tabs")
             <div data-spollers class=" contest__spollers contest-spollers">
                 @if(count($contests) > 0)
                     @foreach($contests as $contest)
