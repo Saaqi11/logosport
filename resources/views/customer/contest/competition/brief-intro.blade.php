@@ -42,6 +42,16 @@
                                     </div>
 
                                 </div>
+                                <div class="block-brief__info-row">
+
+                                    <div class="block-brief__left">
+                                        Website
+                                    </div>
+                                    <div class="block-brief__right">
+                                        {{ $contest->website }}
+                                    </div>
+
+                                </div>
                             </div>
 
                         </div>
