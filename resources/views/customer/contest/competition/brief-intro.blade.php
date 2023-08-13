@@ -50,11 +50,6 @@
                                 <h4 class="block-brief__title">
                                     Information
                                 </h4>
-                                <select name="form[]" data-class-modif="lang" class="form">
-                                    <option value="1" selected>English</option>
-                                    <option value="2">Russian</option>
-                                    <option value="3">Ukraine</option>
-                                </select>
                             </div>
                             <div class="block-brief__info-row">
 
@@ -219,13 +214,10 @@
                                     Color
                                 </h4>
                             </div>
-                            <div data-gallery class="block-brief__grid-layout">
+                            <div class="block-brief__grid-layout">
                                 @if(!empty($contest->colors) && count($contest->colors) > 0)
                                     @foreach($contest->colors as $color)
                                         <div style="background: {{ $color->color_name }}" class="block-brief__color">
-                                            <svg class="block-brief__color-icon">
-                                                <use href="{{ asset("img/icons/icons.svg#crosshairs") }}"></use>
-                                            </svg>
                                             <span>
                                                 {{ $color->color_name }}
                                             </span>
