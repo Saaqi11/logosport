@@ -84,7 +84,7 @@
     </div>
     <div data-da=".head-brief__items,768,1" class="head-brief__price price-head">
         <div class="price-head__title">
-            Price ({{ $contest->is_amount_verified ? "Verified" : "Not Paid" }}): <span>{{ $contest->contest_price }}$</span>
+            Price ({{ $contest->is_amount_verified ? "Paid" : "Not Paid" }}): <span>{{ $contest->contest_price }}$</span>
         </div>
         <div class="price-head__info">
             <div class="price-head__item">

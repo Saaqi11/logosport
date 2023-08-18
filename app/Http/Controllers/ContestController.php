@@ -10,12 +10,14 @@ use App\Models\Media;
 use App\Models\User;
 use App\Models\UserDefaultLogo;
 use App\Models\WorkParticipants;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
+use Yajra\DataTables\Facades\DataTables;
 
 class ContestController extends Controller
 {
@@ -341,9 +343,6 @@ class ContestController extends Controller
         return redirect()->back()->with("error", "Something went wrong");
     }
 
-    public function contestListing() {
-    }
-
     /**
      * Get finished contests
      * @return View
@@ -416,5 +415,25 @@ class ContestController extends Controller
             ])
             ->get();
         return \view("customer.contest.index", compact("contests"));
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse|View
+     * @throws \Exception
+     */
+    public function contestListing(Request $request): JsonResponse|View
+    {
+        if ($request->ajax()) {
+            $query = Contest::select('contests.id', 'contests.company_name', 'contests.duration', 'contest_price', 'contests.is_paid', 'CONCAT(users.first_name, users.last_name) as name')
+                ->join("users", 'contests.user_id', 'users.id');
+
+            // Apply filter
+            if ($request->has('name')) {
+                $query->where('name', 'like', '%' . $request->input('name') . '%');
+            }
+            return DataTables::of($query)->toJson();
+        }
+        return \view("customer.contest.listing");
     }
 }

@@ -11,10 +11,13 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset("assets/css/toastr.min.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/css/app.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("assets/css/datatables.min.css") }}">
+    @if(request()->route()->action['as'] === "contest.listing")
+        <link rel="stylesheet" href="{{ asset("assets/css/contest-listing-filter.css") }}">
+    @endif
     <link rel="stylesheet" href="{{ asset("assets/css/top.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/css/competition.min.css") }}">
-    @if(request()->route()->getPrefix() === "/competition")
-    @else
+    @if(request()->route()->getPrefix() !== "/competition")
         <link rel="stylesheet" href="{{ asset("assets/css/dropzone.css") }}">
         <link rel="stylesheet" href="{{ asset("assets/css/dropzone-custom.css") }}">
         <link rel="stylesheet" href="{{ asset("assets/css/custom.css") }}">
