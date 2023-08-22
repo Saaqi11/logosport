@@ -447,10 +447,7 @@ h1	{
 }
 
 .fltr-down input {
-	height: 42px;
-	border: 1px solid #E6E6E6;
-	border-radius: 3px;
-	padding-left: 15px;
+	height: 15px;
 }
 
 .min {
@@ -526,7 +523,7 @@ h1	{
 .dol p {
 	float: right;
 	margin-top: 55px;
-	margin-right: -40px;
+	margin-right: -72px;
 	color: #BBBBBB;
 }
 
@@ -627,4 +624,7 @@ h1	{
 .active-status {
 	background-color: #4AC420 !important;
 	color: white !important;
+}
+input:focus, textarea:focus {
+
 }

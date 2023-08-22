@@ -1,6 +1,7 @@
 <script src="{{ asset("assets/js/jquery.min.js") }}"></script>
-<script src="{{ asset("assets/js/dropzone.js") }}"></script>
 <script src="{{ asset("assets/js/datatables.min.js") }}"></script>
+<script src="{{ asset("assets/js/slider.min.js") }}"></script>
+<script src="{{ asset("assets/js/dropzone.js") }}"></script>
 <script src="{{ asset("assets/js/popper.min.js") }}"></script>
 <script src="{{ asset("assets/js/jquery-validation.min.js") }}"></script>
 @if(request()->route()->getPrefix() === "customer/contest")

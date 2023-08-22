@@ -1,33 +1,28 @@
 
 let contestListing = {
 	fetchListing: () => {
-		$.ajax({
-			type: "GET",
-			url: "/contest-listing/",
-			data: {
-				level: $("#business-level").val(),
-				sortBy: $("#sort-by").val(),
-				minBudget: $("#min-budget").val(),
-				maxBudget: $("#max-budget").val(),
-				status: $("#contest-status").val(),
-			},
-			dataType: "JSON",
-			cache: false,
-			contentType: false,
-			success: (response) => {
-				let cities = response.cities;
-				if (typeof cities !== "undefined" && cities.length > 0) {
-					let html = '<option value="" selected="" disabled="" hidden="">Please Choose any</option>';
-					$.each(cities, function (index, item) {
-						html += '<option value="'+item.id+'">'+item.name+'</option>'
-					});
-					$("#city").html(html);
+		var dataTable = new DataTable('#contest-container', {
+			processing: true,
+			serverSide: true,
+			ajax: {
+				url: "/contest-listing/",
+				data: function (d) {
+					d.business_level = $('#business-level').val();
 				}
 			},
-			error: (response) => {
-				console.log(response)
+			columns: [
+				{ data: 'html', name: 'html' }
+			],
+			drawCallback: function(settings) {
+				$('#contest-container_paginate .previous').html('<i class="fas fa-chevron-left"></i>')
+				$('#contest-container_paginate .next').html('<i class="fas fa-chevron-right"></i>')
+			},
+			language: {
+				lengthMenu: 'Show Contests Per Page  &nbsp; &nbsp; _MENU_',
+				search: 'Search By Company Name &nbsp; &nbsp;'
 			}
 		});
+		
 	},
 	activeStatusEvent: () => {
 		$(".status-filter").on('click', (e) => {
@@ -36,9 +31,15 @@ let contestListing = {
 			$("#contest-status").val()
 		})
 	},
+	initializeSlider: () => {
+		$(".price-range input").on('input change', (event) => {
+			$('#contest-filter-price-value').html("Contest Price ("+$(event.target).val()+"$):")
+		});
+	},
 	init: () => {
 		contestListing.fetchListing();
 		contestListing.activeStatusEvent()
+		contestListing.initializeSlider()
 	}
 }
 

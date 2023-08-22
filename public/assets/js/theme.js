@@ -1495,7 +1495,7 @@
 			emailTest: (e) => !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(e.value),
 		};
 		e.select = new (class {
-			constructor(e, t = null) {
+/*			constructor(e, t = null) {
 				if (
 					((this.config = Object.assign({ init: !0, logging: !0 }, e)),
 						(this.selectClasses = {
@@ -1529,7 +1529,7 @@
 					const e = t ? document.querySelectorAll(t) : document.querySelectorAll("select");
 					e.length ? (this.selectsInit(e), this.setLogging(`Прокинувся, построїв селектов: (${e.length})`)) : this.setLogging("Сплю, немає жодного select zzZZZzZZz");
 				}
-			}
+			}*/
 			getSelectClass(e) {
 				return `.${e}`;
 			}

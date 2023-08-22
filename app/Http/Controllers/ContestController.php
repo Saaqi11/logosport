@@ -425,14 +425,64 @@ class ContestController extends Controller
     public function contestListing(Request $request): JsonResponse|View
     {
         if ($request->ajax()) {
-            $query = Contest::select('contests.id', 'contests.company_name', 'contests.duration', 'contest_price', 'contests.is_paid', 'CONCAT(users.first_name, users.last_name) as name')
+            $query = Contest::select('contests.id as contest_id', 'contests.company_name','contests.business_level', 'contests.duration', 'contests.contest_price', 'contests.is_paid')
+                ->selectRaw("CONCAT(users.first_name,  ' ', users.last_name) as name")
                 ->join("users", 'contests.user_id', 'users.id');
 
-            // Apply filter
-            if ($request->has('name')) {
-                $query->where('name', 'like', '%' . $request->input('name') . '%');
+            if ($request->get('search')['value']) {
+                $query->where('contests.company_name', 'like', '%' . $request->get('search')['value'] . '%');
             }
-            return DataTables::of($query)->toJson();
+            if ($request->has('business_level')) {
+                $query->where('contests.business_level', 'like', '%' . $request->input('business_level') . '%');
+            }
+            return DataTables::of($query)
+                ->addColumn("html", function($row) {
+                    $paymentStatus = $row->is_paid ? "Paid" : "Unpaid";
+                    return '
+                    <div class="row">
+                        <div class="col">
+                            <img src="images/slider-1.png" alt="">
+                        </div>
+                        <div class="col-6">
+                            <div class="description">
+                                <h3>
+                                    '.$row->company_name.'
+                                </h3>
+                                <div class="icons">
+                                    <i class="fas fa-thumbtack"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <div class="lmt">
+                                    <p class="limit">
+                                        Time limit: <span>'.$row->duration.' day</span>
+                                    </p>
+                                    <p class="customer">
+                                        Customer: <span>'.$row->name.'</span>
+                                    </p>
+                                </div>
+                                <div class="ftr">
+                                    <p class="smal">
+                                        '.$row->business_level.'
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="dol">
+                                <h2>
+                                    $'.$row->contest_price.' 
+                                </h2>
+                                <p>
+                                    Price('.$paymentStatus.')
+                                </p>
+                                <p><a href="">Participate</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    ';
+                })
+                ->rawColumns(['html'])
+                ->toJson();
         }
         return \view("customer.contest.listing");
     }
