@@ -21,7 +21,7 @@
                 <div class="col">
                     <label for="sort-by">Level Of Contest</label>
                     <select name="business_level" id="business-level">
-                        <option value="" selected>Select Any Option</option>
+                        <option value="All">All</option>
                         <option value="Small">Small</option>
                         <option value="Medium">Medium</option>
                         <option value="Big">Big</option>
@@ -30,7 +30,7 @@
                 <div class="col default">
                     <label for="sort-by">Sort By Participants</label>
                     <select name="sort_by_participants" id="sort-by-participants">
-                        <option value="" selected hidden>Select Any Option</option>
+                        <option value="All" >All</option>
                         <option value="5">Less than 5</option>
                         <option value="10">Less than 10</option>
                         <option value="20">Less than 20 </option>

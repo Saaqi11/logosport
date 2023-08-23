@@ -450,7 +450,7 @@ class ContestController extends Controller
             if (!empty($request->get('search')['value'])) {
                 $query->where('contests.company_name', 'like', '%' . $request->get('search')['value'] . '%');
             }
-            if (!empty($request->get('business_level'))) {
+            if (!empty($request->get('business_level')) && $request->get('business_level') !== "All") {
                 $query->where('contests.business_level', 'like', '%' . $request->get('business_level') . '%');
             }
             if (!empty($request->get('contest_price'))) {
@@ -465,7 +465,7 @@ class ContestController extends Controller
             }
             $query->where('contests.status', '!=', 3);
             $query->where('contests.score', 100);
-            if (!empty($request->get('participants'))) {
+            if (!empty($request->get('participants')) && $request->get('participants') !== "All") {
                 $query->having('participants', '<', $request->get('participants'));
             }
             $query->groupBy(

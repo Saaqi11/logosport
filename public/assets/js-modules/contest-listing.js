@@ -75,7 +75,6 @@ let contestListing = {
 	},
 	init: () => {
 		contestListing.fetchListing();
-		contestListing.activeStatusEvent()
 		contestListing.initializeSlider()
 	}
 }
