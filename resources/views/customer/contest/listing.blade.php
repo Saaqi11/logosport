@@ -26,16 +26,16 @@
                 <div class="col">
                     <label for="sort-by">Level Of Contest</label>
                     <select name="business_level" id="business-level">
-                        <option value="" selected disabled>Select Any Option</option>
+                        <option value="" selected>Select Any Option</option>
                         <option value="Small">Small</option>
                         <option value="Medium">Medium</option>
-                        <option value="Large">Large</option>
+                        <option value="Big">Big</option>
                     </select>
                 </div>
                 <div class="col default">
                     <label for="sort-by">Sort By Participants</label>
-                    <select name="sort_by_participants" id="sort-by">
-                        <option value="" selected disabled hidden>Select Any Option</option>
+                    <select name="sort_by_participants" id="sort-by-participants">
+                        <option value="" selected hidden>Select Any Option</option>
                         <option value="5">Less than 5</option>
                         <option value="10">Less than 10</option>
                         <option value="20">Less than 20 </option>
@@ -44,7 +44,7 @@
             </div>
             <div class="row fltr-down">
                 <div class="col price-range">
-                    <label for="contest-filter-price" id="contest-filter-price-value">Contest Price (200$):</label>
+                    <label for="contest-filter-price" id="contest-filter-price-value">Contest price greater than (200$):</label>
                     <input id="contest-filter-price" type="range" value="200" min="10" max="1800">
                 </div>
                 <div class="col dubble-btn">
@@ -71,6 +71,5 @@
                 </tbody>
             </table>
         </div>
-        <div id="pagination-container"></div>
     </div>
 @endsection

@@ -75,6 +75,9 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get("/get-declined-works/{id}", [CompetitionController::class, 'getDeclinedWorks']);
             Route::get("/sort-works/{id}", [CompetitionController::class, 'sortWorks']);
         });
+
+        Route::get("/contest/participate/{contest_id}", [ContestController::class, 'contestParticipate'])->name('contest.participate');
+
         Route::group(['middleware' => ['role:Customer', 'verified-user']], function () {
 
             //Customer

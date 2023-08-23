@@ -1,13 +1,18 @@
 
 let contestListing = {
 	fetchListing: () => {
-		var dataTable = new DataTable('#contest-container', {
+		let dataTable = new DataTable('#contest-container', {
 			processing: true,
 			serverSide: true,
 			ajax: {
 				url: "/contest-listing/",
 				data: function (d) {
-					d.business_level = $('#business-level').val();
+					const businessLevel = $($('#business-level').parent('.select').find('[hidden]')[2]).data('value');
+					const participants = $($('#sort-by-participants').parent('.select').find('[hidden]')[2]).find('[hidden]').data('value')
+					d.business_level = businessLevel ? businessLevel : "";
+					d.participants = participants ? participants : "";
+					d.contest_price = $('#contest-filter-price').val();
+					d.status = $('.status-filter.active-status').data('id')
 				}
 			},
 			columns: [
@@ -22,18 +27,24 @@ let contestListing = {
 				search: 'Search By Company Name &nbsp; &nbsp;'
 			}
 		});
-		
+		$('#contest-filter-price').on('change', () => {
+			dataTable.ajax.reload();
+		})
+		$('.select__option').on('click', () => {
+			setTimeout(() => {
+				dataTable.ajax.reload();
+			}, 200);
+		})
 	},
 	activeStatusEvent: () => {
 		$(".status-filter").on('click', (e) => {
 			$(".status-filter").removeClass("active-status")
 			$(e.target).addClass("active-status")
-			$("#contest-status").val()
 		})
 	},
 	initializeSlider: () => {
 		$(".price-range input").on('input change', (event) => {
-			$('#contest-filter-price-value').html("Contest Price ("+$(event.target).val()+"$):")
+			$('#contest-filter-price-value').html("Contest price greater than ("+$(event.target).val()+"$):")
 		});
 	},
 	init: () => {

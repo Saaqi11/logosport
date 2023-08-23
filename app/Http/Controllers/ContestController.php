@@ -31,8 +31,6 @@ class ContestController extends Controller
     public function index(): View
     {
         $user_id = Auth::id();
-
-
         $contests = Contest::select(
             'id',
             'company_name',
@@ -425,19 +423,55 @@ class ContestController extends Controller
     public function contestListing(Request $request): JsonResponse|View
     {
         if ($request->ajax()) {
-            $query = Contest::select('contests.id as contest_id', 'contests.company_name','contests.business_level', 'contests.duration', 'contests.contest_price', 'contests.is_paid')
+            $query = Contest::select(
+                'contests.id as contest_id',
+                'contests.company_name',
+                'contests.business_level',
+                'contests.duration',
+                'contests.contest_price',
+                'contests.is_paid',
+                DB::raw('(SELECT COUNT(*) FROM work_participants WHERE work_participants.contest_id = contests.id) as participants'),
+                DB::raw('(SELECT COUNT(*) FROM work_participants WHERE work_participants.designer_user_id = '.Auth::id().' AND work_participants.contest_id = contests.id) as is_participated')
+            )
                 ->selectRaw("CONCAT(users.first_name,  ' ', users.last_name) as name")
-                ->join("users", 'contests.user_id', 'users.id');
+                ->join("users", 'contests.user_id', 'users.id')
+                ->leftJoin("work_participants", 'contests.id', 'work_participants.contest_id');
 
-            if ($request->get('search')['value']) {
+            if (!empty($request->get('search')['value'])) {
                 $query->where('contests.company_name', 'like', '%' . $request->get('search')['value'] . '%');
             }
-            if ($request->has('business_level')) {
-                $query->where('contests.business_level', 'like', '%' . $request->input('business_level') . '%');
+            if (!empty($request->get('business_level'))) {
+                $query->where('contests.business_level', 'like', '%' . $request->get('business_level') . '%');
             }
+            if (!empty($request->get('contest_price'))) {
+                $query->where('contests.contest_price', '>',  (float)$request->get('contest_price'));
+            }
+            if (!empty($request->get('status'))) {
+                if ((int)$request->get('status') === 2 ) {
+                    $query->where('contests.status', '<=',(int)$request->get('status'));
+                } else {
+                    $query->where('contests.status', (int)$request->get('status'));
+                }
+            }
+            $query->where('contests.status', '!=', 3);
+            if (!empty($request->get('participants'))) {
+                $query->having('participants', '<', $request->get('participants'));
+            }
+            $query->groupBy(
+                'contests.id',
+                'contests.company_name',
+                'contests.business_level',
+                'contests.duration',
+                'contests.contest_price',
+                'contests.is_paid',
+                'users.first_name',
+                'users.last_name'
+            );
+
             return DataTables::of($query)
                 ->addColumn("html", function($row) {
                     $paymentStatus = $row->is_paid ? "Paid" : "Unpaid";
+                    $participatedHtml = $row->is_participated ? "<span class='participated-span'>Participated</span>" : '<a href="'.route('contest.participate', [$row->contest_id]).'" class="button" >Participate</a>';
                     return '
                     <div class="row">
                         <div class="col">
@@ -454,10 +488,13 @@ class ContestController extends Controller
                                 </div>
                                 <div class="lmt">
                                     <p class="limit">
-                                        Time limit: <span>'.$row->duration.' day</span>
+                                        Time limit: <span>'.$row->duration.' day(s)</span>
                                     </p>
                                     <p class="customer">
                                         Customer: <span>'.$row->name.'</span>
+                                    </p>
+                                    <p class="customer">
+                                        Participants: <span>'.$row->participants.'</span>
                                     </p>
                                 </div>
                                 <div class="ftr">
@@ -472,10 +509,10 @@ class ContestController extends Controller
                                 <h2>
                                     $'.$row->contest_price.' 
                                 </h2>
-                                <p>
+                                <p class="payment-status">
                                     Price('.$paymentStatus.')
                                 </p>
-                                <p><a href="">Participate</a></p>
+                                <p class="participation-para">'.$participatedHtml.'</p>
                             </div>
                         </div>
                     </div>
@@ -485,5 +522,26 @@ class ContestController extends Controller
                 ->toJson();
         }
         return \view("customer.contest.listing");
+    }
+
+    /**
+     * Contest participate
+     * @param $contestId
+     * @return RedirectResponse
+     */
+    public function contestParticipate($contestId): RedirectResponse
+    {
+        $participant = WorkParticipants::where([
+            'contest_id' => $contestId,
+            'designer_user_id' => Auth::id()
+        ])->first();
+        if (empty($participant)) {
+            $participate = new WorkParticipants();
+            $participate->contest_id = $contestId;
+            $participate->designer_user_id = Auth::id();
+            $participate->save();
+            return redirect()->back()->with('success', 'You are successfully participated in the contest.');
+        }
+        return redirect()->back()->with('error', 'You already participated in this contest.');
     }
 }

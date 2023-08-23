@@ -3,7 +3,9 @@
     @include('layouts.header')
     <body>
         @include('layouts.top_nav')
-        @include("layouts.flashMessages")
+        <div class="container">
+            @include("layouts.flashMessages")
+        </div>
         @yield('content')
         @include('layouts.footer')
         @include('layouts.scripts')

@@ -520,7 +520,7 @@ h1	{
 	color: #4AC420;
 }
 
-.dol p {
+.dol .payment-status {
 	float: right;
 	margin-top: 55px;
 	margin-right: -72px;
@@ -548,18 +548,24 @@ h1	{
 .description .fa-thumbtack {
 	margin-left: 10px;
 	margin-right: 10px;
+	cursor: pointer;
 }
 
-.icons .fas {
+.icons .fa-thumbtack{
 	margin-left: 360px;
 	margin-top: 28px;
 	position: absolute;
 	color: #44B21E;
+	cursor: pointer;
 }
-
-.icons .far {
+.icons .fa-star {
+	cursor: pointer;
 	margin-top: 26px;
 	margin-left: 380px;
+}
+.icons .fas {
+	color: #44B21E;
+	cursor: pointer;
 }
 
 .lmt {
@@ -625,6 +631,14 @@ h1	{
 	background-color: #4AC420 !important;
 	color: white !important;
 }
-input:focus, textarea:focus {
-
+p.participation-para {
+	display: flex;
+	padding-top: 85px;
+	padding-left: 110px;
+}
+.participated-span {
+	background-color: #FFAD17;
+	padding: 12px 20px;
+	color: white;
+	border-radius: 50px;
 }

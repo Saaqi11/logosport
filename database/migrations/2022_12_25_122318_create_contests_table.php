@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger("user_id");
             $table->string("business_level");
             $table->string('slug')->unique()->nullable();
-            $table->string("contest_price");
+            $table->double("contest_price");
             $table->string("company_name")->nullable();
             $table->string("industry_type")->nullable();
             $table->string("slogan")->nullable();
@@ -36,7 +36,6 @@ return new class extends Migration
             $table->string("score")->nullable();
             $table->integer("status")->default(0);
             $table->integer("is_paid")->default(0);
-            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('no action')->onDelete('no action');
