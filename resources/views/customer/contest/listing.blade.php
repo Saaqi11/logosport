@@ -7,18 +7,13 @@
                     Contests
                 </h1>
             </div>
-            <div class="col buton">
-                <button>
-                    <p>Add contest</p>
-                </button>
-            </div>
         </div>
         <div class="filter">
 			<span>
 				Filter
 			</span>
             <ul>
-                <li><a ><i class="fas fa-star"></i>Favourites</a></li>
+                <li><a data-selected="0"><i class="fas fa-star"></i>Favourites</a> <input type="checkbox" id="get-favourite-contests"></li>
             </ul>
         </div>
         <div class="fltr-item">

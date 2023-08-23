@@ -569,7 +569,7 @@ h1	{
 }
 
 .lmt {
-	margin-top: 12px;
+	margin-top: 50px;
 	margin-left: 30px;
 }
 
@@ -618,11 +618,6 @@ h1	{
 	border-radius: 5px;
 }
 
-.icons .star {
-	margin-left: 360px;
-	color: #FFAD17;
-}
-
 .mt {
 	margin-top: 56px;
 }
@@ -641,4 +636,9 @@ p.participation-para {
 	padding: 12px 20px;
 	color: white;
 	border-radius: 50px;
+}
+.far,
+.fas.fa-star {
+	color: #4AC420;
+	cursor: pointer;
 }

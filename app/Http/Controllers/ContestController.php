@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contest;
 use App\Models\ContestStyle;
 use App\Models\DefaultLogo;
+use App\Models\FavouriteContest;
 use App\Models\LogoColor;
 use App\Models\Media;
 use App\Models\User;
@@ -430,12 +431,21 @@ class ContestController extends Controller
                 'contests.duration',
                 'contests.contest_price',
                 'contests.is_paid',
+                'media.src as contest_image',
                 DB::raw('(SELECT COUNT(*) FROM work_participants WHERE work_participants.contest_id = contests.id) as participants'),
-                DB::raw('(SELECT COUNT(*) FROM work_participants WHERE work_participants.designer_user_id = '.Auth::id().' AND work_participants.contest_id = contests.id) as is_participated')
+                DB::raw('(SELECT COUNT(*) FROM work_participants WHERE work_participants.designer_user_id = '.Auth::id().' AND work_participants.contest_id = contests.id) as is_participated'),
+                DB::raw('(SELECT COUNT(*) FROM favourite_contests WHERE favourite_contests.user_id = '.Auth::id().' AND favourite_contests.contest_id = contests.id AND favourite_contests.status = 1) as is_favourite')
             )
                 ->selectRaw("CONCAT(users.first_name,  ' ', users.last_name) as name")
                 ->join("users", 'contests.user_id', 'users.id')
-                ->leftJoin("work_participants", 'contests.id', 'work_participants.contest_id');
+                ->leftJoin("media", 'media.contest_id', 'contests.id');
+            if ($request->get("is_favourite") && $request->get("is_favourite") === "true") {
+                $query->join("favourite_contests", "favourite_contests.contest_id", "contests.id");
+                $query->where([
+                    "favourite_contests.user_id" => Auth::id(),
+                    "favourite_contests.status" => 1
+                ]);
+            }
 
             if (!empty($request->get('search')['value'])) {
                 $query->where('contests.company_name', 'like', '%' . $request->get('search')['value'] . '%');
@@ -454,6 +464,7 @@ class ContestController extends Controller
                 }
             }
             $query->where('contests.status', '!=', 3);
+            $query->where('contests.score', 100);
             if (!empty($request->get('participants'))) {
                 $query->having('participants', '<', $request->get('participants'));
             }
@@ -465,26 +476,29 @@ class ContestController extends Controller
                 'contests.contest_price',
                 'contests.is_paid',
                 'users.first_name',
-                'users.last_name'
+                'users.last_name',
+                'contest_image',
             );
 
             return DataTables::of($query)
                 ->addColumn("html", function($row) {
                     $paymentStatus = $row->is_paid ? "Paid" : "Unpaid";
-                    $participatedHtml = $row->is_participated ? "<span class='participated-span'>Participated</span>" : '<a href="'.route('contest.participate', [$row->contest_id]).'" class="button" >Participate</a>';
+                    $participatedHtml = $row->is_participated ? "<span class='participated-span'>Participated</span>" : '<a href="'.route('contest.participate', ['contest_id' => $row->contest_id]).'" class="button" >Participate</a>';
+                    $isFavourite = $row->is_favourite ? "fas" : "far";
                     return '
                     <div class="row">
                         <div class="col">
-                            <img src="images/slider-1.png" alt="">
+                            <img src="'.$row->contest_image.'" alt="">
                         </div>
                         <div class="col-6">
                             <div class="description">
-                                <h3>
-                                    '.$row->company_name.'
-                                </h3>
-                                <div class="icons">
-                                    <i class="fas fa-thumbtack"></i>
-                                    <i class="far fa-star"></i>
+                                <div class="contest-heading">
+                                    <div class="contest-title">
+                                        <h3>
+                                            <a href="'.route("competition.show", [$row->contest_id]).'">'.$row->company_name.'</a>
+                                             &nbsp; <i class="'.$isFavourite.' fa-star" data-id="'.$row->contest_id.'"></i>
+                                        </h3>
+                                    </div>                              
                                 </div>
                                 <div class="lmt">
                                     <p class="limit">
@@ -543,5 +557,36 @@ class ContestController extends Controller
             return redirect()->back()->with('success', 'You are successfully participated in the contest.');
         }
         return redirect()->back()->with('error', 'You already participated in this contest.');
+    }
+
+    /**
+     * contest favourite
+     * @param $contestId
+     * @param $status
+     * @return JsonResponse
+     */
+    public function favouriteContest($contestId, $status): JsonResponse
+    {
+        $favouriteContest = FavouriteContest::where([
+            'user_id' => Auth::id(),
+            'contest_id' => $contestId
+        ])->first();
+        $response = [
+            'status' => 1,
+            'message' => "Contest marked as a favourite"
+        ];
+        if (!empty($favouriteContest)) {
+            $favouriteContest->status = $status;
+            $favouriteContest->update();
+            $response['status'] = (int)$status === 1 ? 1 : 0;
+            $response['message'] = (int)$status === 1 ? "Contest marked as a favourite" : "Contest unmarked as a favourite";
+        } else {
+            $newFavouriteContest = new FavouriteContest();
+            $newFavouriteContest->user_id = Auth::id();
+            $newFavouriteContest->contest_id = $contestId;
+            $newFavouriteContest->status = $status;
+            $newFavouriteContest->save();
+        }
+        return response()->json($response);
     }
 }

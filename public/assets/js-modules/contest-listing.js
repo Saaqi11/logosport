@@ -9,6 +9,7 @@ let contestListing = {
 				data: function (d) {
 					const businessLevel = $($('#business-level').parent('.select').find('[hidden]')[2]).data('value');
 					const participants = $($('#sort-by-participants').parent('.select').find('[hidden]')[2]).find('[hidden]').data('value')
+					d.is_favourite = $('#get-favourite-contests').is(':checked');
 					d.business_level = businessLevel ? businessLevel : "";
 					d.participants = participants ? participants : "";
 					d.contest_price = $('#contest-filter-price').val();
@@ -27,6 +28,7 @@ let contestListing = {
 				search: 'Search By Company Name &nbsp; &nbsp;'
 			}
 		});
+		
 		$('#contest-filter-price').on('change', () => {
 			dataTable.ajax.reload();
 		})
@@ -35,11 +37,35 @@ let contestListing = {
 				dataTable.ajax.reload();
 			}, 200);
 		})
-	},
-	activeStatusEvent: () => {
+		$(document).on('click', '.fa-star', (e) => {
+			const status = $(e.target).hasClass("fas") ? 0 : 1;
+			$.ajax({
+				type: "GET",
+				url: "/contest/favourite/"+$(e.target).data('id')+"/"+status,
+				cache: false,
+				contentType: false,
+				success: (response) => {
+					$(e.target).removeAttr("class");
+					if (response.status){
+						$(e.target).addClass("fas fa-star");
+					} else {
+						$(e.target).addClass("far fa-star");
+					}
+					toastr.success(response.message)
+				},
+				error: (response) => {
+					console.log(response)
+				}
+			});
+		});
+		$("#get-favourite-contests").on('change', (e) => {
+			dataTable.ajax.reload();
+		})
+		
 		$(".status-filter").on('click', (e) => {
 			$(".status-filter").removeClass("active-status")
 			$(e.target).addClass("active-status")
+			dataTable.ajax.reload();
 		})
 	},
 	initializeSlider: () => {
