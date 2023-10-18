@@ -237,7 +237,7 @@
                                 @php if (!empty($contest->doc_file)) { @endphp
                                     <a href="{{ asset($contest->doc_file) }}" class="block-brief__download-link">
                                         <svg class="block-brief__download-icon">
-                                            <use href="img/icons/icons.svg#arrow-down"></use>
+                                            <use href="{{ asset("images/img/icons/icons.svg#arrow-down") }}"></use>
                                         </svg>
                                         @php
                                             $docFile = explode("/", @$contest->doc_file);

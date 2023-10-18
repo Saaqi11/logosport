@@ -16,21 +16,23 @@
 								example
 							</span>
 							<span class="tippy-popup__example">
-								<img src="img/svg/logo2.svg" alt="">
+								<img src="{{ asset("images/img/svg/logo2.svg") }}" alt="">
 							</span>
 						</span>
                 </p>
             </div>
             <form action="{{ route("competition.save.work", ["id" => $contest->id]) }}" class="popup__form" method="post" enctype="multipart/form-data">
                 @csrf
-                <label for="upload" class="block-brief__download-link popup-upload">
-                    <input type="file" id="upload-work" name="work" required class="popup-upload__input" hidden>
-                    <svg class="block-brief__download-icon">
-                        <use href="img/icons/icons.svg#arrow-down"></use>
-                    </svg>
-                    <span id="show-name">Upload file <br>
-							(.png)</span>
-                </label>
+                <div id="upload-image-div">
+                    <label for="upload" class="block-brief__download-link popup-upload">
+                        <input type="file" id="upload-work" name="work" required class="popup-upload__input" style="width: 90px">
+                        <svg class="block-brief__download-icon">
+                            <use href="{{ asset("images/img/icons/icons.svg#arrow-down") }}"></use>
+                        </svg>
+                        <span id="show-name">Upload file <br>
+                                (.png)</span>
+                    </label>
+                </div>
                 <div class="popup__text-bottom">
                     <p>Read and agree to the agreement on the transfer
                         of rights to the logo and everything that is attached to it.</p>

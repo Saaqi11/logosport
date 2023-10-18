@@ -16,5 +16,6 @@
         @include('layouts.footer')
         @include('layouts.scripts')
         @stack('script')
+
     </body>
 </html>

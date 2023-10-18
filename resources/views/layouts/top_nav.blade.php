@@ -50,7 +50,7 @@
                             <span class="user-name">
                                 <details class="dropdown">
                                     <summary role="button">
-                                          <a class="button">
+                                          <a class="button top_nav">
                                               {{ auth()->user()->first_name }} &#160;
                                               <i class="fas fa-chevron-down"></i>
                                           </a>

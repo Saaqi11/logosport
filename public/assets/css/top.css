@@ -12,11 +12,14 @@
 
 /* Boring button styles */
 a.button {
-    color: white !important;
     border-radius: 50px;
     box-sizing: border-box;
     font-size: 14px;
     cursor: pointer;
+}
+
+a.top_nav {
+    color: white !important;
 }
 
 a.button:active {

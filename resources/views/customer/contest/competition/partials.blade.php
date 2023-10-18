@@ -4,11 +4,13 @@
             <h2 class="title head-brief__title">
                 {{ $contest->company_name }}
             </h2>
-            <button data-like class="head-brief__like">
+            @if(auth()->check() && auth()->user()->user_type === "Designer")
+            <button data-like class="head-brief__like" style="margin-bottom: 22px;">
                 <svg class="head-brief__icon">
-                    <use href="img/icons/icons.svg#star"></use>
+                    <use href="{{ asset("images/img/icons/icons.svg#heart") }}"></use>
                 </svg>
             </button>
+            @endif
 {{--            <select name="form[]" data-class-modif="lang" class="form">--}}
 {{--                <option value="1" selected>ENG</option>--}}
 {{--                <option value="2">RU</option>--}}
@@ -39,7 +41,7 @@
                                 <a href="" class="profile-head__link">
 														<span class="profile-head__check">
 															<svg class="profile-head__icon">
-																<use href="img/icons/icons.svg#check-circle"></use>
+																<use href="{{ asset("images/img/icons/icons.svg#check-circle") }}"></use>
 															</svg>
 														</span>
                                     {{ $contest->customer->first_name }}
@@ -84,7 +86,7 @@
     </div>
     <div data-da=".head-brief__items,768,1" class="head-brief__price price-head">
         <div class="price-head__title">
-            Price ({{ $contest->is_amount_verified ? "Paid" : "Not Paid" }}): <span>{{ $contest->contest_price }}$</span>
+            Price ({{ $contest->is_paid ? "Paid" : "Not Paid" }}): <span>{{ $contest->contest_price }}$</span>
         </div>
         <div class="price-head__info">
             <div class="price-head__item">
@@ -141,9 +143,11 @@
             <div class="navigation-brief__count">
                 <span id="designer-works"></span>/4 works
             </div>
-            <a data-popup="#popup1" class="navigation-brief__button button button_border">
-                Add new work
-            </a>
+            @if($totalWorks->files->count() < 4)
+                <a data-popup="#popup1" class="navigation-brief__button button button_border">
+                    Add new work
+                </a>
+            @endif
         </div>
     @endif
 </div>

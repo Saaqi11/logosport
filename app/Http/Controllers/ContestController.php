@@ -498,7 +498,7 @@ class ContestController extends Controller
                                             <a href="'.route("competition.show", [$row->contest_id]).'">'.$row->company_name.'</a>
                                              &nbsp; <i class="'.$isFavourite.' fa-star" data-id="'.$row->contest_id.'"></i>
                                         </h3>
-                                    </div>                              
+                                    </div>
                                 </div>
                                 <div class="lmt">
                                     <p class="limit">
@@ -521,7 +521,7 @@ class ContestController extends Controller
                         <div class="col">
                             <div class="dol">
                                 <h2>
-                                    $'.$row->contest_price.' 
+                                    $'.$row->contest_price.'
                                 </h2>
                                 <p class="payment-status">
                                     Price('.$paymentStatus.')

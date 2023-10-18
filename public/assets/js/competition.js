@@ -173,7 +173,7 @@ function manageResponse (response, e) {
                                         </div>
                                     </div>
                                 </div>`;
-			
+
 			if (response.contest.user_id === user_id) {
 				html +=
 					`
@@ -182,7 +182,7 @@ function manageResponse (response, e) {
 								<i class="far fa-times-circle ${ work.status === 2 ? "active" : "" }"></i>
 							</div> `;
 			}
-			
+
 			html += `</div>
                         </div>`;
 		});

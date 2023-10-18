@@ -16,7 +16,7 @@
 @if(request()->route()->action['as'] === "contest.listing")
     <script src="{{ asset("assets/js-modules/contest-listing.js") }}"></script>
 @endif
-@if(request()->route()->getPrefix() !== "/competition")
+@if(request()->route()->getPrefix() === "/competition")
     <script src="{{ asset("assets/js/competition-app.min.js") }}"></script>
     <script src="{{ asset("assets/js/competition.js") }}"></script>
 @endif

@@ -29,7 +29,11 @@ class CompetitionController extends Controller
     {
         $contest = Contest::with("customer", "style", "mediaFiles", "colors")->findOrFail($id);
         if ($contest) {
-            return \view($this->briefCompetitionView."brief-intro", compact("contest"));
+            $works = Work::with("files", "reactions", "totalWorks")->where("contest_id", $id)->get();
+            if(Auth::check()) {
+                $totalWorks = Work::with("files")->where(["contest_id" => $id, "designer_user_id" => Auth::id()])->first();
+            }
+            return \view($this->briefCompetitionView."brief-intro", compact("works", "contest", "totalWorks"));
         }
         return redirect()->back()->with("error", "Contest not found");
     }
@@ -44,7 +48,11 @@ class CompetitionController extends Controller
         $contest = Contest::with("customer", "style", "mediaFiles", "colors")->findOrFail($id);
         if ($contest) {
             $works = Work::with("files", "reactions", "totalWorks")->where("contest_id", $id)->get();
-            return \view($this->briefCompetitionView."round-one", compact("contest", "works"));
+            $totalWorks = 0;
+            if(Auth::check()) {
+                $totalWorks = Work::with("files")->where(["contest_id" => $id, "designer_user_id" => Auth::id()])->first();
+            }
+            return \view($this->briefCompetitionView."round-one", compact("contest", "works", "totalWorks"));
         }
         return redirect()->back()->with("error", "Contest not found");
     }
@@ -59,7 +67,10 @@ class CompetitionController extends Controller
         $contest = Contest::with("customer", "style", "mediaFiles", "colors")->findOrFail($id);
         if ($contest) {
             $works = Work::with("files", "reactions", "totalWorks")->where(["contest_id" => $id, "status" => 1])->get();
-            return \view($this->briefCompetitionView."round-two", compact("contest", "works"));
+            if(Auth::check()) {
+                $totalWorks = Work::with("files")->where(["contest_id" => $id, "designer_user_id" => Auth::id()])->first();
+            }
+            return \view($this->briefCompetitionView."round-two", compact("contest", "works", "totalWorks"));
         }
         return redirect()->back()->with("error", "Contest not found");
     }
@@ -73,7 +84,6 @@ class CompetitionController extends Controller
     public function saveWork(Request $request, $id): RedirectResponse
     {
         $work = Work::with("files")->where(["contest_id" => $id, "designer_user_id" => Auth::id()])->first();
-
         if (empty($work)) {
             $work = new Work();
             $work->designer_user_id = Auth::id();
@@ -171,7 +181,10 @@ class CompetitionController extends Controller
         $contest = Contest::with("customer")->findOrFail($id);
         if ($contest) {
             $works = Work::with("files", "reactions", "totalWorks")->where(["contest_id" => $id, "status" => 1])->whereIn("place", ["1", "2", "3"])->get();
-            return \view($this->briefCompetitionView."winners", compact("contest", "works"));
+            if(Auth::check()) {
+                $totalWorks = Work::with("files")->where(["contest_id" => $id, "designer_user_id" => Auth::id()])->first();
+            }
+            return \view($this->briefCompetitionView."winners", compact("contest", "works", "totalWorks"));
         }
         return redirect()->back()->with("error", "Contest not found");
     }
@@ -238,7 +251,7 @@ class CompetitionController extends Controller
             }
             $collection = $query->get();
             $works = new Collection($collection);
-            $works = $works->sortBy("reactions", $request->get("sortBy"));
+            $works = $works->sortBy("reactions", (int)$request->get("sortBy"));
             return response()->json(["status" => true, "contest" => $contest, "works" => $works]);
         }
         return response()->json(["status" => false]);
