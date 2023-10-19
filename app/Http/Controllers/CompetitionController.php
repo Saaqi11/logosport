@@ -92,7 +92,7 @@ class CompetitionController extends Controller
             $work->save();
         }
         if ($request->work) {
-            if (count($work->files) <= 4) {
+            if (count($work->files) < 4) {
                 $userAttachmentPublicPath = public_path("/work/".Auth::id()."/");
 
                 //create dynamic directory
