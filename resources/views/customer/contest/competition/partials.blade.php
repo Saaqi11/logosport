@@ -143,7 +143,7 @@
             <div class="navigation-brief__count">
                 <span id="designer-works"></span>/4 works
             </div>
-            @if($totalWorks->files->count() < 4)
+            @if(!empty($totalWorks) && !empty($totalWorks->files) && $totalWorks->files->count() < 4)
                 <a data-popup="#popup1" class="navigation-brief__button button button_border">
                     Add new work
                 </a>
