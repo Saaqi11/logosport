@@ -147,6 +147,10 @@
                 <a data-popup="#popup1" class="navigation-brief__button button button_border">
                     Add new work
                 </a>
+            @elseif (!empty($totalWorks))
+                <a data-popup="#popup1" class="navigation-brief__button button button_border">
+                    Add new work
+                </a>
             @endif
         </div>
     @endif
