@@ -40,7 +40,7 @@
             <div class="row fltr-down">
                 <div class="col price-range">
                     <label for="contest-filter-price" id="contest-filter-price-value">Contest price greater than (200$):</label>
-                    <input id="contest-filter-price" type="range" value="200" min="10" max="1800">
+                    <input id="contest-filter-price" type="range" value="100" min="10" max="1800">
                 </div>
                 <div class="col dubble-btn">
                     <p>

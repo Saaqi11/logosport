@@ -214,3 +214,19 @@ $('.sort-by').on("click", (e) => {
 		});
 	}
 })
+
+$(".winners-slider-images-view").click((e) => {
+	let dataId = $(e.target).parents(".card-view__top").find('.winners-slider-images-view').data("id");
+	$.ajax({
+		type: "GET",
+		url: "/competition/get-winner-works/"+dataId,
+		dataType: "JSON",
+		cache: false,
+		contentType: false,
+		success: (response) => {
+		},
+		error: (response) => {
+			console.log(response)
+		}
+	});
+});

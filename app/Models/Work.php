@@ -28,7 +28,7 @@ class Work extends Model
      */
     public function contest(): HasOne
     {
-        return $this->hasOne(Contest::class, "contest_id", "id");
+        return $this->hasOne(Contest::class, "id", "contest_id");
     }
 
     /**

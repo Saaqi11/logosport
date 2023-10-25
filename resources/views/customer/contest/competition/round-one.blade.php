@@ -87,7 +87,7 @@
                                             </div>
                                         </div>
                                         @if($contest->user_id === auth()->id())
-                                            <div class="card-view__item" data-id="{{ $work->id }}" style="cursor: pointer; display: flex; position: absolute; left: 250px; font-size: 28px; color: #e6e6e6;">
+                                            <div class="card-view__item" data-id="{{ $work->id }}" style="cursor: pointer; display: flex; position: absolute; left: 190px; font-size: 28px; color: #e6e6e6;">
                                                 <i class="far fa-check-circle {{ $work->status === 1 ? "activ" : "" }}"></i>
                                                 <i class="far fa-times-circle {{ $work->status === 2 ? "active" : "" }}"></i>
                                             </div>

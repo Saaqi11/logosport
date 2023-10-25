@@ -256,4 +256,17 @@ class CompetitionController extends Controller
         }
         return response()->json(["status" => false]);
     }
+
+    /**
+     * Get winner works
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getWinnerWorks($id) {
+        $work = Work::with("files", "reactions", "totalWorks", "designer", "contest.customer")->where("id", $id)->first();
+        if (!empty($work)) {
+            return response()->json($work);
+        }
+        return response()->json(null);
+    }
 }

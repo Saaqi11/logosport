@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Competition
         Route::prefix('competition')->name('competition.')->group(function () {
+            Route::get("/get-winner-works/{id}", [CompetitionController::class, 'getWinnerWorks'])->name('show');
             Route::get("/show-contest-brief/{id}", [CompetitionController::class, 'showBrief'])->name('show');
             Route::get("/round-one/{id}", [CompetitionController::class, 'roundOne'])->name('round.one');
             Route::get("/round-two/{id}", [CompetitionController::class, 'roundTwo'])->name('round.two');

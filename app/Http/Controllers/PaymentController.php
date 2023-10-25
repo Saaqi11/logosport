@@ -100,6 +100,12 @@ class PaymentController extends Controller
      */
     public function paypalSuccess(Request $request,$id): RedirectResponse
     {
+
+        Contest::where("id", $id)->update(
+            [
+                'is_paid' => 1
+            ]
+        );
         $uri = 'https://api.sandbox.paypal.com/v1/billing/subscriptions/'.$request->subscription_id;
 
         $client = new Client();

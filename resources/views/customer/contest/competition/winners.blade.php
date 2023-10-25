@@ -11,10 +11,9 @@
                                 @foreach($works as $work)
                                     <div class="card-view">
                                         <div class="card-view__top">
-                                            <a data-gallery href="{{ asset("images/img/other-img/logo.jpg") }}" class="card-view__image-ibg">
+                                            <a class="card-view__image-ibg winners-slider-images-view" data-id="{{ $work->id }}">
                                                 <picture>
-                                                    <source srcset="{{ asset("images/img/other-img/logo.webp") }}" type="image/webp">
-                                                    <img src="{{ asset("images/img/other-img/logo.jpg") }}" alt="">
+                                                    <img src="{{ asset("images/img/other-img/logo.webp") }}" alt="">
                                                 </picture>
                                             </a>
                                         </div>

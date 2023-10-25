@@ -61,7 +61,7 @@
                                                 @foreach($work->files as $file)
                                                     <div class="sliders-brief__slide swiper-slide">
                                                         <a href="{{ asset($file->src) }}" data-gallery class="card-logo" style="background-color: #6a6a6a;">
-                                                            <img src="{{ asset($file->src) }}" alt="">
+                                                            <img src="{{ auth()->user() && (auth()->user()->id === $work->designer_user_id || auth()->user()->id === $contest->user_id) ? asset($file->src) : asset("images/img/icons/icons.svg#folder") }}" alt="">
                                                         </a>
                                                     </div>
                                                 @endforeach
