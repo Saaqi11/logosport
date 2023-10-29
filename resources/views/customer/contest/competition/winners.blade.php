@@ -9,11 +9,20 @@
                         <div class="brief__card-grid-layout mt-30  grid">
                             @if(!empty($works))
                                 @foreach($works as $work)
+                                    @php
+                                        $imagePath = "";
+                                        foreach ($work->files as $file)
+                                        {
+                                            if (!empty($file->favWork) && $file->favWork->work_media_file_id === $file->id){
+                                                $imagePath = asset($file->src);
+                                            }
+                                        }
+                                    @endphp
                                     <div class="card-view">
                                         <div class="card-view__top">
                                             <a class="card-view__image-ibg winners-slider-images-view" data-id="{{ $work->id }}">
                                                 <picture>
-                                                    <img src="{{ asset("images/img/other-img/logo.webp") }}" alt="">
+                                                    <img src="{{ $imagePath !== "" ? $imagePath : asset("images/img/other-img/logo.webp") }}" alt="">
                                                 </picture>
                                             </a>
                                         </div>
@@ -55,5 +64,57 @@
                 </div>
             </section>
         </main>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Work Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="hidden" id="appURL" value="{{ env("APP_URL") }}">
+                                <!-- Carousel -->
+                                <div id="workCarousel" class="carousel slide" data-ride="carousel">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <!-- Card -->
+                                <div class="card">
+                                    <div class="card-header">Designer Detail</div>
+                                    <div class="card-body">
+                                        <h4 class="card-title" id="designer-name"></h4>
+                                        <a class="btn btn-primary" href="" id="dribble">Dribble</a>
+                                        <a class="btn btn-primary" href="" id="behance">Behance</a>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="card">
+                                    <div class="card-header">Contest Details:</div>
+                                    <div class="card-body">
+                                        <h4 class="card-title" >Customer Name</h4>
+                                        <p id="customer-name"></p>
+                                        <br>
+                                        <h6>Company About:</h6>
+                                        <p id="company_name"></p>
+                                        <br>
+                                        <h4>Company About:</h4>
+                                        <p id="company_about"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

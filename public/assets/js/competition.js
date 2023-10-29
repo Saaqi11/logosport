@@ -215,7 +215,39 @@ $('.sort-by').on("click", (e) => {
 	}
 })
 
+$(".customer-heart-icon").on("click", (e) => {
+    e.preventDefault()
+    let status = 0;
+    if ($(e.target).hasClass("far")) {
+        status = 1
+    }
+    let dataId = $(e.target).data("id")
+    $.ajax({
+        type: "GET",
+        url: "/competition/save-customer-favourite-work/"+dataId+"/"+status,
+        dataType: "JSON",
+        cache: false,
+        contentType: false,
+        success: (response) => {
+            if (status === 1) {
+                let $slidersBriefSlider = $(e.target).closest('.sliders-brief__slider');
+                let $farFaHeartElements = $slidersBriefSlider.find('.far.fa-heart');
+                $farFaHeartElements.removeClass('fa');
+                $farFaHeartElements.addClass('far');
+                $(e.target).addClass("fa")
+            } else {
+                $(e.target).removeClass("fa")
+                $(e.target).addClass("far")
+            }
+        },
+        error: (response) => {
+            console.log(response)
+        }
+    });
+})
+
 $(".winners-slider-images-view").click((e) => {
+    $("#myModal").modal("show")
 	let dataId = $(e.target).parents(".card-view__top").find('.winners-slider-images-view').data("id");
 	$.ajax({
 		type: "GET",
@@ -224,6 +256,27 @@ $(".winners-slider-images-view").click((e) => {
 		cache: false,
 		contentType: false,
 		success: (response) => {
+            let html = `<div class="carousel-inner">`;
+            let appURL = $("#appURL").val()+"/";
+            if (response.files.length > 0) {
+                response.files.map((file) => {
+                    html += `
+            <div class="carousel-item ${response.files[0].id === file.id ? "active" : ""}">
+                <img class="d-block w-100" src="${appURL+file.src}" alt="">
+            </div>
+        `;
+                });
+            }
+            html += `</div>`;
+            $("#workCarousel").html(html);
+            $("#customer-name").text(response.contest.customer.first_name + " " + response.contest.customer.last_name)
+            $("#company_about").text(response.contest.company_about)
+            $("#company_name").text(response.contest.company_name)
+            $("#designer-name").text(response.designer.first_name + " " + response.designer.last_name)
+            $("#behance").href(response.designer.behance)
+            $("#dribble").href(response.designer.dribble)
+
+            $('#workCarousel').carousel();
 		},
 		error: (response) => {
 			console.log(response)

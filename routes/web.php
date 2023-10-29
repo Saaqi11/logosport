@@ -65,8 +65,9 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get("/get-winner-works/{id}", [CompetitionController::class, 'getWinnerWorks'])->name('show');
             Route::get("/show-contest-brief/{id}", [CompetitionController::class, 'showBrief'])->name('show');
             Route::get("/round-one/{id}", [CompetitionController::class, 'roundOne'])->name('round.one');
-            Route::get("/round-two/{id}", [CompetitionController::class, 'roundTwo'])->name('round.two');
+            Route::get("/designer-works/{id}", [CompetitionController::class, 'roundTwo'])->name('designer.works');
             Route::post("/save-work/{id}", [CompetitionController::class, 'saveWork'])->name('save.work');
+            Route::get("/save-customer-favourite-work/{id}/{status}", [CompetitionController::class, 'saveCustomerFavouriteWork'])->name('save.customer.favourite.work');
             Route::get("/decline-work/{id}", [CompetitionController::class, 'declineWork'])->name('decline.work');
             Route::get("/winners/{id}", [CompetitionController::class, 'winners'])->name('winners');
             Route::get("/change-work-status/{id}/{status}", [CompetitionController::class, 'changeWorkStatus']);

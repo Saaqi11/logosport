@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contest;
+use App\Models\CustomerFavouriteWork;
 use App\Models\Work;
 use App\Models\WorkMediaFile;
 use Illuminate\Http\JsonResponse;
@@ -30,6 +31,7 @@ class CompetitionController extends Controller
         $contest = Contest::with("customer", "style", "mediaFiles", "colors")->findOrFail($id);
         if ($contest) {
             $works = Work::with("files", "reactions", "totalWorks")->where("contest_id", $id)->get();
+            $totalWorks = 0;
             if(Auth::check()) {
                 $totalWorks = Work::with("files")->where(["contest_id" => $id, "designer_user_id" => Auth::id()])->first();
             }
@@ -66,11 +68,12 @@ class CompetitionController extends Controller
     {
         $contest = Contest::with("customer", "style", "mediaFiles", "colors")->findOrFail($id);
         if ($contest) {
-            $works = Work::with("files", "reactions", "totalWorks")->where(["contest_id" => $id, "status" => 1])->get();
+            $works = Work::with("files.favWork", "reactions", "totalWorks")->where(["contest_id" => $id, "status" => 1])->get();
+            $totalWorks = 0;
             if(Auth::check()) {
                 $totalWorks = Work::with("files")->where(["contest_id" => $id, "designer_user_id" => Auth::id()])->first();
             }
-            return \view($this->briefCompetitionView."round-two", compact("contest", "works", "totalWorks"));
+            return \view($this->briefCompetitionView."designer-works", compact("contest", "works", "totalWorks"));
         }
         return redirect()->back()->with("error", "Contest not found");
     }
@@ -180,7 +183,8 @@ class CompetitionController extends Controller
     {
         $contest = Contest::with("customer")->findOrFail($id);
         if ($contest) {
-            $works = Work::with("files", "reactions", "totalWorks")->where(["contest_id" => $id, "status" => 1])->whereIn("place", ["1", "2", "3"])->get();
+            $works = Work::with("files.favWork", "reactions", "totalWorks")->where(["contest_id" => $id, "status" => 1])->whereIn("place", ["1", "2", "3"])->orderBy("place", "asc")->get();
+            $totalWorks = 0;
             if(Auth::check()) {
                 $totalWorks = Work::with("files")->where(["contest_id" => $id, "designer_user_id" => Auth::id()])->first();
             }
@@ -262,11 +266,44 @@ class CompetitionController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function getWinnerWorks($id) {
+    public function getWinnerWorks($id): JsonResponse
+    {
         $work = Work::with("files", "reactions", "totalWorks", "designer", "contest.customer")->where("id", $id)->first();
         if (!empty($work)) {
             return response()->json($work);
         }
         return response()->json(null);
     }
+
+    /**
+     * save Customer's fav work
+     * @param $id
+     * @param $status
+     * @return bool
+     */
+    public function saveCustomerFavouriteWork($id, $status): bool
+    {
+        $work = WorkMediaFile::with("work")->where("id", $id)->first();
+        if (!empty($work)) {
+            $favWork = CustomerFavouriteWork::where([
+                "work_media_file_id" => $id,
+                "contest_id" => $work->work->contest_id
+            ])->first();
+            if (!empty($favWork))
+            {
+                $favWork->status = $status;
+                $favWork->update();
+            } else {
+                $favWork = new CustomerFavouriteWork();
+                $favWork->work_media_file_id = $id;
+                $favWork->contest_id = $work->work->contest_id;
+                $favWork->status = $status;
+                $favWork->save();
+            }
+            return true;
+        }
+        return false;
+    }
+
+
 }

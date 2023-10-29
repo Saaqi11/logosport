@@ -20,3 +20,4 @@
     <script src="{{ asset("assets/js/competition-app.min.js") }}"></script>
     <script src="{{ asset("assets/js/competition.js") }}"></script>
 @endif
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>

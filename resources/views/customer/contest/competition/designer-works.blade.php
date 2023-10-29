@@ -15,6 +15,14 @@
 	    background: #3EAE18;
 	    color: #FFFFFF;
     }
+
+    .customer-heart-icon {
+        color: white;
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font-size: 20px;
+    }
 </style>
     <div class="wrapper">
         <main class="page">
@@ -47,7 +55,7 @@
                                                 <div class="avatar-info__items">
                                                     <div class="avatar-info__item">
                                                         <span>{{ $work->reactions ? $work->reactions : 0 }}</span>
-                                                        <i class="fa fa-heart"></i>
+                                                        <i class="far fa-heart"></i>
                                                     </div>
                                                     <div class="avatar-info__item"><span>
                                                             {{ $work->totalWorks->count() }} works
@@ -59,7 +67,12 @@
                                         <div class="sliders-brief__slider swiper">
                                             <div class="sliders-brief__wrapper swiper-wrapper">
                                                 @foreach($work->files as $file)
-                                                    <div class="sliders-brief__slide swiper-slide">
+                                                    <div class="sliders-brief__slide swiper-slide"  style="position: relative">
+                                                        {!!  auth()->user()->id && $contest->user_id === auth()->user()->id
+                                                                ? '<i class="'.(!empty($file->favWork) && $file->favWork->work_media_file_id === $file->id && $file->favWork->status === 1
+                                                                                    ? "fa fa-heart"
+                                                                                    : "far fa-heart").' customer-heart-icon" data-id="'.$file->id.'"></i>'
+                                                                : "" !!}
                                                         <a href="{{ asset($file->src) }}" data-gallery class="card-logo" style="background-color: #6a6a6a;">
                                                             <img src="{{ auth()->user() && (auth()->user()->id === $work->designer_user_id || auth()->user()->id === $contest->user_id) ? asset($file->src) : asset("images/img/icons/icons.svg#folder") }}" alt="">
                                                         </a>

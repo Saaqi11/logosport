@@ -112,19 +112,19 @@
                         Brief
                     </a>
                 </div>
+{{--                <div class="navigation-brief__slide swiper-slide">--}}
+{{--                    <a href="{{ route("competition.round.one", ["id" => $contest->id]) }}" class="{{ request()->route()->action['as'] == 'competition.round.one' ? "active" : '' }}">--}}
+{{--                        Round 1--}}
+{{--                    </a>--}}
+{{--                </div>--}}
                 <div class="navigation-brief__slide swiper-slide">
-                    <a href="{{ route("competition.round.one", ["id" => $contest->id]) }}" class="{{ request()->route()->action['as'] == 'competition.round.one' ? "active" : '' }}">
-                        Round 1
-                    </a>
-                </div>
-                <div class="navigation-brief__slide swiper-slide">
-                    <a href="{{ route("competition.round.two", ["id" => $contest->id]) }}" class="{{ request()->route()->action['as'] == 'competition.round.two' ? "active" : '' }}">
-                        Round 2
+                    <a href="{{ route("competition.designer.works", ["id" => $contest->id]) }}" class="{{ request()->route()->action['as'] == 'competition.designer.works' ? "active" : '' }}">
+                        Designer Works
                     </a>
                 </div>
                 <div class="navigation-brief__slide swiper-slide">
                     <a href="{{ route("competition.winners", ["id" => $contest->id]) }}" class="{{ request()->route()->action['as'] == 'competition.winners' ? "active" : '' }}">
-                        Winner
+                        Winners
                     </a>
                 </div>
             </div>
