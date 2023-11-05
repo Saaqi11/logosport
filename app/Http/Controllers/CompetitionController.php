@@ -183,7 +183,7 @@ class CompetitionController extends Controller
     {
         $contest = Contest::with("customer")->findOrFail($id);
         if ($contest) {
-            $works = Work::with("files.favWork", "reactions", "totalWorks")->where(["contest_id" => $id, "status" => 1])->whereIn("place", ["1", "2", "3"])->orderBy("place", "asc")->get();
+            $works = Work::with("files.favWork", "reactions", "totalWorks")->where(["contest_id" => $id])->whereIn("place", ["1", "2", "3"])->orderBy("place", "asc")->get();
             $totalWorks = 0;
             if(Auth::check()) {
                 $totalWorks = Work::with("files")->where(["contest_id" => $id, "designer_user_id" => Auth::id()])->first();
