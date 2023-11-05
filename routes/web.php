@@ -57,6 +57,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get("/delete", [UserController::class, 'delete'])->name("delete");
             Route::prefix('cabinet')->name('cabinet.')->group(function () {
                 Route::get("/my-all-works", [DesignerWorkController::class, 'myAllWorks'])->name("my-all-works");
+                Route::get("/my-active-works", [DesignerWorkController::class, 'myActiveWorks'])->name("my-active-works");
+                Route::get("/my-winner-works", [DesignerWorkController::class, 'myWinnerWorks'])->name("my-winner-works");
             });
         });
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Contest extends Model
 {
@@ -56,5 +57,15 @@ class Contest extends Model
     public function works()
     {
         return $this->hasMany(Work::class, "contest_id", "id");
+    }
+
+    public function designerWork()
+    {
+        return $this->hasOne(Work::class, 'contest_id', 'id')->where('designer_user_id', Auth::id());
+    }
+
+    public function winnerWork()
+    {
+        return $this->hasOne(Work::class, 'contest_id', 'id')->where('designer_user_id', Auth::id())->where("place", 1)->orWhere("place", 2)->orWhere("place", 3);
     }
 }
