@@ -18,40 +18,57 @@
     </div>
     <div class="row">
         @forelse ($works as $work)
-            <div class="col-lg-3 col-md-6 col-sm-12 cabinet-slider-images-view" data-id={{ $work->contest->designerWork->id }}>
-                <div class="prf-block prf-block--win">
-                    <div class="prf-image">
-                        <div class="count-img count-img--3">
-                            @if (!empty($work->contest->designerWork) && !empty($work->contest->designerWork->files))
-                                <div class="wrp-few">
-                                    <div class="first-image">
-                                        <a href="#">
-                                            <img src="{{ asset(@$work->contest->designerWork->files[0]->src ?? "/images/ex-1.png") }}"  alt="">
-                                        </a>
-                                    </div>
-                                    <div class="second-image">
-                                        <a href="#">
-                                            <img src="{{ asset(@$work->contest->designerWork->files[1]->src ?? "/images/ex-2.png" ) }}" alt="">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="third-image">
-                                    <a href="#">
-                                        <img src="{{ asset(@$work->contest->designerWork->files[2]->src ?? "/images/ex-3.png")  }}" alt="">
-                                    </a>
-                                </div>
-                            @else
-                                You didn't submit any work.
-                            @endif
+            @if (!empty($work->contest))
+                <div class="col-lg-3 col-md-6 col-sm-12 cabinet-slider-images-view">
+                    <div class="prf-block prf-block--win">
+                        <div class="prf-image">
+                            <div class="count-img count-img--3">
+                                You didn't submit any work in this contest
+                            </div>
+                        </div>
+                        <div class="prf-title">
+                            <a href="#">
+                                {{ $work->contest->company_name }}
+                            </a>
                         </div>
                     </div>
-                    <div class="prf-title">
-                        <a href="#">
-                            {{ $work->contest->company_name }}
-                        </a>
+                </div>
+            @else
+                <div class="col-lg-3 col-md-6 col-sm-12 cabinet-slider-images-view" data-id={{ $work->contest->designerWork->id }}>
+                    <div class="prf-block prf-block--win">
+                        <div class="prf-image">
+                            <div class="count-img count-img--3">
+                                @if (!empty($work->contest->designerWork) && !empty($work->contest->designerWork->files))
+                                    <div class="wrp-few">
+                                        <div class="first-image">
+                                            <a href="#">
+                                                <img src="{{ asset(@$work->contest->designerWork->files[0]->src ?? "/images/ex-1.png") }}"  alt="">
+                                            </a>
+                                        </div>
+                                        <div class="second-image">
+                                            <a href="#">
+                                                <img src="{{ asset(@$work->contest->designerWork->files[1]->src ?? "/images/ex-2.png" ) }}" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="third-image">
+                                        <a href="#">
+                                            <img src="{{ asset(@$work->contest->designerWork->files[2]->src ?? "/images/ex-3.png")  }}" alt="">
+                                        </a>
+                                    </div>
+                                @else
+                                    You didn't submit any work.
+                                @endif
+                            </div>
+                        </div>
+                        <div class="prf-title">
+                            <a href="#">
+                                {{ $work->contest->company_name }}
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
         @empty
             <div class="col-12">
                 <p class="justify-content-center">There is not any work available</p>

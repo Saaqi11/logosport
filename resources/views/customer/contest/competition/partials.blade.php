@@ -138,7 +138,7 @@
             </button>
         </div>
     </div>
-    @if(auth()->user()->user_type === "Designer")
+    @if(auth()->user()->user_type === "Designer" && $contest->status !== 4)
         <div class="navigation-brief__right">
             <div class="navigation-brief__count">
                 <span id="designer-works"></span>/4 works

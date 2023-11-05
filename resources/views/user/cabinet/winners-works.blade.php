@@ -19,11 +19,11 @@
     <div class="row" id="cabinet-portal">
         @forelse ($works as $work)
             @if ($work->contest)
-            @if (empty($work->contest->winnerWork))
-                @php
-                    continue;
-                @endphp
-            @endif
+                @if (empty($work->contest->winnerWork))
+                    @php
+                        continue;
+                    @endphp
+                @endif
                 <div class="col-lg-3 col-md-6 col-sm-12 cabinet-slider-images-view" data-id={{ $work->contest->winnerWork->id }}>
                     <div class="prf-block prf-block--win">
                         <div class="prf-image">
