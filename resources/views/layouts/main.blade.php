@@ -1,5 +1,6 @@
 @php
     $sectionClass = str_contains(url()->current(), "cabinet") ? "profile" : "";
+    $sectionClass = str_contains(url()->current(), "profile") ? "profile" : $sectionClass;
     $sectionClass = str_contains(url()->current(), "contest") ? "contest" : $sectionClass;
 @endphp
 <!DOCTYPE html>

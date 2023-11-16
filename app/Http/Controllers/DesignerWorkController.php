@@ -45,4 +45,13 @@ class DesignerWorkController extends Controller
             ->paginate(10);
         return view("user.cabinet.winners-works", compact("works"));
     }
+
+    public function designerWork ($id, $position) : View
+    {
+        $works = WorkParticipants::where("designer_user_id", $id)
+            ->join("contests", 'contests.id', 'work_participants.contest_id')
+            ->with("contest.winnerWork.files")
+            ->paginate(10);
+        return view("user.profile.work-list", compact("works", "position", "id"));
+    }
 }

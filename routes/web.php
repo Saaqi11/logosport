@@ -59,6 +59,10 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get("/my-all-works", [DesignerWorkController::class, 'myAllWorks'])->name("my-all-works");
                 Route::get("/my-active-works", [DesignerWorkController::class, 'myActiveWorks'])->name("my-active-works");
                 Route::get("/my-winner-works", [DesignerWorkController::class, 'myWinnerWorks'])->name("my-winner-works");
+                // designer work by id
+            });
+            Route::prefix('profile')->name('profile.')->group(function () {
+                Route::get("/designer-works/{id}/{position}", [DesignerWorkController::class, 'designerWork'])->name('designer-works');
             });
         });
 
@@ -84,6 +88,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get("/favourite/{contest_id}/{status}", [ContestController::class, 'favouriteContest'])->name('favourite');
         });
 
+        
         Route::group(['middleware' => ['role:Customer', 'verified-user']], function () {
 
             //Customer
