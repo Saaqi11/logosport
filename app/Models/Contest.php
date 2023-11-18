@@ -68,4 +68,24 @@ class Contest extends Model
     {
         return $this->hasOne(Work::class, 'contest_id', 'id')->where('designer_user_id', Auth::id())->where("place", 1)->orWhere("place", 2)->orWhere("place", 3);
     }
+
+    public function firstPosition()
+    {
+        return $this->hasMany(Work::class, "contest_id", "id")->where("place", 1);
+    }
+
+    public function secondPosition()
+    {
+        return $this->hasMany(Work::class, "contest_id", "id")->where("place", 2);
+    }
+
+    public function thirdPosition()
+    {
+        return $this->hasMany(Work::class, "contest_id", "id")->where("place", 3);
+    }
+
+    public function favorite()
+    {
+        return $this->hasMany(CustomerFavouriteWork::class, "contest_id", "id")->where("status", 1);
+    }
 }

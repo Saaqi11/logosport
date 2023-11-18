@@ -44,7 +44,9 @@
                                             </div>
                                             <div class="avatar-info__content">
                                                 <div class="avatar-info__name">
-                                                    {{ $work->designer->first_name." ".$work->designer->last_name }}
+                                                    <a href="{{ route('user.profile.designer-works', ['id' => $work->designer->id, 'position' => 0])}}">
+                                                        {{ $work->designer->first_name." ".$work->designer->last_name }}
+                                                    </a>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                                     @if($contest->user_id === auth()->user()->id)
                                                         <button class="choose-position {{ $work->place === "1" ? "active-position" : "" }}" data-contest_id="{{ $work->contest_id }}" data-work_id="{{ $work->id }}" data-position="1">1</button>
