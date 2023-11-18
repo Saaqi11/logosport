@@ -33,8 +33,7 @@ Route::get("get-city/{id}", [UserController::class, 'getCities']);
 Route::get("states-city/{id}", [UserController::class, 'getStates']);
 
 
-Route::get("/{user}/designer-works/{position}", [DesignerWorkController::class, 'designerWork'])->name('designer-works');
-
+Route::get("profile/{user}/designer-works/{position}", [DesignerWorkController::class, 'designerWork'])->name('designer-works');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/send-email-verification', [UserController::class, 'reSendVerificationEmail'])->name("send-email-verification")
@@ -88,7 +87,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get("/favourite/{contest_id}/{status}", [ContestController::class, 'favouriteContest'])->name('favourite');
         });
 
-        
+
         Route::group(['middleware' => ['role:Customer', 'verified-user']], function () {
 
             //Customer
