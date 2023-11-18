@@ -48,22 +48,27 @@ class DesignerWorkController extends Controller
         return view("user.cabinet.winners-works", compact("works"));
     }
 
-    public function designerWork($id, $position): View
+    public function designerWork($userName, $id, $position): View
     {
-        $works = WorkParticipants::where("designer_user_id", $id)
-            ->paginate(10);
-
-        $totalRecord = WorkParticipants::where("designer_user_id", $id)
-            ->get();
-
-        $user = User::find($id);
-        
         $totalWork = 0;
         $totalFavorite = 0;
         $totalWinnner = 0;
         $totalFirstPosition = 0;
         $totalSecondPosition = 0;
         $totalThirdPosition = 0;
+        $totalParticipants = 0;
+        $works = [];
+        $user = User::where('username', $userName)->first();
+        if ($user->user_type !== 'Designer') {
+            return view("user.profile.work-list", compact("user", "works", "position", "totalWork", "totalFavorite", "totalFirstPosition", "totalSecondPosition", "totalThirdPosition", "totalWinnner", "totalParticipants"));
+        }
+        $works = WorkParticipants::where("designer_user_id", $user->id)
+            ->paginate(10);
+
+        $totalRecord = WorkParticipants::where("designer_user_id", $id)
+            ->get();
+
+        
         $totalParticipants = $totalRecord->count();
 
         foreach ($totalRecord as $work) {
@@ -79,6 +84,6 @@ class DesignerWorkController extends Controller
             $totalFavorite += $favoriteWorks->count();
         }
         $totalWinnner = $totalFirstPosition + $totalSecondPosition + $totalThirdPosition;
-        return view("user.profile.work-list", compact("user", "works", "position", "id", "totalWork", "totalFavorite", "totalFirstPosition", "totalSecondPosition", "totalThirdPosition", "totalWinnner", "totalParticipants"));
+        return view("user.profile.work-list", compact("user", "works", "position", "totalWork", "totalFavorite", "totalFirstPosition", "totalSecondPosition", "totalThirdPosition", "totalWinnner", "totalParticipants"));
     }
 }

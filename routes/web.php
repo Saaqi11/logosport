@@ -33,6 +33,9 @@ Route::get("get-city/{id}", [UserController::class, 'getCities']);
 Route::get("states-city/{id}", [UserController::class, 'getStates']);
 
 
+Route::get("/{user}/designer-works/{id}/{position}", [DesignerWorkController::class, 'designerWork'])->name('designer-works');
+
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/send-email-verification', [UserController::class, 'reSendVerificationEmail'])->name("send-email-verification")
         ->middleware('throttle:1,1');
@@ -60,9 +63,6 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get("/my-active-works", [DesignerWorkController::class, 'myActiveWorks'])->name("my-active-works");
                 Route::get("/my-winner-works", [DesignerWorkController::class, 'myWinnerWorks'])->name("my-winner-works");
                 // designer work by id
-            });
-            Route::prefix('profile')->name('profile.')->group(function () {
-                Route::get("/designer-works/{id}/{position}", [DesignerWorkController::class, 'designerWork'])->name('designer-works');
             });
         });
 
