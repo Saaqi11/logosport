@@ -19,30 +19,30 @@
                 <div class="col-lg-3">
                     <div class="p-info">
                         <div class="wrp-img">
-                            <img src="{{ asset('images/profile-icon.png') }}" alt="" class="profile-img">
+                            <img src="{{ asset("default-images/avatar.png") }}" alt="" class="profile-img">
                         </div>
                         <div class="p-content">
                             <span class="p-username">
-                                dmitryburnos
+                                {{$user->username}}
                                 <i class="fas fa-check-circle done-y"></i>
                             </span>
                             <span class="p-name">
-                                Dmitriy Burnos
+                                {{$user->first_name}} {{$user->last_name}}
                             </span>
                         </div>
                     </div>
                     <div class="p-icon">
-                        <a class="p-md" href="#">
-                            <span class="numeric">12</span>
-                            <img src="{{ asset('images/star-1.svg') }}" alt="gold star">
+                        <a class="p-md" href="{{ route('user.profile.designer-works', ['id' => $id, 'position' => 'first'])}}">
+                            <span class="numeric">{{$totalFirstPosition}}</span>
+                            <img src="{{ asset('images/star-1.svg') }}" width="30" alt="gold star">
                         </a>
-                        <a class="p-md" href="#">
-                            <span class="numeric">42</span>
-                            <img src="{{ asset('images/star-2.svg') }}" alt="medium star">
+                        <a class="p-md" href="{{ route('user.profile.designer-works', ['id' => $id, 'position' => 'second'])}}">
+                            <span class="numeric">{{$totalSecondPosition}}</span>
+                            <img src="{{ asset('images/star-2.svg') }}" width="30" alt="medium star">
                         </a>
-                        <a class="p-md" href="#">
-                            <span class="numeric">11</span>
-                            <img src="{{ asset('images/star-3.svg') }}" alt="seb star">
+                        <a class="p-md" href="{{ route('user.profile.designer-works', ['id' => $id, 'position' => 'third'])}}">
+                            <span class="numeric">{{$totalThirdPosition}}</span>
+                            <img src="{{ asset('images/star-3.svg') }}" width="30" alt="seb star">
                         </a>
                     </div>
                 </div>
@@ -60,37 +60,28 @@
                     <ul class="info__list">
                         <li class="info__items">
                             <a href="" class="info__link">
-                                <span>1445</span>Liked
+                                <span>{{$totalFavorite}}</span>Liked
                             </a>
                         </li>
-                        <li class="info__items">
+                        {{-- <li class="info__items">
                             <a href="" class="info__link">
                                 <span>6674</span>View
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="info__items">
                             <a href="" class="info__link">
-                                <span>120</span>Contest
+                                <span>{{$totalParticipants}}</span>Contest
                             </a>
                         </li>
                         <li class="info__items">
                             <a href="" class="info__link">
-                                <span>314</span>Works
+                                <span> {{$totalWork}}</span>Works
                             </a>
                         </li>
+                        
                         <li class="info__items">
                             <a href="" class="info__link">
-                                <span>56%</span>Round 1
-                            </a>
-                        </li>
-                        <li class="info__items">
-                            <a href="" class="info__link">
-                                <span>38%</span>Round 2
-                            </a>
-                        </li>
-                        <li class="info__items">
-                            <a href="" class="info__link">
-                                <span>10%</span>Winner
+                                <span>{{$totalWinnner ?? ($totalWinnner/$totalParticipants)*100}}%</span>Winner
                             </a>
                         </li>
                     </ul>
@@ -104,19 +95,19 @@
                         <a class="sort__link">Sort by:</a>
                     </li>
                     <li class="sort__items">
-                        <a href="{{ route('user.profile.designer-works', ['id' => $id, 'position' => 0])}}" class="sort__link {{ $position == 0 ? 'activ' : '' }}">All</a>
+                        <a href="{{ route('user.profile.designer-works', ['id' => $id, 'position' => 'all'])}}" class="sort__link {{ $position == 'all' ? 'activ' : '' }}">All</a>
                     </li>
                     <li class="sort__items">
                         <a href="{{ route('user.profile.designer-works', ['id' => $id, 'position' => 'like'])}}" class="sort__link {{ $position == 'like' ? 'activ' : '' }}">Likes</a>
                     </li>
                     <li class="sort__items">
-                        <a href="{{ route('user.profile.designer-works', ['id' => $id, 'position' => 1])}}" class="sort__link {{ $position == 1 ? 'activ' : '' }}">1st</a>
+                        <a href="{{ route('user.profile.designer-works', ['id' => $id, 'position' => 'first'])}}" class="sort__link {{ $position == 'first' ? 'activ' : '' }}">1st</a>
                     </li>
                     <li class="sort__items">
-                        <a href="{{ route('user.profile.designer-works', ['id' => $id, 'position' => 2])}}" class="sort__link {{ $position == 2 ? 'activ' : '' }}">2nd</a>
+                        <a href="{{ route('user.profile.designer-works', ['id' => $id, 'position' => 'second'])}}" class="sort__link {{ $position == 'second' ? 'activ' : '' }}">2nd</a>
                     </li>
                     <li class="sort__items">
-                        <a href="{{ route('user.profile.designer-works', ['id' => $id, 'position' => 3])}}" class="sort__link {{ $position == 3 ? 'activ' : '' }}">3rd</a>
+                        <a href="{{ route('user.profile.designer-works', ['id' => $id, 'position' => 'third'])}}" class="sort__link {{ $position == 'third' ? 'activ' : '' }}">3rd</a>
                     </li>
                 </ul>
             </div>
@@ -140,22 +131,22 @@
             @forelse ($works as $work)
                 @if ($work->contest)
                     @php 
-                        if ($position == 0) {
+                        if ($position == 'all') {
                             if (empty($work->contest->works[0])) {
                                continue;
                             }
                             $workList = $work->contest->works[0];
-                        } elseif ($position == 1) {
+                        } elseif ($position == 'first') {
                             if (empty($work->contest->firstPosition[0])) {
                                continue;
                             }
                             $workList = $work->contest->firstPosition[0];
-                        } elseif ($position == 2) {
+                        } elseif ($position == 'second') {
                             if (empty($work->contest->secondPosition[0])) {
                                continue;
                             }
                             $workList = $work->contest->secondPosition[0];
-                        } elseif ($position == 3) {
+                        } elseif ($position == 'third') {
                             if (empty($work->contest->thirdPosition[0])) {
                                continue;
                             }
