@@ -141,7 +141,9 @@
                     <img src="{{ asset("default-images/avatar.png") }}" alt="" class="profile-img">
                     <div class="profile-content">
 						<span class="profile-name" data-name="{{ $user->first_name." ".$user->last_name }}">
-							{{ $user->first_name." ".$user->last_name }}
+                            <a href="{{ route('designer-works', ['position' => 'all', 'user' => $user->username])}}">
+                                {{ $user->first_name." ".$user->last_name }}
+                            </a>
 						</span>
                         <div class="wrp-info">
 							<span class="profile-folowers" data-reactions="{{ count($user->reactions) > 0 ? $user->reactions->sum("count") : 0 }}">
