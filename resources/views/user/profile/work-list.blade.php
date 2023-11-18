@@ -32,15 +32,15 @@
                         </div>
                     </div>
                     <div class="p-icon">
-                        <a class="p-md" href="{{ route('designer-works', ['id' => $user->id, 'position' => 'first', 'user' => $user->username])}}">
+                        <a class="p-md" href="{{ route('designer-works', ['position' => 'first', 'user' => $user->username])}}">
                             <span class="numeric">{{$totalFirstPosition}}</span>
                             <img src="{{ asset('images/star-1.svg') }}" width="30" alt="gold star">
                         </a>
-                        <a class="p-md" href="{{ route('designer-works', ['id' => $user->id, 'position' => 'second', 'user' => $user->username])}}">
+                        <a class="p-md" href="{{ route('designer-works', ['position' => 'second', 'user' => $user->username])}}">
                             <span class="numeric">{{$totalSecondPosition}}</span>
                             <img src="{{ asset('images/star-2.svg') }}" width="30" alt="medium star">
                         </a>
-                        <a class="p-md" href="{{ route('designer-works', ['id' => $user->id, 'position' => 'third', 'user' => $user->username])}}">
+                        <a class="p-md" href="{{ route('designer-works', ['position' => 'third', 'user' => $user->username])}}">
                             <span class="numeric">{{$totalThirdPosition}}</span>
                             <img src="{{ asset('images/star-3.svg') }}" width="30" alt="seb star">
                         </a>
@@ -95,19 +95,19 @@
                         <a class="sort__link">Sort by:</a>
                     </li>
                     <li class="sort__items">
-                        <a href="{{ route('designer-works', ['id' => $user->id, 'position' => 'all', 'user' => $user->username])}}" class="sort__link {{ $position == 'all' ? 'activ' : '' }}">All</a>
+                        <a href="{{ route('designer-works', ['position' => 'all', 'user' => $user->username])}}" class="sort__link {{ $position == 'all' ? 'activ' : '' }}">All</a>
                     </li>
                     <li class="sort__items">
-                        <a href="{{ route('designer-works', ['id' => $user->id, 'position' => 'like', 'user' => $user->username])}}" class="sort__link {{ $position == 'like' ? 'activ' : '' }}">Likes</a>
+                        <a href="{{ route('designer-works', ['position' => 'like', 'user' => $user->username])}}" class="sort__link {{ $position == 'like' ? 'activ' : '' }}">Likes</a>
                     </li>
                     <li class="sort__items">
-                        <a href="{{ route('designer-works', ['id' => $user->id, 'position' => 'first', 'user' => $user->username])}}" class="sort__link {{ $position == 'first' ? 'activ' : '' }}">1st</a>
+                        <a href="{{ route('designer-works', ['position' => 'first', 'user' => $user->username])}}" class="sort__link {{ $position == 'first' ? 'activ' : '' }}">1st</a>
                     </li>
                     <li class="sort__items">
-                        <a href="{{ route('designer-works', ['id' => $user->id, 'position' => 'second', 'user' => $user->username])}}" class="sort__link {{ $position == 'second' ? 'activ' : '' }}">2nd</a>
+                        <a href="{{ route('designer-works', ['position' => 'second', 'user' => $user->username])}}" class="sort__link {{ $position == 'second' ? 'activ' : '' }}">2nd</a>
                     </li>
                     <li class="sort__items">
-                        <a href="{{ route('designer-works', ['id' => $user->id, 'position' => 'third', 'user' => $user->username])}}" class="sort__link {{ $position == 'third' ? 'activ' : '' }}">3rd</a>
+                        <a href="{{ route('designer-works', ['position' => 'third', 'user' => $user->username])}}" class="sort__link {{ $position == 'third' ? 'activ' : '' }}">3rd</a>
                     </li>
                 </ul>
             </div>

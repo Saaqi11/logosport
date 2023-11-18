@@ -44,7 +44,7 @@
                                             </div>
                                             <div class="avatar-info__content">
                                                 <div class="avatar-info__name">
-                                                    <a href="{{ route('designer-works', ['id' => $work->designer->id, 'position' => 'all', 'user' => $work->designer->username])}}">
+                                                    <a href="{{ route('designer-works', ['position' => 'all', 'user' => $work->designer->username])}}">
                                                         {{ $work->designer->first_name." ".$work->designer->last_name }}
                                                     </a>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;

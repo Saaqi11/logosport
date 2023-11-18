@@ -48,7 +48,7 @@ class DesignerWorkController extends Controller
         return view("user.cabinet.winners-works", compact("works"));
     }
 
-    public function designerWork($userName, $id, $position): View
+    public function designerWork($userName, $position): View
     {
         $totalWork = 0;
         $totalFavorite = 0;
@@ -65,7 +65,7 @@ class DesignerWorkController extends Controller
         $works = WorkParticipants::where("designer_user_id", $user->id)
             ->paginate(10);
 
-        $totalRecord = WorkParticipants::where("designer_user_id", $id)
+        $totalRecord = WorkParticipants::where("designer_user_id", $user->id)
             ->get();
 
         

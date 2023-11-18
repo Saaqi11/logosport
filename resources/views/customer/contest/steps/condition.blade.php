@@ -141,7 +141,7 @@
                     <img src="{{ asset("default-images/avatar.png") }}" alt="" class="profile-img">
                     <div class="profile-content">
 						<span class="profile-name" data-name="{{ $user->first_name." ".$user->last_name }}">
-                            <a href="{{ route('designer-works', ['id' => $user->id, 'position' => 'all', 'user' => $user->username])}}">
+                            <a href="{{ route('designer-works', ['position' => 'all', 'user' => $user->username])}}">
                                 {{ $user->first_name." ".$user->last_name }}
                             </a>
 						</span>

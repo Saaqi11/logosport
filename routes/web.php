@@ -33,7 +33,7 @@ Route::get("get-city/{id}", [UserController::class, 'getCities']);
 Route::get("states-city/{id}", [UserController::class, 'getStates']);
 
 
-Route::get("/{user}/designer-works/{id}/{position}", [DesignerWorkController::class, 'designerWork'])->name('designer-works');
+Route::get("/{user}/designer-works/{position}", [DesignerWorkController::class, 'designerWork'])->name('designer-works');
 
 
 Route::group(['middleware' => 'auth'], function () {
