@@ -60,6 +60,11 @@ return [
             'root'   => public_path() . '/work/',
         ],
 
+        'winner_uploads' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/winner/',
+        ],
+
     ],
 
     /*
