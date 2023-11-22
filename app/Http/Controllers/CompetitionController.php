@@ -422,6 +422,9 @@ class CompetitionController extends Controller
     public function getUploadWorks($id)
     {
         $work = Work::find($id);
+        if ($work->expires_at < Carbon::now()) {
+            return redirect()->back()->with("error", "Time expire for uploading");
+        }
         $winnerFiles = WinnerMediaFile::where('work_id', $id)->first();
         if ($winnerFiles) {
             $winnerFiles->media = json_decode($winnerFiles->media, true);

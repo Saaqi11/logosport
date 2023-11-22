@@ -64,9 +64,12 @@
                                             </div>
 
                                             <div class="card-view__place">
-                                                <a href="{{ route('competition.get-upload.work', $work->id)}}" class="btn btn-info m-0">
-                                                    {{auth()->user()->user_type == 'Designer' ?  'Upload' : 'View'}}
-                                                </a>
+                                                @if ($work->place == 1)
+                                                    <a href="{{ route('competition.get-upload.work', $work->id)}}" class="btn btn-info m-0">
+                                                        {{auth()->user()->user_type == 'Designer' ?  'Upload' : 'View'}}
+                                                    </a>
+                                                    
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

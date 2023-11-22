@@ -51,15 +51,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['logotype']) && isset($media['logotype'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['logotype'][0]['file']);
+                                    @endphp
                                     @if ($media['logotype'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['logotype'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['logotype'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['logotype'][0]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="logo_type1">
@@ -68,7 +75,7 @@
                                                 class="winner-file logotype 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -92,15 +99,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['logotype']) && isset($media['logotype'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['logotype'][1]['file']);
+                                    @endphp
                                     @if ($media['logotype'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['logotype'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['logotype'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['logotype'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="logo_type2">
@@ -109,7 +123,7 @@
                                                 class="winner-file logotype 2" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -133,15 +147,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['logotype']) && isset($media['logotype'][2]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['logotype'][2]['file']);
+                                    @endphp
                                     @if ($media['logotype'][2]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['logotype'][2]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['logotype'][2]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['logotype'][2]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="logo_type3">
@@ -150,7 +171,7 @@
                                                 class="winner-file logotype 3" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -183,15 +204,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['palette']) && isset($media['palette'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['palette'][0]['file']);
+                                    @endphp
                                     @if ($media['palette'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['palette'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['palette'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['palette'][0]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="palette1">
@@ -200,7 +228,7 @@
                                                 class="winner-file palette 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -224,15 +252,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['palette']) && isset($media['palette'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['palette'][1]['file']);
+                                    @endphp
                                     @if ($media['palette'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['palette'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['palette'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['palette'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                 @endif
@@ -242,7 +277,7 @@
                                             class="winner-file palette 2" hidden>
                                     @endif
                                     <i class="fas fa-arrow-down"></i>
-                                    <span>Upload file</span>
+                                    <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                 </label>
                                 <div class="file-type">
                                     <span class="text">
@@ -274,15 +309,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['font']) && isset($media['font'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['font'][0]['file']);
+                                    @endphp
                                     @if ($media['font'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['font'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['font'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['font'][0]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="font1">
@@ -291,7 +333,7 @@
                                                 class="winner-file font 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -315,15 +357,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['font']) && isset($media['font'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['font'][1]['file']);
+                                    @endphp
                                     @if ($media['font'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['font'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['font'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['font'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="font2">
@@ -332,7 +381,7 @@
                                                 class="winner-file font 2" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -365,15 +414,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['letterhead']) && isset($media['letterhead'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['letterhead'][0]['file']);
+                                    @endphp
                                     @if ($media['letterhead'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['letterhead'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['letterhead'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['letterhead'][0]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="letter_head1">
@@ -382,7 +438,7 @@
                                                 class="winner-file letterhead 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -406,15 +462,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['letterhead']) && isset($media['letterhead'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['letterhead'][1]['file']);
+                                    @endphp
                                     @if ($media['letterhead'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['letterhead'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['letterhead'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['letterhead'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="letter_head2">
@@ -423,7 +486,7 @@
                                                 class="winner-file letterhead 2" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -456,15 +519,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['businessCard']) && isset($media['businessCard'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['businessCard'][0]['file']);
+                                    @endphp
                                     @if ($media['businessCard'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['businessCard'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['businessCard'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['businessCard'][0]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="business_card1">
@@ -473,7 +543,7 @@
                                                 class="winner-file businessCard 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -497,15 +567,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['businessCard']) && isset($media['businessCard'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['businessCard'][1]['file']);
+                                    @endphp
                                     @if ($media['businessCard'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['businessCard'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['businessCard'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['businessCard'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="business_card2">
@@ -514,7 +591,7 @@
                                                 class="winner-file businessCard 2" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -547,15 +624,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['Pattern']) && isset($media['Pattern'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['Pattern'][0]['file']);
+                                    @endphp
                                     @if ($media['Pattern'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['Pattern'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['Pattern'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['Pattern'][0]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="Pattern1">
@@ -564,7 +648,7 @@
                                                 class="winner-file Pattern 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -588,15 +672,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['Pattern']) && isset($media['Pattern'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['Pattern'][1]['file']);
+                                    @endphp
                                     @if ($media['Pattern'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['Pattern'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['Pattern'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['Pattern'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="Pattern2">
@@ -605,7 +696,7 @@
                                                 class="winner-file Pattern 2" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -638,15 +729,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['site']) && isset($media['site'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['site'][0]['file']);
+                                    @endphp
                                     @if ($media['site'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['site'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['site'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['site'][0]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="site1">
@@ -655,7 +753,7 @@
                                                 class="winner-file site 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -679,15 +777,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['site']) && isset($media['site'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['site'][1]['file']);
+                                    @endphp
                                     @if ($media['site'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['site'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['site'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['site'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="site2">
@@ -696,7 +801,7 @@
                                                 class="winner-file site 2" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -729,15 +834,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['account']) && isset($media['account'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['account'][0]['file']);
+                                    @endphp
                                     @if ($media['account'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['account'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['account'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['account'][0]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="account1">
@@ -746,7 +858,7 @@
                                                 class="winner-file account 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -770,15 +882,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['account']) && isset($media['account'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['account'][1]['file']);
+                                    @endphp
                                     @if ($media['account'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['account'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['account'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['account'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="account2">
@@ -787,7 +906,7 @@
                                                 class="winner-file account 2" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -820,15 +939,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['companyLabel']) && isset($media['companyLabel'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['companyLabel'][0]['file']);
+                                    @endphp
                                     @if ($media['companyLabel'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['companyLabel'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['companyLabel'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['companyLabel'][0]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="company_label1">
@@ -837,7 +963,7 @@
                                                 class="winner-file companyLabel 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -861,15 +987,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['companyLabel']) && isset($media['companyLabel'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['companyLabel'][1]['file']);
+                                    @endphp
                                     @if ($media['companyLabel'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['companyLabel'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['companyLabel'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['companyLabel'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="company_label2">
@@ -878,7 +1011,7 @@
                                                 class="winner-file companyLabel 2" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -911,15 +1044,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['layoutLogo']) && isset($media['layoutLogo'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['layoutLogo'][0]['file']);
+                                    @endphp
                                     @if ($media['layoutLogo'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['layoutLogo'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['layoutLogo'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['layoutLogo'][0]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="layout_logo1">
@@ -928,7 +1068,7 @@
                                                 class="winner-file layoutLogo 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -952,15 +1092,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['layoutLogo']) && isset($media['layoutLogo'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['layoutLogo'][1]['file']);
+                                    @endphp
                                     @if ($media['layoutLogo'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['layoutLogo'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['layoutLogo'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['layoutLogo'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="layout_logo2">
@@ -969,7 +1116,7 @@
                                                 class="winner-file layoutLogo 2" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -1002,15 +1149,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['tShirt']) && isset($media['tShirt'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['tShirt'][1]['file']);
+                                    @endphp
                                     @if ($media['tShirt'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['tShirt'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['tShirt'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['tShirt'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="t_shirt1">
@@ -1019,7 +1173,7 @@
                                                 class="winner-file tShirt 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -1043,15 +1197,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['tShirt']) && isset($media['tShirt'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['tShirt'][1]['file']);
+                                    @endphp
                                     @if ($media['tShirt'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['tShirt'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['tShirt'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['tShirt'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="t_shirt2">
@@ -1060,7 +1221,7 @@
                                                 class="winner-file tShirt 2" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -1093,15 +1254,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['carrier']) && isset($media['carrier'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['carrier'][0]['file']);
+                                    @endphp
                                     @if ($media['carrier'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['carrier'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['carrier'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['carrier'][0]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="carrier1">
@@ -1110,7 +1278,7 @@
                                                 class="winner-file carrier 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -1134,15 +1302,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['carrier']) && isset($media['carrier'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['carrier'][1]['file']);
+                                    @endphp
                                     @if ($media['carrier'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['carrier'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['carrier'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['carrier'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="carrier2">
@@ -1151,7 +1326,7 @@
                                                 class="winner-file carrier 2" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -1184,15 +1359,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['product']) && isset($media['product'][0]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['product'][0]['file']);
+                                    @endphp
                                     @if ($media['product'][0]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['product'][0]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['product'][0]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['product'][0]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="product1">
@@ -1201,7 +1383,7 @@
                                                 class="winner-file product 1" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
@@ -1225,15 +1407,22 @@
                                     </label>
                                 @endif
                                 @if (isset($media['product']) && isset($media['product'][1]))
+                                    @php
+                                        $file = explode('/', $winnerFiles['media']['product'][1]['file']);
+                                    @endphp
                                     @if ($media['product'][1]['type'] == 'image')
-                                        <img src="{{ asset($winnerFiles['media']['product'][1]['file']) }}"
-                                            style="width: 100%; height: 100%" alt="">
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <img src="{{ asset($winnerFiles['media']['product'][1]['file']) }}"
+                                                style="width: 100%; height: 100%" alt="">
+
+                                        </a>
                                     @else
-                                        @php
-                                            $file = explode('/', $winnerFiles['media']['product'][1]['file']);
-                                        @endphp
-                                        <a class="btn btn-info"
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">Download</a>
+                                        <a
+                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                            <i class="fas fa-arrow-down d-block text-center"></i>
+                                            <span>Download</span>
+                                        </a>
                                     @endif
                                 @else
                                     <label style="display: contents" for="product2">
@@ -1242,7 +1431,7 @@
                                                 class="winner-file product 2" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Upload file</span>
+                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">

@@ -99,7 +99,7 @@
                                                                 alt="">
                                                         </a>
 
-                                                        @if (auth()->user()->user_type == 'Designer')
+                                                        @if (auth()->user()->user_type == 'Designer' && !$work->place)
                                                             <div class="prf-icon profile">
                                                                 <a class="icon">
                                                                     <i class="fas fa-pencil-alt edit-file-work" data-item-id="{{ $file->id }}" data-toggle="modal" data-target="#update-image"></i>
