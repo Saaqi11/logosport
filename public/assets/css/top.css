@@ -214,3 +214,11 @@ input[type=range]::-moz-range-thumb {
 input[type=range]:focus {
     border: none !important;
 }
+
+
+.custom-modal-content {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #fff; /* Set the background color of the modal content */
+    border-radius: 10px; /* Add border-radius for rounded corners */
+}

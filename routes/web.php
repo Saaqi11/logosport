@@ -81,6 +81,14 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get("/get-all-works/{id}", [CompetitionController::class, 'getAllWorks']);
             Route::get("/get-declined-works/{id}", [CompetitionController::class, 'getDeclinedWorks']);
             Route::get("/sort-works/{id}", [CompetitionController::class, 'sortWorks']);
+            Route::get("/work-reaction/{designerId}/{workId}", [CompetitionController::class, 'workReaction'])->name('reaction.work');
+            Route::delete("/delete-work-file/{id}", [CompetitionController::class, 'deleteWork'])->name('delete-file.work');
+            Route::post("/update-work/{id}", [CompetitionController::class, 'updateWork'])->name('update.work');
+            Route::get("/upload-work/{id}", [CompetitionController::class, 'getUploadWorks'])->name('get-upload.work');
+            Route::post("/upload-work", [CompetitionController::class, 'uploadWorks'])->name('upload.work');
+            Route::get('/download-file/{folder}/{id}/{name}', [CompetitionController::class, 'download'])->name('download.file');
+
+
         });
         Route::prefix('contest')->name('contest.')->group(function () {
             Route::get("/participate/{contest_id}", [ContestController::class, 'contestParticipate'])->name('participate');

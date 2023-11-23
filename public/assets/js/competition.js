@@ -246,6 +246,38 @@ $(".customer-heart-icon").on("click", (e) => {
     });
 })
 
+$(".user-work-reaction").on("click", (e) => {
+    e.preventDefault()
+    let dataId = $(e.target).data("id")
+    let workId = $(e.target).data("workid")
+    $.ajax({
+        type: "GET",
+        url: "/competition/work-reaction/"+dataId+"/"+workId,
+        dataType: "JSON",
+        cache: false,
+        contentType: false,
+        success: (response) => {
+			var currentReactionCount = parseInt($(".reaction-count span").text());
+			if ($(e.target).hasClass("far")) {
+				$(e.target).removeClass("far")
+                $(e.target).addClass("fa")
+
+				var newReactionCount = currentReactionCount + 1;
+				$(".reaction-count span").text(newReactionCount);
+			} else {
+				var newReactionCount = currentReactionCount - 1;
+				$(".reaction-count span").text(newReactionCount);
+
+				$(e.target).removeClass("fa")
+                $(e.target).addClass("far")
+			}
+        },
+        error: (response) => {
+            console.log(response)
+        }
+    });
+})
+
 $(".cabinet-slider-images-view").click((e) => {
     $("#myModal").modal("show")
 	let dataId = $(e.target).parents(".cabinet-slider-images-view").data("id")
@@ -326,4 +358,154 @@ $(document).ready(function(){
 		$("#cabinet-portal").html("<p>There is not any work available.</p>")
 		$("#cabinet-works-count").html("0 ")
 	}
+
+	$('.delete-work').on('click', function () {
+		itemIdToDelete = $(this).data('item-id');
+		$('#deleteConfirmationModal').modal('show');
+	});
+
+	$('#update-image').on('show.bs.modal', function (event) {
+		var fileId = event.relatedTarget.dataset.itemId;
+		var formAction = $('#update-image-form').data('action').replace('FILE_ID_PLACEHOLDER', fileId);
+		console.log({ formAction });
+
+		// Set the updated form action to the url attribute
+		$('#update-image-form').attr('url', formAction);
+		// $('#update-image-form').attr('action', formAction);
+	});
+
+	$('#update-image-form').submit(function (e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        var form = $(this);
+		console.log(form.data('action'));
+		var formAction = $(this).attr('url');
+		var formData = new FormData(form[0]);
+
+        $.ajax({
+            type: 'POST',
+            url: formAction,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                var fileId = response.fileId;
+				var updatedImageUrl = response.updatedImageUrl;
+
+				// Close the modal or handle the response as needed
+				$('#update-image').modal('hide');
+
+				// Update the image in the list (assuming each image has a unique data-item-id)
+				$('.sliders-brief__slide[data-item-id="' + fileId + '"] img').attr('src', updatedImageUrl);
+				$('#update-image-form')[0].reset();
+				$("#show-name").html('Upload file <br>(.png)');
+            },
+            error: function (error) {
+                // Handle error response
+                console.error('Error updating work:', error.responseText);
+            }
+        });
+    });
+
+	$('#confirmDeleteWork').on('click', function () {
+
+		
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		// Make Ajax call to delete the item
+		$.ajax({
+			type: 'DELETE',
+			url: '/competition/delete-work-file/'+itemIdToDelete, // Replace with your server-side script
+			dataType: "JSON",
+			cache: false,
+			contentType: false,
+			success: function (response) {
+				// Handle success (e.g., remove the item from the UI)
+				$('#deleteConfirmationModal').modal('hide');
+				// Remove the item from the UI (example assumes list item has an ID)
+				if (response.success) {
+					$('.sliders-brief__slide').each(function () {
+						var currentItemId = $(this).find('.delete-work').data('item-id');
+						if (currentItemId === itemIdToDelete) {
+							var $deletedElement = $(this);
+
+							// Slide up the element
+							$deletedElement.slideUp('slow', function () {
+								// Remove the element from the DOM
+								$deletedElement.remove();
+
+								// Optionally, animate the container height adjustment
+								$('.sliders-brief__wrapper').animate({
+									height: $('.sliders-brief__wrapper').height() - $deletedElement.outerHeight(true)
+								}, 'slow');
+							});
+							toastr.success(response.message);
+							return false; // Exit the loop after removing the element
+						}
+					});
+				} else {
+					toastr.error(response.message);
+				}
+			},
+			error: function (error) {
+				alert(error);
+				console.error('Error deleting item:', error);
+				// Handle error if needed
+			}
+		});
+	});
+
+	$(document).ready(function() {
+        $('.winner-file').change(function() {
+            var inputId = $(this).attr('id');
+            uploadWorkFile(inputId);
+        });
+    });
+
+	function uploadWorkFile(inputId) {
+        const fileInput = $('#' + inputId);
+        const file = fileInput[0].files[0];
+
+		const id = window.location.pathname.split('/')[3];
+		console.log({ file });
+
+		const closestParent = fileInput.closest('[class]').attr('class').split(' ');
+		const keyClass = closestParent[1];
+		const indexClass = closestParent[2];
+        var formData = new FormData();
+        formData.append('file', file);
+        formData.append('id', id);
+        formData.append('key_class', keyClass);
+        formData.append('index_class', indexClass);
+
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+        $.ajax({
+            url: '/competition/upload-work', // Replace with your actual endpoint
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                // Assuming your server returns the file name
+                var fileName = data.file_name;
+
+				window.location.reload();
+                // // Update the text inside the span with the file name
+                // $('#' + inputId).siblings('span').text(fileName);
+				// $(this).parent().contents().filter(function() {
+				// 	return this.nodeType === 3; // Filter out text nodes
+				// }).remove();
+            },
+            error: function (error) {
+                console.log('Error uploading file: ', error);
+            }
+        });
+    }
 })
