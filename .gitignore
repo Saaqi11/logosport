@@ -20,3 +20,4 @@ yarn-error.log
 /public/winner/
 /public/contests-attachments/*.pdf
 /public/images/contests/*
+fileupload.text
