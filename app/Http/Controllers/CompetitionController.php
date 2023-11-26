@@ -427,6 +427,7 @@ class CompetitionController extends Controller
         }
         $winnerFiles = WinnerMediaFile::where('work_id', $id)->first();
         if ($winnerFiles) {
+            $winnerFiles->change_request = $winnerFiles->change_request ? json_decode($winnerFiles->change_request, true) : [];
             $winnerFiles->media = json_decode($winnerFiles->media, true);
         }
         return \view($this->briefCompetitionView . "upload-works", compact("id", "winnerFiles", "work"));
@@ -460,8 +461,6 @@ class CompetitionController extends Controller
                         'file' => 'winner/' . $file,
                         'extension' => $fileType,
                         'type' => explode('/', $mimeType)[0],
-                        'no_of_request' => 0,
-                        'request_changes' => [],
                     ]
                 ]
             ];
@@ -498,8 +497,6 @@ class CompetitionController extends Controller
                         'file' => 'winner/' . $file,
                         'extension' => $fileType,
                         'type' => explode('/', $mimeType)[0],
-                        'no_of_request' => $mediaFile[$request->key_class][$indexToUpdate]['request_no'] ?? 0,
-                        'request_changes' => $mediaFile[$request->key_class][$indexToUpdate]['request_changes'] ?? [],
                     ];
 
                     // Convert the updated array back to JSON
@@ -520,8 +517,6 @@ class CompetitionController extends Controller
                         'file' => 'winner/' . $file,
                         'extension' => $fileType,
                         'type' => explode('/', $mimeType)[0],
-                        'no_of_request' => 0,
-                        'request_changes' => [],
                     ];
 
                     // Convert the updated array back to JSON
@@ -544,8 +539,6 @@ class CompetitionController extends Controller
                     'file' => 'winner/' . $file,
                     'extension' => $fileType,
                     'type' => explode('/', $mimeType)[0],
-                    'no_of_request' => 0,
-                    'request_changes' => [],
                 ];
 
                 // Convert the updated array back to JSON
@@ -579,28 +572,12 @@ class CompetitionController extends Controller
 
     public function sendRequest(Request $request)
     {
-        $winnerFiles = WinnerMediaFile::where('work_id', $request->workId)->first();
-        $mediaFile = json_decode($winnerFiles->media, true);
+        $winnerFiles = WinnerMediaFile::find($request->id);
+        $changeRequest = json_decode($winnerFiles->change_request, true);
 
-        foreach ($mediaFile[$request->type] as $key => $file) {
-            if ($file['id'] == $request->id) {
-                $mediaFile[$request->type][$key] = [
-                    'id' => $file['id'],
-                    'file' => $file['file'],
-                    'extension' => $file['extension'],
-                    'type' => $file['type'],
-                    'no_of_request' => $file['no_of_request'] + 1,
-                    'request_changes' => array_merge($file['request_changes'], [$request->requestChange]),
-                ];
-
-                // Convert the updated array back to JSON
-                $updatedMedia = json_encode($mediaFile);
-
-                // Update the record in the database with the updated JSON
-                $winnerFiles->media = $updatedMedia;
-                $winnerFiles->save();
-            }
-        }
+        $winnerFiles->change_request = json_encode(array_merge($changeRequest ?? [], [$request->requestChange]));
+        $winnerFiles->no_of_request = $winnerFiles->no_of_request + 1;
+        $winnerFiles->save();
 
         return redirect()->back()->with("success", "Send Request changes");
     }
@@ -627,6 +604,7 @@ class CompetitionController extends Controller
                     break;
             }
 
+            $work->expires_at = null;
             $work->save();
         }
 

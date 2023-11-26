@@ -510,12 +510,11 @@ $(document).ready(function(){
     }
 
 	$('.request-work').on('click', function () {
-		const id = $(this).data('id');
-		const type = $(this).data('type');
-		console.log({ id} , { type });
+		// const id = $(this).data('id');
+		// const type = $(this).data('type');
+		// console.log({ id} , { type });
 
-		$('#sendRequestWorkModal input[name="id"]').val(id);
-    	$('#sendRequestWorkModal input[name="type"]').val(type);
+		console.log(" adas asd ");
 
 		$('#sendRequestWorkModal').modal('show');
 	});
