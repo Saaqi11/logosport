@@ -26,6 +26,17 @@
                             </div>
                         </div>
                     </div>
+
+                    @if (auth()->user()->id == $work->contest->user_id)
+                        <div class="row">
+                            <div class="col col-lg-12">
+                                <div class="wrp-contest justify-content-end">
+                                    <a href="{{ route('competition.distribute-reward.work', [$work->contest_id]) }}"
+                                        class="btn-lg btn-success px-5">confirm</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     @php
                         $media = $winnerFiles['media'] ?? null;
                     @endphp
@@ -33,1413 +44,1109 @@
                         <div class="col-12">
                             <div class="title-ntf">
                                 <h2>
-                                    Logotype
+                                    Logotype {{ count($media['logotype'] ?? []) }}/3
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="logo_type1">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
+                        @if ($media && isset($media['logotype']))
+                            @foreach ($media['logotype'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="logotype{{ $index + 1 }}">
                                             @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="logo_type1" name="logo_type1"
-                                                    class="winner-file logotype 1" hidden>
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="logotype{{ $index + 1 }}" name="logotype"
+                                                        class="winner-file logotype {{ $index + 1 }}" hidden>
+                                                </div>
                                             @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['logotype']) && isset($media['logotype'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['logotype'][0]['file']);
-                                    @endphp
-                                    @if ($media['logotype'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['logotype'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
+                                        </a>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="logotype">Request</button>
+                                        </a>
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
 
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="logo_type1">
+
+                        @if (!$media || (empty($media['logotype']) || count($media['logotype']) < 3))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+                                    <label style="display: contents"
+                                        for="logotype{{ count($media['logotype'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="logo_type1" name="logo_type1"
-                                                class="winner-file logotype 1" hidden>
+                                            <input type="file" id="logotype{{ count($media['logotype'] ?? []) + 1 }}"
+                                                name="logotype"
+                                                class="winner-file logotype {{ count($media['logotype'] ?? []) + 1 }}"
+                                                hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            eps
+                                            @if (count($media['logotype'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['logotype'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
+                                            @endif
                                         </span>
                                     </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="logo_type2">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="logo_type2" name="logo_type2"
-                                                    class="winner-file logotype 2" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['logotype']) && isset($media['logotype'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['logotype'][1]['file']);
-                                    @endphp
-                                    @if ($media['logotype'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['logotype'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="logo_type2">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="logo_type2" name="logo_type2"
-                                                class="winner-file logotype 2" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            ai
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="logo_type3">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="logo_type3" name="logo_type3"
-                                                    class="winner-file logotype 3" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['logotype']) && isset($media['logotype'][2]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['logotype'][2]['file']);
-                                    @endphp
-                                    @if ($media['logotype'][2]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['logotype'][2]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="logo_type3">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="logo_type3" name="logo_type3"
-                                                class="winner-file logotype 3" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            png
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="title-ntf">
-                                <h2>
-                                    Company color palette
-                                </h2>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="palette1">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="palette1" name="palette1"
-                                                    class="winner-file palette 1" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['palette']) && isset($media['palette'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['palette'][0]['file']);
-                                    @endphp
-                                    @if ($media['palette'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['palette'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="palette1">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="palette1" name="palette1"
-                                                class="winner-file palette 1" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            ai
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="palette2">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="palette2" name="palette2"
-                                                    class="winner-file palette 2" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['palette']) && isset($media['palette'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['palette'][1]['file']);
-                                    @endphp
-                                    @if ($media['palette'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['palette'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                @endif
-                                <label style="display: contents" for="palette2">
-                                    @if (auth()->user()->user_type == 'Designer')
-                                        <input type="file" id="palette2" name="palette2"
-                                            class="winner-file palette 2" hidden>
-                                    @endif
-                                    <i class="fas fa-arrow-down"></i>
-                                    <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                </label>
-                                <div class="file-type">
-                                    <span class="text">
-                                        png
-                                    </span>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="title-ntf">
                                 <h2>
-                                    Map of branded fonts
+                                    Company color palette {{ count($media['palette'] ?? []) }}/2
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="font1">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="font1" name="font1"
-                                                    class="winner-file font 1" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['font']) && isset($media['font'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['font'][0]['file']);
-                                    @endphp
-                                    @if ($media['font'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['font'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
 
+                        @if ($media && isset($media['palette']))
+                            @foreach ($media['palette'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="palette{{ $index + 1 }}">
+                                            @if (auth()->user()->user_type == 'Designer')
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="palette{{ $index + 1 }}" name="palette"
+                                                        class="winner-file palette {{ $index + 1 }}" hidden>
+                                                </div>
+                                            @endif
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
                                         </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="palette">Request</button>
                                         </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="font1">
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        @if (!$media || (empty($media['palette']) || count($media['palette']) < 2))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+                                    <label style="display: contents" for="palette{{ count($media['palette'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="font1" name="font1"
-                                                class="winner-file font 1" hidden>
+                                            <input type="file" id="palette{{ count($media['palette'] ?? []) + 1 }}"
+                                                name="palette"
+                                                class="winner-file palette {{ count($media['palette'] ?? []) + 1 }}"
+                                                hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            ai
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="font1">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="font1" name="font1"
-                                                    class="winner-file font 2" hidden>
+                                            @if (count($media['palette'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['palette'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
                                             @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['font']) && isset($media['font'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['font'][1]['file']);
-                                    @endphp
-                                    @if ($media['font'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['font'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="font2">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="font2" name="font2"
-                                                class="winner-file font 2" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            png
                                         </span>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="title-ntf">
                                 <h2>
-                                    Design of letterhead
+                                    Map of branded fonts {{ count($media['font'] ?? []) }}/2
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="letter_head1">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="letter_head1" name="letter_head1"
-                                                    class="winner-file letterhead 1" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['letterhead']) && isset($media['letterhead'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['letterhead'][0]['file']);
-                                    @endphp
-                                    @if ($media['letterhead'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['letterhead'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
 
+                        @if ($media && isset($media['font']))
+                            @foreach ($media['font'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="font{{ $index + 1 }}">
+                                            @if (auth()->user()->user_type == 'Designer')
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="font{{ $index + 1 }}" name="font"
+                                                        class="winner-file font {{ $index + 1 }}" hidden>
+                                                </div>
+                                            @endif
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
                                         </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="font">Request</button>
                                         </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="letter_head1">
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        @if (!$media || (empty($media['font']) || count($media['font']) < 2))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+
+                                    <label style="display: contents" for="font{{ count($media['font'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="letter_head1" name="letter_head1"
-                                                class="winner-file letterhead 1" hidden>
+                                            <input type="file" id="font{{ count($media['font'] ?? []) + 1 }}"
+                                                name="font"
+                                                class="winner-file font {{ count($media['font'] ?? []) + 1 }}" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            ai
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="letter_head1">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="letter_head1" name="letter_head1"
-                                                    class="winner-file letterhead 2" hidden>
+                                            @if (count($media['font'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['font'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
                                             @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['letterhead']) && isset($media['letterhead'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['letterhead'][1]['file']);
-                                    @endphp
-                                    @if ($media['letterhead'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['letterhead'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="letter_head2">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="letter_head2" name="letter_head2"
-                                                class="winner-file letterhead 2" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            png
                                         </span>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
+
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="title-ntf">
                                 <h2>
-                                    Corporate business card
+                                    Design of letterhead {{ count($media['letterhead'] ?? []) }}/2
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="business_card1">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="business_card1" name="business_card1"
-                                                    class="winner-file businessCard 1" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['businessCard']) && isset($media['businessCard'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['businessCard'][0]['file']);
-                                    @endphp
-                                    @if ($media['businessCard'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['businessCard'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
 
+                        @if ($media && isset($media['letterhead']))
+                            @foreach ($media['letterhead'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="letterhead{{ $index + 1 }}">
+                                            @if (auth()->user()->user_type == 'Designer')
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="letterhead{{ $index + 1 }}"
+                                                        name="letterhead"
+                                                        class="winner-file letterhead {{ $index + 1 }}" hidden>
+                                                </div>
+                                            @endif
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
                                         </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="letterhead">Request</button>
                                         </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="business_card1">
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        @if (!$media || (empty($media['letterhead']) || count($media['letterhead']) < 2))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+                                    <label style="display: contents"
+                                        for="letterhead{{ count($media['letterhead'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="business_card1" name="business_card1"
-                                                class="winner-file businessCard 1" hidden>
+                                            <input type="file"
+                                                id="letterhead{{ count($media['letterhead'] ?? []) + 1 }}"
+                                                name="letterhead"
+                                                class="winner-file letterhead {{ count($media['letterhead'] ?? []) + 1 }}"
+                                                hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            ai
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="business_card1">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="business_card1" name="business_card1"
-                                                    class="winner-file businessCard 2" hidden>
+                                            @if (count($media['letterhead'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['letterhead'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
                                             @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['businessCard']) && isset($media['businessCard'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['businessCard'][1]['file']);
-                                    @endphp
-                                    @if ($media['businessCard'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['businessCard'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="business_card2">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="business_card2" name="business_card2"
-                                                class="winner-file businessCard 2" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            png
                                         </span>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="title-ntf">
                                 <h2>
-                                    Pattern
+                                    Corporate business card {{ count($media['businessCard'] ?? []) }}/2
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="Pattern">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="Pattern" name="Pattern"
-                                                    class="winner-file Pattern 1" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['Pattern']) && isset($media['Pattern'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['Pattern'][0]['file']);
-                                    @endphp
-                                    @if ($media['Pattern'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['Pattern'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
 
+                        @if ($media && isset($media['businessCard']))
+                            @foreach ($media['businessCard'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="businessCard{{ $index + 1 }}">
+                                            @if (auth()->user()->user_type == 'Designer')
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="businessCard{{ $index + 1 }}"
+                                                        name="businessCard"
+                                                        class="winner-file businessCard {{ $index + 1 }}" hidden>
+                                                </div>
+                                            @endif
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
                                         </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="businessCard">Request</button>
                                         </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="Pattern1">
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        @if (!$media || (empty($media['businessCard']) || count($media['businessCard']) < 2))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+                                    <label style="display: contents"
+                                        for="businessCard{{ count($media['businessCard'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="Pattern1" name="Pattern1"
-                                                class="winner-file Pattern 1" hidden>
+                                            <input type="file"
+                                                id="businessCard{{ count($media['businessCard'] ?? []) + 1 }}"
+                                                name="businessCard"
+                                                class="winner-file businessCard {{ count($media['businessCard'] ?? []) + 1 }}"
+                                                hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            ai
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="Pattern">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="Pattern" name="Pattern"
-                                                    class="winner-file Pattern 2" hidden>
+                                            @if (count($media['businessCard'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['businessCard'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
                                             @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['Pattern']) && isset($media['Pattern'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['Pattern'][1]['file']);
-                                    @endphp
-                                    @if ($media['Pattern'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['Pattern'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="Pattern2">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="Pattern2" name="Pattern2"
-                                                class="winner-file Pattern 2" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            png
                                         </span>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
+
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="title-ntf">
                                 <h2>
-                                    Favicon for the site
+                                    Pattern {{ count($media['pattern'] ?? []) }}/2
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="site">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="site" name="site"
-                                                    class="winner-file site 1" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['site']) && isset($media['site'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['site'][0]['file']);
-                                    @endphp
-                                    @if ($media['site'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['site'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
 
+                        @if ($media && isset($media['pattern']))
+                            @foreach ($media['pattern'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="pattern{{ $index + 1 }}">
+                                            @if (auth()->user()->user_type == 'Designer')
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="pattern{{ $index + 1 }}" name="pattern"
+                                                        class="winner-file pattern {{ $index + 1 }}" hidden>
+                                                </div>
+                                            @endif
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
                                         </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="pattern">Request</button>
                                         </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="site1">
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        @if (!$media || (empty($media['pattern']) || count($media['pattern']) < 2))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+                                    <label style="display: contents"
+                                        for="pattern{{ count($media['pattern'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="site1" name="site1"
-                                                class="winner-file site 1" hidden>
+                                            <input type="file" id="pattern{{ count($media['pattern'] ?? []) + 1 }}"
+                                                name="pattern"
+                                                class="winner-file pattern {{ count($media['pattern'] ?? []) + 1 }}"
+                                                hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            ai
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="site">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="site" name="site"
-                                                    class="winner-file site 2" hidden>
+                                            @if (count($media['pattern'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['pattern'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
                                             @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['site']) && isset($media['site'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['site'][1]['file']);
-                                    @endphp
-                                    @if ($media['site'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['site'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="site2">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="site2" name="site2"
-                                                class="winner-file site 2" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            png
                                         </span>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
+
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="title-ntf">
                                 <h2>
-                                    Design of Facebook account
+                                    Favicon for the site {{ count($media['site'] ?? []) }}/2
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="account">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="account" name="account"
-                                                    class="winner-file account 1" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['account']) && isset($media['account'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['account'][0]['file']);
-                                    @endphp
-                                    @if ($media['account'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['account'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
 
+                        @if ($media && isset($media['site']))
+                            @foreach ($media['site'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="site{{ $index + 1 }}">
+                                            @if (auth()->user()->user_type == 'Designer')
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="site{{ $index + 1 }}" name="site"
+                                                        class="winner-file site {{ $index + 1 }}" hidden>
+                                                </div>
+                                            @endif
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
                                         </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="site">Request</button>
                                         </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="account1">
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        @if (!$media || (empty($media['site']) || count($media['site']) < 2))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+                                    <label style="display: contents" for="site{{ count($media['site'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="account1" name="account1"
-                                                class="winner-file account 1" hidden>
+                                            <input type="file" id="site{{ count($media['site'] ?? []) + 1 }}"
+                                                name="site"
+                                                class="winner-file site {{ count($media['site'] ?? []) + 1 }}" hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            ai
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="account">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="account" name="account"
-                                                    class="winner-file account 2" hidden>
+                                            @if (count($media['site'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['site'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
                                             @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['account']) && isset($media['account'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['account'][1]['file']);
-                                    @endphp
-                                    @if ($media['account'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['account'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="account2">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="account2" name="account2"
-                                                class="winner-file account 2" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            png
                                         </span>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
+
+
+
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="title-ntf">
                                 <h2>
-                                    Model of company labels
+                                    Design of Facebook account {{ count($media['account'] ?? []) }}/2
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="companyLabel">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="companyLabel" name="companyLabel"
-                                                    class="winner-file companyLabel 1" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['companyLabel']) && isset($media['companyLabel'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['companyLabel'][0]['file']);
-                                    @endphp
-                                    @if ($media['companyLabel'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['companyLabel'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
 
+                        @if ($media && isset($media['account']))
+                            @foreach ($media['account'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="account{{ $index + 1 }}">
+                                            @if (auth()->user()->user_type == 'Designer')
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="account{{ $index + 1 }}" name="account"
+                                                        class="winner-file account {{ $index + 1 }}" hidden>
+                                                </div>
+                                            @endif
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
                                         </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="account">Request</button>
                                         </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="company_label1">
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        @if (!$media || (empty($media['account']) || count($media['account']) < 2))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+                                    <label style="display: contents"
+                                        for="account{{ count($media['account'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="company_label1" name="company_label1"
-                                                class="winner-file companyLabel 1" hidden>
+                                            <input type="file" id="account{{ count($media['account'] ?? []) + 1 }}"
+                                                name="account"
+                                                class="winner-file account {{ count($media['account'] ?? []) + 1 }}"
+                                                hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            ai
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="companyLabel">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="companyLabel" name="companyLabel"
-                                                    class="winner-file companyLabel 2" hidden>
+                                            @if (count($media['account'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['account'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
                                             @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['companyLabel']) && isset($media['companyLabel'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['companyLabel'][1]['file']);
-                                    @endphp
-                                    @if ($media['companyLabel'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['companyLabel'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="company_label2">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="company_label2" name="company_label2"
-                                                class="winner-file companyLabel 2" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            png
                                         </span>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
+
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="title-ntf">
                                 <h2>
-                                    Icon layout with your logo
+                                    Model of company labels {{ count($media['companyLabel'] ?? []) }}/2
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="layoutLogo">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="layoutLogo" name="layoutLogo"
-                                                    class="winner-file layoutLogo 1" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['layoutLogo']) && isset($media['layoutLogo'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['layoutLogo'][0]['file']);
-                                    @endphp
-                                    @if ($media['layoutLogo'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['layoutLogo'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
 
+                        @if ($media && isset($media['companyLabel']))
+                            @foreach ($media['companyLabel'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="companyLabel{{ $index + 1 }}">
+                                            @if (auth()->user()->user_type == 'Designer')
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="companyLabel{{ $index + 1 }}"
+                                                        name="companyLabel"
+                                                        class="winner-file companyLabel {{ $index + 1 }}" hidden>
+                                                </div>
+                                            @endif
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
                                         </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="companyLabel">Request</button>
                                         </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="layout_logo1">
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        @if (!$media || (empty($media['companyLabel']) || count($media['companyLabel']) < 2))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+                                    <label style="display: contents"
+                                        for="companyLabel{{ count($media['companyLabel'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="layout_logo1" name="layout_logo1"
-                                                class="winner-file layoutLogo 1" hidden>
+                                            <input type="file"
+                                                id="companyLabel{{ count($media['companyLabel'] ?? []) + 1 }}"
+                                                name="companyLabel"
+                                                class="winner-file companyLabel {{ count($media['companyLabel'] ?? []) + 1 }}"
+                                                hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            ai
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="layoutLogo">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="layoutLogo" name="layoutLogo"
-                                                    class="winner-file layoutLogo 2" hidden>
+                                            @if (count($media['companyLabel'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['companyLabel'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
                                             @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['layoutLogo']) && isset($media['layoutLogo'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['layoutLogo'][1]['file']);
-                                    @endphp
-                                    @if ($media['layoutLogo'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['layoutLogo'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="layout_logo2">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="layout_logo2" name="layout_logo2"
-                                                class="winner-file layoutLogo 2" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            png
                                         </span>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
+
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="title-ntf">
                                 <h2>
-                                    Model T-shirt
+                                    Icon layout with your logo {{ count($media['layoutLogo'] ?? []) }}/2
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="tShirt">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="tShirt" name="tShirt"
-                                                    class="winner-file tShirt 1" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['tShirt']) && isset($media['tShirt'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['tShirt'][1]['file']);
-                                    @endphp
-                                    @if ($media['tShirt'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['tShirt'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
 
+                        @if ($media && isset($media['layoutLogo']))
+                            @foreach ($media['layoutLogo'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="layoutLogo{{ $index + 1 }}">
+                                            @if (auth()->user()->user_type == 'Designer')
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="layoutLogo{{ $index + 1 }}"
+                                                        name="layoutLogo"
+                                                        class="winner-file layoutLogo {{ $index + 1 }}" hidden>
+                                                </div>
+                                            @endif
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
                                         </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="layoutLogo">Request</button>
                                         </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="t_shirt1">
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        @if (!$media || (empty($media['layoutLogo']) || count($media['layoutLogo']) < 2))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+                                    <label style="display: contents"
+                                        for="layoutLogo{{ count($media['layoutLogo'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="t_shirt1" name="t_shirt1"
-                                                class="winner-file tShirt 1" hidden>
+                                            <input type="file"
+                                                id="layoutLogo{{ count($media['layoutLogo'] ?? []) + 1 }}"
+                                                name="layoutLogo"
+                                                class="winner-file layoutLogo {{ count($media['layoutLogo'] ?? []) + 1 }}"
+                                                hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            ai
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="tShirt">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="tShirt" name="tShirt"
-                                                    class="winner-file tShirt 1" hidden>
+                                            @if (count($media['layoutLogo'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['layoutLogo'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
                                             @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['tShirt']) && isset($media['tShirt'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['tShirt'][1]['file']);
-                                    @endphp
-                                    @if ($media['tShirt'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['tShirt'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="t_shirt2">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="t_shirt2" name="t_shirt2"
-                                                class="winner-file tShirt 2" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            png
                                         </span>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
+
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="title-ntf">
                                 <h2>
-                                    5 individual carriers
+                                    Model T-shirt {{ count($media['tShirt'] ?? []) }}/2
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="carrier">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="carrier" name="carrier"
-                                                    class="winner-file carrier 1" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['carrier']) && isset($media['carrier'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['carrier'][0]['file']);
-                                    @endphp
-                                    @if ($media['carrier'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['carrier'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
 
+                        @if ($media && isset($media['tShirt']))
+                            @foreach ($media['tShirt'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="tShirt{{ $index + 1 }}">
+                                            @if (auth()->user()->user_type == 'Designer')
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="tShirt{{ $index + 1 }}" name="tShirt"
+                                                        class="winner-file tShirt {{ $index + 1 }}" hidden>
+                                                </div>
+                                            @endif
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
                                         </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="tShirt">Request</button>
                                         </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="carrier1">
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        @if (!$media || (empty($media['tShirt']) || count($media['tShirt']) < 2))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+                                    <label style="display: contents"
+                                        for="tShirt{{ count($media['tShirt'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="carrier1" name="carrier1"
-                                                class="winner-file carrier 1" hidden>
+                                            <input type="file" id="tShirt{{ count($media['tShirt'] ?? []) + 1 }}"
+                                                name="tShirt"
+                                                class="winner-file tShirt {{ count($media['tShirt'] ?? []) + 1 }}"
+                                                hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            ai
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="carrier">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="carrier" name="carrier"
-                                                    class="winner-file carrier 2" hidden>
+                                            @if (count($media['tShirt'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['tShirt'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
                                             @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['carrier']) && isset($media['carrier'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['carrier'][1]['file']);
-                                    @endphp
-                                    @if ($media['carrier'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['carrier'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
-
-                                        </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
-                                        </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="carrier2">
-                                        @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="carrier2" name="carrier2"
-                                                class="winner-file carrier 2" hidden>
-                                        @endif
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
-                                    </label>
-                                    <div class="file-type">
-                                        <span class="text">
-                                            png
                                         </span>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
+
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="title-ntf">
                                 <h2>
-                                    Preview of product
+                                    5 individual carriers {{ count($media['carrier'] ?? []) }}/2
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="product">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="product" name="product"
-                                                    class="winner-file product 1" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['product']) && isset($media['product'][0]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['product'][0]['file']);
-                                    @endphp
-                                    @if ($media['product'][0]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['product'][0]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
 
+                        @if ($media && isset($media['carrier']))
+                            @foreach ($media['carrier'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="carrier{{ $index + 1 }}">
+                                            @if (auth()->user()->user_type == 'Designer')
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="carrier{{ $index + 1 }}"
+                                                        name="carrier" class="winner-file carrier {{ $index + 1 }}"
+                                                        hidden>
+                                                </div>
+                                            @endif
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
                                         </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="carrier">Request</button>
                                         </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="product1">
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        @if (!$media || (empty($media['carrier']) || count($media['carrier']) < 2))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+                                    <label style="display: contents"
+                                        for="carrier{{ count($media['carrier'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="product1" name="product1"
-                                                class="winner-file product 1" hidden>
+                                            <input type="file" id="carrier{{ count($media['carrier'] ?? []) + 1 }}"
+                                                name="carrier"
+                                                class="winner-file carrier {{ count($media['carrier'] ?? []) + 1 }}"
+                                                hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            ai
+                                            @if (count($media['carrier'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['carrier'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
+                                            @endif
                                         </span>
                                     </div>
-                                @endif
+                                </div>
+                            </div>
+                        @endif
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="title-ntf">
+                                <h2>
+                                    Preview of product {{ count($media['product'] ?? []) }}/2
+                                </h2>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="block-upload block-upload--dsg">
-                                @if (auth()->user()->user_type == 'Designer')
-                                    <label style="display: contents" for="product">
-                                        <div class="icon icon-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                            @if (auth()->user()->user_type == 'Designer')
-                                                <input type="file" id="product" name="product"
-                                                    class="winner-file product 2" hidden>
-                                            @endif
-                                        </div>
-                                    </label>
-                                @endif
-                                @if (isset($media['product']) && isset($media['product'][1]))
-                                    @php
-                                        $file = explode('/', $winnerFiles['media']['product'][1]['file']);
-                                    @endphp
-                                    @if ($media['product'][1]['type'] == 'image')
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <img src="{{ asset($winnerFiles['media']['product'][1]['file']) }}"
-                                                style="width: 100%; height: 100%" alt="">
 
+                        @if ($media && isset($media['product']))
+                            @foreach ($media['product'] as $index => $item)
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="block-upload block-upload--dsg">
+                                        <label style="display: contents" for="product{{ $index + 1 }}">
+                                            @if (auth()->user()->user_type == 'Designer')
+                                                <div class="icon icon-edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <input type="file" id="product{{ $index + 1 }}"
+                                                        name="product" class="winner-file product {{ $index + 1 }}"
+                                                        hidden>
+                                                </div>
+                                            @endif
+                                        </label>
+                                        @php
+                                            $file = explode('/', $item['file']);
+                                        @endphp
+                                        @if ($item['type'] == 'image')
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <img src="{{ asset($item['file']) }}"
+                                                    style="width: 100%; max-height: 151px !important;" alt="">
+                                            </a>
+                                        @else
+                                            <a
+                                                href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
+                                                <i class="fas fa-arrow-down d-block text-center"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    {{-- <div class="prf-icon profile">
+                                        <a class="icon">
+                                            {{$item['no_of_request']}}
                                         </a>
-                                    @else
-                                        <a
-                                            href="{{ route('competition.download.file', ['folder' => $file[0], 'id' => $file[1], 'name' => $file[2]]) }}">
-                                            <i class="fas fa-arrow-down d-block text-center"></i>
-                                            <span>Download</span>
+                                        <a class="icon">
+                                            <button class="btn btn-info request-work mr-5" data-id="{{ $index + 1 }}" data-type="product">Request</button>
                                         </a>
-                                    @endif
-                                @else
-                                    <label style="display: contents" for="product2">
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        @if (!$media || (empty($media['product']) || count($media['product']) < 2))
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="block-upload block-upload--dsg">
+                                    <label style="display: contents"
+                                        for="product{{ count($media['product'] ?? []) + 1 }}">
                                         @if (auth()->user()->user_type == 'Designer')
-                                            <input type="file" id="product2" name="product2"
-                                                class="winner-file product 2" hidden>
+                                            <input type="file" id="product{{ count($media['product'] ?? []) + 1 }}"
+                                                name="product"
+                                                class="winner-file product {{ count($media['product'] ?? []) + 1 }}"
+                                                hidden>
                                         @endif
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>{{auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet'}}</span>
+                                        <span>{{ auth()->user()->user_type == 'Designer' ? 'Upload file' : 'Not Uploaded yet' }}</span>
                                     </label>
                                     <div class="file-type">
                                         <span class="text">
-                                            png
+                                            @if (count($media['product'] ?? []) == 0)
+                                                ai
+                                            @elseif (count($media['product'] ?? []) == 1)
+                                                png
+                                            @else
+                                                eps
+                                            @endif
                                         </span>
                                     </div>
-                                @endif
+                                </div>
                             </div>
+                        @endif
+
+
+                    </div>
+                </div>
+
+                <div class="modal fade" id="sendRequestWorkModal" tabindex="-1" role="dialog"
+                    aria-labelledby="sendRequestWorkModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="sendRequestWorkModalLabel">Send Request</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="POST" action="{{ route('competition.send-request.work') }}">
+                                @csrf
+                                <div class="modal-body">
+                                    <input type="text" class="form-control" name="workId"
+                                        value="{{ $id }}" hidden>
+                                    <input type="text" class="form-control" name="id" hidden>
+                                    <input type="text" class="form-control" name="type" hidden>
+                                    <textarea type="text" class="form-control" name="requestChange" required></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

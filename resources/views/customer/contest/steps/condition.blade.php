@@ -1,5 +1,5 @@
-@extends("layouts.main")
-@section("content")
+@extends('layouts.main')
+@section('content')
     <div class="row">
         <div class="col-12">
             <div class="title">
@@ -34,7 +34,7 @@
             </span>
         </div>
     </div>
-    <form action="{{ route("customer.contest.condition.save", $id) }}" id="condition-form" class="row mb" method="post">
+    <form action="{{ route('customer.contest.condition.save', $id) }}" id="condition-form" class="row mb" method="post">
         @csrf
         <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="wrp-brief">
@@ -43,7 +43,8 @@
                 </span>
                 <div class="select-wrapper">
                     <input type="number" name="duration" class="form-control" min="7" max="21">
-                    <span style="font-size: 10px"> The designer will have 3 days to provide logos and corporate identity. </span>
+                    <span style="font-size: 10px"> The designer will have 3 days to provide logos and corporate identity.
+                    </span>
                 </div>
             </div>
         </div>
@@ -127,31 +128,33 @@
                 </span>
                 <div class="select-wrapper">
                     <i class="fas fa-search"></i>
-                    <input type="text" name="name_search" class="input-brief input-brief--search" placeholder="Search designer by name" id="designer_name">
+                    <input type="text" name="name_search" class="input-brief input-brief--search"
+                        placeholder="Search designer by name" id="designer_name">
                 </div>
             </div>
         </div>
     </form>
 
     <!-- User detail -->
-    @if(!empty($users))
-        @foreach($users as $user)
+    @if (!empty($users))
+        @foreach ($users as $user)
             <div class="row mb-p designer-block">
                 <div class="col-8 d-flex align-items-center justify-content-start">
-                    <img src="{{ asset("default-images/avatar.png") }}" alt="" class="profile-img">
+                    <img src="{{ asset('default-images/avatar.png') }}" alt="" class="profile-img">
                     <div class="profile-content">
-						<span class="profile-name" data-name="{{ $user->first_name." ".$user->last_name }}">
-                            <a href="{{ route('designer-works', ['position' => 'all', 'user' => $user->username])}}">
-                                {{ $user->first_name." ".$user->last_name }}
+                        <span class="profile-name" data-name="{{ $user->first_name . ' ' . $user->last_name }}">
+                            <a href="{{ route('designer-works', ['position' => 'all', 'user' => $user->username]) }}">
+                                {{ $user->first_name . ' ' . $user->last_name }}
                             </a>
-						</span>
+                        </span>
                         <div class="wrp-info">
-							<span class="profile-folowers" data-reactions="{{ count($user->reactions) > 0 ? $user->reactions->sum("count") : 0 }}">
-								{{ count($user->reactions) > 0 ? $user->reactions->sum("count") : 0 }}
-							</span>
+                            <span class="profile-folowers"
+                                data-reactions="{{ count($user->reactions) > 0 ? $user->reactions->sum('count') : 0 }}">
+                                {{ count($user->reactions) > 0 ? $user->reactions->sum('count') : 0 }}
+                            </span>
                             <span class="profile-works" data-works="{{ count($user->works) }}">
-								{{ count($user->works) }} works
-							</span>
+                                {{ count($user->works) }} works
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -162,13 +165,18 @@
 
 
             <!-- Designer Works -->
-            @if(count($user->works) > 5)
+            @if (count($user->works) > 0)
                 <div class="row">
-                    @foreach($user->works as $work)
+                    @foreach ($user->works as $works)
                         <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="info-block">
-
-                            </div>
+                            @foreach ($works->files as $file)
+                                {{-- <div class="mb-4"> --}}
+                                    <a href="{{ asset($file->src) }}" data-gallery class="card-logo"
+                                        style="background-color: #6a6a6a;">
+                                    <img src="{{ asset($file->src) }}" style="width: 100%; height: 100%; object-fit: cover;" alt="">
+                                    </a>
+                                {{-- </div> --}}
+                            @endforeach
                         </div>
                     @endforeach
                 </div>
@@ -178,33 +186,32 @@
                 </div>
             @endif
         @endforeach
-
     @endif
 
     <!-- Pagination -->
-{{--    <div class="row mb-p">--}}
-{{--        <div class="col-lg-12 d-flex justify-content-center align-items-center">--}}
-{{--            <div class="page">--}}
-{{--                <ul class="page__list">--}}
-{{--                    <li class="page__items"><a href="#" class="page__link">--}}
-{{--                            <i class="fas fa-chevron-left"></i>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                    <li class="page__items"><a href="#" class="page__link activ">1</a></li>--}}
-{{--                    <li class="page__items"><a href="#" class="page__link">2</a></li>--}}
-{{--                    <li class="page__items"><a href="#" class="page__link">3</a></li>--}}
-{{--                    <li class="page__items"><a href="#" class="page__link">...</a></li>--}}
-{{--                    <li class="page__items"><a href="#" class="page__link">24</a></li>--}}
-{{--                    <li class="page__items"><a href="#" class="page__link">--}}
-{{--                            <i class="fas fa-chevron-right"></i>--}}
-{{--                        </a>--}}
+    {{--    <div class="row mb-p"> --}}
+    {{--        <div class="col-lg-12 d-flex justify-content-center align-items-center"> --}}
+    {{--            <div class="page"> --}}
+    {{--                <ul class="page__list"> --}}
+    {{--                    <li class="page__items"><a href="#" class="page__link"> --}}
+    {{--                            <i class="fas fa-chevron-left"></i> --}}
+    {{--                        </a> --}}
+    {{--                    </li> --}}
+    {{--                    <li class="page__items"><a href="#" class="page__link activ">1</a></li> --}}
+    {{--                    <li class="page__items"><a href="#" class="page__link">2</a></li> --}}
+    {{--                    <li class="page__items"><a href="#" class="page__link">3</a></li> --}}
+    {{--                    <li class="page__items"><a href="#" class="page__link">...</a></li> --}}
+    {{--                    <li class="page__items"><a href="#" class="page__link">24</a></li> --}}
+    {{--                    <li class="page__items"><a href="#" class="page__link"> --}}
+    {{--                            <i class="fas fa-chevron-right"></i> --}}
+    {{--                        </a> --}}
 
-{{--                    </li>--}}
-{{--                </ul>--}}
-{{--            </div>--}}
-{{--            <span class="selected">Selected 12 <span>designers</span></span>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    {{--                    </li> --}}
+    {{--                </ul> --}}
+    {{--            </div> --}}
+    {{--            <span class="selected">Selected 12 <span>designers</span></span> --}}
+    {{--        </div> --}}
+    {{--    </div> --}}
 
     <!-- Selected Designers -->
     <div class="row">

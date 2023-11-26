@@ -87,6 +87,9 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get("/upload-work/{id}", [CompetitionController::class, 'getUploadWorks'])->name('get-upload.work');
             Route::post("/upload-work", [CompetitionController::class, 'uploadWorks'])->name('upload.work');
             Route::get('/download-file/{folder}/{id}/{name}', [CompetitionController::class, 'download'])->name('download.file');
+            Route::post("/send-request", [CompetitionController::class, 'sendRequest'])->name('send-request.work');
+            Route::get("/distribute-reward/{id}", [CompetitionController::class, 'distributeReward'])->name('distribute-reward.work');
+
 
 
         });
