@@ -16,8 +16,8 @@
         <div class="wrp-step">
             <div class="step {{ Route::is("user.general") ? "activ" : "" }}"><span class="step-text"><a href="{{ route("user.general") }}" >General</a></span></div>
             <div class="step {{ Route::is("user.password") ? "activ" : "" }}"><span class="step-text"><a href="{{ route("user.password") }}" >Password</a></span></div>
+            <div class="step {{ Route::is("user.notification") ? "activ" : "" }}"><span class="step-text"><a href="{{ route("user.notification") }}" >Notification</a></span></div>
             @if(auth()->user()->hasRole("Designer"))
-                <div class="step {{ Route::is("user.notification") ? "activ" : "" }}"><span class="step-text"><a href="{{ route("user.notification") }}" >Notification</a></span></div>
                 <div class="step {{ Route::is("user.verification") ? "activ" : "" }}"><span class="step-text"><a href="{{ route("user.verification") }}" >Verification</a></span></div>
             @endif
         </div>

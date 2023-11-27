@@ -27,7 +27,7 @@
     </style>
     <div class="wrapper">
         <main class="page">
-            <section class="brief">
+            <section class="container">
                 <div class="brief__container">
                     @include('customer.contest.competition.partials')
                     <div class="brief__round">
@@ -99,7 +99,7 @@
                                                                 alt="">
                                                         </a>
 
-                                                        @if (auth()->user()->user_type == 'Designer' && !$work->place)
+                                                        @if (auth()->user()->user_type == 'Designer' && !$work->place && $work->designer_user_id == auth()->id())
                                                             <div class="prf-icon profile">
                                                                 <a class="icon">
                                                                     <i class="fas fa-pencil-alt edit-file-work" data-item-id="{{ $file->id }}" data-toggle="modal" data-target="#update-image"></i>

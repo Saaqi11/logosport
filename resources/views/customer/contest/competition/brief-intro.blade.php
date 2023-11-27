@@ -2,7 +2,7 @@
 @section("content")
     <div class="wrapper">
         <main class="page">
-            <section class="brief">
+            <section class="container">
                 <div class="brief__container">
                     @include("customer.contest.competition.partials")
                     <div class="brief__blocks">

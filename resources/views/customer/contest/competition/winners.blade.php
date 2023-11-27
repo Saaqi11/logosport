@@ -2,7 +2,7 @@
 @section('content')
     <div class="wrapper">
         <main class="page">
-            <section class="brief">
+            <section class="container">
                 <div class="brief__container">
                     @include('customer.contest.competition.partials')
                     <div class="brief__round">
@@ -64,7 +64,7 @@
                                             </div>
 
                                             <div class="card-view__place">
-                                                @if ($work->place == 1)
+                                                @if ($work->place == 1 && ($work->designer_user_id == auth()->id()  || $contest->user_id === auth()->id()))
                                                     <a href="{{ route('competition.get-upload.work', $work->id)}}" class="btn btn-info m-0">
                                                         {{auth()->user()->user_type == 'Designer' ?  'Upload' : 'View'}}
                                                     </a>
