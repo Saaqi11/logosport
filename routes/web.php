@@ -136,6 +136,10 @@ Route::group(['middleware' => 'auth'], function () {
             });
         });
     });
+
+
+    Route::get('/notification/{id}',  [CustomerController::class, 'notifcation'])->name('notification.get');
+
 });
 
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Contest;
 use App\Models\CustomerFavouriteWork;
+use App\Models\Notification;
+use App\Models\NotificationMessage;
 use App\Models\UserWorkReaction;
 use App\Models\WinnerMediaFile;
 use App\Models\Work;
@@ -15,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -210,6 +213,26 @@ class CompetitionController extends Controller
                     "status" => 2
                 ]);
             }
+
+            $designerId = $work->designer_user_id;
+
+            $notification = Notification::where('user_id', $designerId)->first();
+            $notificationArray = [];
+            if (!empty($notification)) {
+                $notificationArray = json_decode($notification->notifications, true);
+                $notificationArray["active"] = explode(",", $notificationArray["active"]);
+                unset($notificationArray["active"][count($notificationArray["active"]) - 1]);
+
+                if (in_array('winner_site', $notificationArray['active'])) {
+                    $message = "Congrats! you get the " . ($position) . " position in the contest by " . $work->contest->company_name . ".";
+                    $newNotification = new NotificationMessage();
+                    $newNotification->user_id = $designerId;
+                    $newNotification->message = $message;
+                    $newNotification->save();
+                    broadcast(new \App\Events\NewNotification($message, $designerId));
+                }
+            }
+
             return response()->json(["message" => "The designer has been rewarded with " . $position . " position", "status" => true]);
         }
         return response()->json(["message" => "This action is not allowed", "status" => false]);
@@ -356,6 +379,26 @@ class CompetitionController extends Controller
                 $favWork->status = $status;
                 $favWork->save();
             }
+
+            $designerId = $work->work->designer_user_id;
+
+            $notification = Notification::where('user_id', $designerId)->first();
+            $notificationArray = [];
+            if (!empty($notification)) {
+                $notificationArray = json_decode($notification->notifications, true);
+                $notificationArray["active"] = explode(",", $notificationArray["active"]);
+                unset($notificationArray["active"][count($notificationArray["active"]) - 1]);
+
+                if (in_array('work_like_site', $notificationArray['active'])) {
+                    $message = "Your work has been " . ($status ? "liked" : "unliked") . " in the contest by " . $work->work->contest->company_name . ".";
+                    $newNotification = new NotificationMessage();
+                    $newNotification->user_id = $designerId;
+                    $newNotification->message = $message;
+                    $newNotification->save();
+                    broadcast(new \App\Events\NewNotification($message, $designerId));
+                }
+            }
+
             return true;
         }
         return false;
@@ -526,6 +569,29 @@ class CompetitionController extends Controller
                     $winnerFiles->score = $winnerFiles->score + 1;
                     $winnerFiles->media = $updatedMedia;
                     $winnerFiles->save();
+
+
+                    if ($winnerFiles->score == 27) {
+                        $customerId = $winnerFiles->work->contest->user_id;
+
+                        $notification = Notification::where('user_id', $customerId)->first();
+                        $notificationArray = [];
+                        if (!empty($notification)) {
+                            $notificationArray = json_decode($notification->notifications, true);
+                            $notificationArray["active"] = explode(",", $notificationArray["active"]);
+                            unset($notificationArray["active"][count($notificationArray["active"]) - 1]);
+
+                            if (in_array('winner_site', $notificationArray['active'])) {
+                                $message = "Upload file uploaded in the work of contest " . $winnerFiles->work->contest->company_name . ".";
+                                $newNotification = new NotificationMessage();
+                                $newNotification->user_id = $customerId;
+                                $newNotification->message = $message;
+                                $newNotification->save();
+                                broadcast(new \App\Events\NewNotification($message, $customerId));
+                            }
+                        }
+                    }
+
                     // Handle the case when the item with the specified index is not found
                     return response()->json([
                         'success' => true,
@@ -592,12 +658,15 @@ class CompetitionController extends Controller
             switch ($work->place) {
                 case 1:
                     $work->reward = 0.85 * $contestPrice;
+                    $this->eventNotification($work);
                     break;
                 case 2:
                     $work->reward = 0.1 * $contestPrice;
+                    $this->eventNotification($work);
                     break;
                 case 3:
                     $work->reward = 0.05 * $contestPrice;
+                    $this->eventNotification($work);
                     break;
                 default:
                     // Handle other places if needed
@@ -609,5 +678,27 @@ class CompetitionController extends Controller
         }
 
         return redirect()->back()->with("success", "reward successfully distributed to the winners");
+    }
+
+    public function eventNotification($work)
+    {
+        $customerId = $work->designer_user_id;
+
+        $notification = Notification::where('user_id', $customerId)->first();
+        $notificationArray = [];
+        if (!empty($notification)) {
+            $notificationArray = json_decode($notification->notifications, true);
+            $notificationArray["active"] = explode(",", $notificationArray["active"]);
+            unset($notificationArray["active"][count($notificationArray["active"]) - 1]);
+
+            if (in_array('winner_site', $notificationArray['active'])) {
+                $message = $work->contest->company_name." Contest has been successfully closed ". ".";
+                $newNotification = new NotificationMessage();
+                $newNotification->user_id = $customerId;
+                $newNotification->message = $message;
+                $newNotification->save();
+                broadcast(new \App\Events\NewNotification($message, $customerId));
+            }
+        }
     }
 }
