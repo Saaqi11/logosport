@@ -30,9 +30,36 @@
                     @if (auth()->user()->id == $work->contest->user_id)
                         <div class="row">
                             <div class="col col-lg-12">
+                                <div class="wrp-contest justify-content-between">
+                                    <span>
+                                        <a href="{{ route('competition.distribute-reward.work', [$work->contest_id]) }}"
+                                            class="btn-lg btn-success px-5">Confirm</a>
+                                    </span>
+                                    <span class="d-flex align-items-center" style="gap:20px;">
+                                        <span style="font-weight: 900"> No of Request:
+                                            {{ $winnerFiles->no_of_request ?? 0 }}
+                                        </span>
+                                        @if (isset($winnerFiles) && ($winnerFiles->no_of_request ?? 0) < 3)
+                                            <a href="#" class="btn-lg btn-info" data-toggle="modal"
+                                                data-target="#sendRequestWorkModal">Change Request</a>
+                                        @endif
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="row">
+                            <div class="col col-lg-12">
                                 <div class="wrp-contest justify-content-end">
-                                    <a href="{{ route('competition.distribute-reward.work', [$work->contest_id]) }}"
-                                        class="btn-lg btn-success px-5">confirm</a>
+                                    <span class="d-flex align-items-center" style="gap:20px;">
+                                        <span style="font-weight: 900"> No of Request:
+                                            {{ $winnerFiles->no_of_request ?? 0 }}
+                                        </span>
+                                        @if (isset($winnerFiles) && ($winnerFiles->no_of_request ?? 0) > 0)
+                                            <a href="#" class="btn-lg btn-info" data-toggle="modal"
+                                                data-target="#viewRequestWorkModal">View Request</a>
+                                        @endif
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -1128,7 +1155,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="sendRequestWorkModalLabel">Send Request</h5>
+                                <h5 class="modal-title" id="sendRequestWorkModalLabel">Change Request</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -1138,8 +1165,9 @@
                                 <div class="modal-body">
                                     <input type="text" class="form-control" name="workId"
                                         value="{{ $id }}" hidden>
-                                    <input type="text" class="form-control" name="id" hidden>
-                                    <input type="text" class="form-control" name="type" hidden>
+                                    <input type="text" class="form-control" name="id"
+                                        value="{{ $winnerFiles->id ?? 0 }}" hidden>
+
                                     <textarea type="text" class="form-control" name="requestChange" required></textarea>
                                 </div>
                                 <div class="modal-footer">
@@ -1147,6 +1175,35 @@
                                     <button type="submit" class="btn btn-success">Submit</button>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="viewRequestWorkModal" tabindex="-1" role="dialog"
+                    aria-labelledby="viewRequestWorkModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="viewRequestWorkModalLabel">View Change Request</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="container">
+                                    <ul class="list-group">
+                                        @if ($winnerFiles)
+                                            @foreach ($winnerFiles->change_request as $value)
+                                                <li class="list-group-item d-flex">
+                                                    <i class="fas fa-star mr-2"></i> {{ $value }}
+                                                </li>
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>

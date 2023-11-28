@@ -37,12 +37,15 @@
                         <a href="#" class="wrp-message">
                             <i class="fas fa-envelope"></i>
                         </a>
-                        <a href="#" class="wrp-ring">
+                        <a href="#" class="wrp-ring" id="notification-icon">
                             <div class="bg-color">
                                 <span>4</span>
                             </div>
                             <i class="far fa-bell"></i>
                         </a>
+                        <div id="notification-box" class="notification-box">
+                            <ul id="notification-list"></ul>
+                        </div>
                         <div class="wrp-img">
                             <img src="{{ asset("images/user-icon.png") }}" alt="user icon">
                         </div>
@@ -115,4 +118,5 @@
             @endif
         </div>
     </div>
+
 </header>
