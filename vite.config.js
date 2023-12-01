@@ -5,6 +5,9 @@ import laravel from 'laravel-vite-plugin';
 import Pusher from 'pusher-js';
 
 export default defineConfig({
+    build: {
+    outDir: 'public/build',
+  },
     plugins: [
         laravel({
             input: 'resources/js/app.js', // Your entry JavaScript file
@@ -14,4 +17,5 @@ export default defineConfig({
             // clearConsole: false,
         }),
     ],
+    
 });

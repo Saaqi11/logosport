@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\ContestController;
 use App\Http\Controllers\CustomerController;
@@ -135,6 +136,12 @@ Route::group(['middleware' => 'auth'], function () {
                 });
             });
         });
+
+
+        Route::prefix('chat')->name('chat.')->group(function () {
+            Route::get('/', [ChatController::class, 'getChatRooms']);
+        });
+
     });
 
 
