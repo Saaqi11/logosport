@@ -140,6 +140,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::prefix('chat')->name('chat.')->group(function () {
             Route::get('/', [ChatController::class, 'getChatRooms']);
+            Route::post('/', [ChatController::class, 'sendMessage']);
+            Route::get('/{conversationId}', [ChatController::class, 'getMessages']);
         });
 
     });

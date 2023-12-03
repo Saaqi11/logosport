@@ -20,4 +20,9 @@ class Conversation extends Model
     {
         return $this->belongsTo(User::class, 'user2_id'); // it should be BelongsTo
     }
+
+    public function latestMessage()
+    {
+        return $this->hasOne(Message::class)->latest();
+    }
 }

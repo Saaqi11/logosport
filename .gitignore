@@ -21,3 +21,4 @@ yarn-error.log
 /public/contests-attachments/*.pdf
 /public/images/contests/*
 fileupload.text
+/public/message/

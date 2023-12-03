@@ -258,3 +258,77 @@ input[type=range]:focus {
     border-radius: 11px;
     margin: 5px;
 }
+
+.time {
+    color: #c9c8c8 !important;
+    display: flex;
+    justify-content: flex-end;
+    width: 50%;
+    left: unset !important;
+}
+
+.uploaded-image-preview {
+    height: 85%;
+    border-bottom: 1px solid #e6e6e6;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.uploaded-image-preview img {
+    width: 50%;
+    object-fit: contain;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.cancel-image {
+    position: absolute;
+    top: 31px;
+    right: 31px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#reply-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  #reply-text {
+    flex: 1;
+    color: #333;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  #cancel-reply {
+    color: #666;
+    cursor: pointer; 
+    padding-left: 10px;
+    margin-left: 10px;
+    border-left: 1px solid #ccc;
+  }
+
+  .contact .reply-button {
+    visibility: hidden;
+    position: absolute;
+    right: 5px;
+    top: 16%;
+    transform: translateY(-50%);
+    color: white;
+    background: #6c757d;
+    padding: 2px 5px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .contact:hover .reply-button {
+    visibility: visible;
+  }

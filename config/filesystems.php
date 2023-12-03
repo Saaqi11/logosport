@@ -65,6 +65,11 @@ return [
             'root'   => public_path() . '/winner/',
         ],
 
+        'chat_media' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/message/',
+        ],
+
     ],
 
     /*
