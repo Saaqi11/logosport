@@ -34,7 +34,7 @@
                     <span class="const__prise">
                         0$
                     </span>
-                        <a href="#" class="wrp-message">
+                        <a href="{{ route('chat.list')}}" class="wrp-message">
                             <i class="fas fa-envelope"></i>
                         </a>
                         <a href="#" class="wrp-ring" id="notification-icon">

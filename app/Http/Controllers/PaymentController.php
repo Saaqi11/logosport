@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contest;
+use App\Models\Conversation;
 use App\Models\Payment;
 use App\Models\User;
 use Carbon\Carbon;
@@ -12,12 +13,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PaymentController extends Controller
-{
+class PaymentController extends Controller {
     private $key;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->key = 'AVDvnmafPAQlZ8Kah5Rdlnq2fLYSbrnYpYCCR9ukOpcRYHhyQOybNk94fyvsfBZNSjpvfVDiclNryGEA:EBXJvP_3QuGY4wNd2YizlDHfujscLM4hJEdydQBpMD9289i548diLp8snjdUq0bOReFsCofD2EqbG-Xc';
     }
 
@@ -26,27 +25,24 @@ class PaymentController extends Controller
      * @param $id
      * @return RedirectResponse
      */
-    public function paypalCheckout($id): RedirectResponse
-    {
+    public function paypalCheckout($id): RedirectResponse {
         $contest = Contest::where("id", $id)->where("status", "!=", "3")->first();
 
-        if (!empty($contest)) {
+        if(!empty($contest)) {
             $contestHash = "";
-            if ($contest->contest_price <= 200) {
+            if($contest->contest_price <= 200) {
                 $contestHash = "L1";
-            } else if ($contest->contest_price <= 600) {
+            } else if($contest->contest_price <= 600) {
                 $contestHash = "L2";
-            } else if ($contest->contest_price <= 1400) {
+            } else if($contest->contest_price <= 1400) {
                 $contestHash = "L3";
             }
 
             try {
-                $link =  $this->proceedPaymentPaypal($contestHash, $id);
+                $link = $this->proceedPaymentPaypal($contestHash, $id);
                 return redirect()->to($link);
-            }
-            catch (\Exception|GuzzleException $e)
-            {
-                return redirect()->back()->with('error','Please try again later');
+            } catch (\Exception | GuzzleException $e) {
+                return redirect()->back()->with('error', 'Please try again later');
             }
         }
     }
@@ -57,9 +53,8 @@ class PaymentController extends Controller
      * @return string
      * @throws GuzzleException
      */
-    public function proceedPaymentPaypal($contestHash, $id): string
-    {
-        $plan_id    = env($contestHash."_CONTEST");
+    public function proceedPaymentPaypal($contestHash, $id): string {
+        $plan_id = env($contestHash."_CONTEST");
         try {
             $url = "https://api.sandbox.paypal.com/v1/billing/subscriptions";
 
@@ -69,7 +64,7 @@ class PaymentController extends Controller
                     'headers' => [
                         'Accept' => 'application/json',
                         'Content-Type' => 'application/json',
-                        'Authorization' => 'Basic ' . base64_encode($this->key)
+                        'Authorization' => 'Basic '.base64_encode($this->key)
                     ],
                     'json' => [
                         "plan_id" => $plan_id,
@@ -83,10 +78,8 @@ class PaymentController extends Controller
             $response = $response->getBody()->getContents();
             $response = json_decode($response);
             return $response->links['0']->href;
-        }
-        catch (\Exception $e)
-        {
-            return  $e->getMessage();
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
     }
 
@@ -98,8 +91,7 @@ class PaymentController extends Controller
      * @return RedirectResponse
      * @throws GuzzleException
      */
-    public function paypalSuccess(Request $request,$id): RedirectResponse
-    {
+    public function paypalSuccess(Request $request, $id): RedirectResponse {
 
         Contest::where("id", $id)->update(
             [
@@ -113,7 +105,7 @@ class PaymentController extends Controller
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-                'Authorization' => 'Basic ' . base64_encode($this->key)
+                'Authorization' => 'Basic '.base64_encode($this->key)
             ],
         ]);
 
@@ -145,15 +137,20 @@ class PaymentController extends Controller
             'paypal_plan_id' => $plan_id,
         ]);
 
-        return redirect()->route('customer.contest.view')->with('message','Registration has been successful');
+        $conversations = Conversation::where('contest_id', $id)->get();
+
+        foreach($conversations as $key => $conversation) {
+            $conversation->payment_status = true;
+            $conversation->save();
+        }
+        return redirect()->route('customer.contest.view')->with('message', 'Registration has been successful');
     }
 
     /**
      * Payment Error
      * @return string
      */
-    public function paypalError(): string
-    {
-        return redirect()->route("re-subscription")->with('message','Payment not done! Error Occurred!');
+    public function paypalError(): string {
+        return redirect()->route("re-subscription")->with('message', 'Payment not done! Error Occurred!');
     }
 }

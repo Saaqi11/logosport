@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->foreignId('parent_id')->nullable()->constrained('messages')->onDelete('cascade'); // reply-to message id
             $table->text('message')->nullable(); // message content
             $table->text('media')->nullable(); // message content
+            $table->boolean('is_read')->default(false);
             $table->timestamps();
         });
     }

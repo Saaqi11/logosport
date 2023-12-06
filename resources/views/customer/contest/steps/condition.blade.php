@@ -159,7 +159,7 @@
                     </div>
                 </div>
                 <div class="col-4 d-flex align-items-center justify-content-end">
-                    <i class="far fa-check-circle" data-id="{{ $user->id }}"></i>
+                    <i class="far fa-check-circle invite-designer" style="cursor: pointer" data-contestid="{{ $id }}" data-userid="{{ $user->id }}"></i>
                 </div>
             </div>
 

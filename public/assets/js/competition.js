@@ -518,4 +518,28 @@ $(document).ready(function(){
 
 		$('#sendRequestWorkModal').modal('show');
 	});
+
+
+	$(".invite-designer").on("click", function() {
+		const userId = $(this).data('userid');
+		const contestId = $(this).data('contestid');
+
+		$.ajax({
+			type: "GET",
+			url: "/customer/contest/invitaion/"+contestId+"/"+userId,
+			dataType: "JSON",
+			cache: false,
+			contentType: false,
+			success: (response) => {
+				if (response.status) {
+					toastr.success(response.message);
+				} else {
+					toastr.warning(response.message);
+				}
+			},
+			error: (response) => {
+				console.log(response)
+			}
+		});
+	});
 })

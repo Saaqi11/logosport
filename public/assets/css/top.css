@@ -332,3 +332,10 @@ input[type=range]:focus {
   .contact:hover .reply-button {
     visibility: visible;
   }
+
+  .unread {
+    padding: 7px 10px;
+    background: green;
+    border-radius: 50%;
+    color: #fff;
+  }

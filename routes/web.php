@@ -132,16 +132,24 @@ Route::group(['middleware' => 'auth'], function () {
                         Route::post("/brief-save/{id}", [ContestController::class, 'briefSave'])->name('brief.save');
                         Route::get("/condition/{id}", [ContestController::class, 'condition'])->name('condition');
                         Route::post("/condition-save/{id}", [ContestController::class, 'conditionSave'])->name('condition.save');
+                        
+                        Route::get("/invitaion/{contestId}/{userId}", [ChatController::class, 'invitaion'])->name('invitation.save');
                     });
                 });
             });
         });
 
-
+        
         Route::prefix('chat')->name('chat.')->group(function () {
-            Route::get('/', [ChatController::class, 'getChatRooms']);
-            Route::post('/', [ChatController::class, 'sendMessage']);
-            Route::get('/{conversationId}', [ChatController::class, 'getMessages']);
+            Route::get('/', [ChatController::class, 'getChatRooms'])->name('list');
+            Route::post('/', [ChatController::class, 'sendMessage'])->name('save');
+            Route::get('/{conversationId}', [ChatController::class, 'getMessages'])->name('message');
+            Route::get('/read/{conversationId}', [ChatController::class, 'readMessage'])->name('read');
+            
+            Route::get("/accept-invitation/{id}", [ChatController::class, 'acceptInvitaion'])->name('invitation.accept');
+            Route::get("/cancel-invitation/{id}", [ChatController::class, 'cancelInvitaion'])->name('invitation.cancel');
+
+            Route::get("/start/{contestId}/{designerId}/{userId}", [ChatController::class, 'checkConverstaion'])->name('checkConverstaion');
         });
 
     });

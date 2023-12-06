@@ -27,9 +27,15 @@
                                                     {{ $otherUser->first_name }} {{ $otherUser->last_name }}
                                                 </span>
                                                 <span class="contact-message">
-                                                    {{ $conversation->latestMessage->message ?? '' }}
+                                                    {{ $conversation->contest->company_name ?? '' }}
                                                 </span>
                                             </div>
+
+                                            @if (count($conversation->unReadMessagesCount) > 0)
+                                                <span class="unread">
+                                                    {{ count($conversation->unReadMessagesCount) }}
+                                                </span>
+                                            @endif
                                             <span
                                                 class="contact-date">{{ $conversation->updated_at->format('d.m.y') }}</span>
                                         </div>
@@ -132,6 +138,34 @@
                                 $('.chat-sct').animate({
                                     scrollTop: $(".chat-sct")[0].scrollHeight
                                 }, 500);
+
+
+                                $(`[data-conversation-id="${activeConversationId}"] .unread`).hide();
+
+                                $.ajax({
+                                    url: '/chat/read/' + activeConversationId,
+                                    method: 'GET',
+                                    success: function(response) {
+
+                                    },
+                                    error: function(data) {
+                                        // An error occurred
+                                        console.log(data);
+                                    }
+                                });
+                            } else {
+                                console.log('innnnnnnnn');
+                                const conversationBlock = $(
+                                    `.contact[data-conversation-id="${conversation_id}"]`);
+                                const unreadCountElement = conversationBlock.find('.unread');
+                                if (unreadCountElement.length > 0) {
+                                    unreadCountElement.show();
+                                    const currentCount = parseInt(unreadCountElement.text()) || 0;
+                                    unreadCountElement.text(currentCount + 1);
+                                } else {
+                                    // If the element doesn't exist, create it with the initial count of 1
+                                    conversationBlock.append('<span class="unread">1</span>');
+                                }
                             }
                             const conversationBlock = $(
                                 `.contact[data-conversation-id="${conversation_id}"]`);
@@ -206,6 +240,8 @@
             function loadMessages(page) {
                 const oldScrollHeight = $(".chat-sct").prop('scrollHeight');
 
+                $(`[data-conversation-id="${activeConversationId}"] .unread`).hide();
+
                 $.ajax({
                     url: '/chat/' + activeConversationId + '?page=' + page,
                     method: 'GET',
@@ -260,7 +296,8 @@
                                 } else {
                                     if (e.message) {
                                         messageHTML += receiveMessage(userName, e.message,
-                                            timeString, e.id)
+                                            timeString, e.id, (e.invite_message &&
+                                                data.length == 1))
                                     }
                                 }
                             }
@@ -426,7 +463,7 @@
                 }, 500);
             });
 
-            function receiveMessage(userName, message, time, messageId) {
+            function receiveMessage(userName, message, time, messageId, isFirst = false) {
                 return `
                         <div class="row-you" data-message-id="${messageId}">
                             <div class="contact">
@@ -442,7 +479,10 @@
                                 <span class="reply-button">Reply</span> 
                             </div>
                             <span class="time">${time}</span>
-                        </div>`;
+                            ${isFirst ? `<div><i class="far fa-check-circle accept-invitation mt-2" style="color: green; cursor: pointer"></i> 
+                                                                    <i class="far fa-times-circle cancel-invitation mt-2" style="color: red; font-size: 28px; cursor: pointer"></i></div>` : ''}
+                        </div>
+                        `;
             }
 
             function sendMessage(userName, message, time, messageId) {
@@ -538,6 +578,52 @@
                                     <span class="time" style="bottom: -14px">${time}</span>
 								</div>`;
             }
+
+            $(document).on("click", '.accept-invitation', function() {
+                const clickedElement = $(this); // Capture 'this' in a variable
+
+                $.ajax({
+                    type: "GET",
+                    url: "/chat/accept-invitation/" + activeConversationId,
+                    dataType: "JSON",
+                    cache: false,
+                    contentType: false,
+                    success: (response) => {
+                        if (response.status) {
+                            toastr.success(response.message);
+                            clickedElement.hide(); // Use the captured variable here
+                            $('.cancel-invitation').hide();
+                        } else {
+                            toastr.warning(response.message);
+                        }
+                    },
+                    error: (response) => {
+                        console.log(response)
+                    }
+                });
+            });
+
+            $(document).on("click", '.cancel-invitation', function() {
+                $.ajax({
+                    type: "GET",
+                    url: "/chat/cancel-invitation/" + activeConversationId,
+                    dataType: "JSON",
+                    cache: false,
+                    contentType: false,
+                    success: (response) => {
+                        if (response.status) {
+                            toastr.success(response.message);
+                            clickedElement.hide(); // Use the captured variable here
+                            $('.accept-invitation').hide();
+                        } else {
+                            toastr.warning(response.message);
+                        }
+                    },
+                    error: (response) => {
+                        console.log(response)
+                    }
+                });
+            });
 
         });
     </script>
