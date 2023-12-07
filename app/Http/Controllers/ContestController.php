@@ -275,7 +275,9 @@ class ContestController extends Controller
             $q->where('name', 'Designer');
         })->orderBy("id", "Desc")->take(5)->get();
 
-        return \view($this->contestSteps . "condition", compact("id", "users"));
+        $contest = Contest::find($id);
+
+        return \view($this->contestSteps . "condition", compact("id", "users", "contest"));
     }
 
     /**

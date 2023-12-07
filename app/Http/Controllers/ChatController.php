@@ -208,4 +208,25 @@ class ChatController extends Controller {
             }
         }
     }
+
+    public function messageCount() {
+        $userId = Auth::id();
+        $conversations = Conversation::where('payment_status', true)
+            ->where(function ($query) use ($userId) {
+                $query->where('user1_id', $userId)
+                    ->orWhere('user2_id', $userId);
+            })
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+
+        $conversationId = [];
+        foreach ($conversations as $conversation) {
+            $conversationId[] = $conversation->id;
+        }
+        
+
+        $count = Message::where('is_read', false)->whereNot('user_id', $userId)->whereIn('conversation_id', $conversationId)->count();
+
+        return response()->json(['status' => true, 'data' => $count]);
+    }
 }

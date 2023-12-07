@@ -254,8 +254,7 @@ input[type=range]:focus {
 
 .notification-box ul li {
     padding: 8px;
-    border: 1px solid;
-    border-radius: 11px;
+    border-bottom: 1px solid #e9e6e6;
     margin: 5px;
 }
 
@@ -339,3 +338,23 @@ input[type=range]:focus {
     border-radius: 50%;
     color: #fff;
   }
+
+  .bg-color-message{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:absolute;
+    width:16px;
+    height:16px;
+    right:-7px;
+    top:-7px;
+    color: #fff;
+    background-color:#4ac420;
+    border-radius:50%
+}
+
+.bg-color-message span {
+    font-size: 8px;
+    font-weight: 900;
+    color: #fff;
+}

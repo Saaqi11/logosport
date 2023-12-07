@@ -143,6 +143,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('chat')->name('chat.')->group(function () {
             Route::get('/', [ChatController::class, 'getChatRooms'])->name('list');
             Route::post('/', [ChatController::class, 'sendMessage'])->name('save');
+            Route::get("/count", [ChatController::class, 'messageCount'])->name('count');
             Route::get('/{conversationId}', [ChatController::class, 'getMessages'])->name('message');
             Route::get('/read/{conversationId}', [ChatController::class, 'readMessage'])->name('read');
             
@@ -150,6 +151,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get("/cancel-invitation/{id}", [ChatController::class, 'cancelInvitaion'])->name('invitation.cancel');
 
             Route::get("/start/{contestId}/{designerId}/{userId}", [ChatController::class, 'checkConverstaion'])->name('checkConverstaion');
+
         });
 
     });

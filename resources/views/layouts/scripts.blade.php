@@ -44,7 +44,7 @@
                         var box = $('#notification-box');
                         box.css({
                             'top': iconPosition.top +
-                            20, // Adjust the value based on your layout
+                                20, // Adjust the value based on your layout
                         });
 
                         // Toggle the visibility of the box
@@ -106,6 +106,28 @@
                 $('#notification-box').removeClass('show');
             }
         });
+
+
+        function messageCount() {
+            $.ajax({
+                type: "GET",
+                url: "/chat/count",
+                dataType: "JSON",
+                cache: false,
+                contentType: false,
+                success: (response) => {
+                    if (response.status) {
+                        console.log('response.data', response.data);
+                        $('.bg-color-message span').text(response.data);
+                    }
+                },
+                error: (response) => {
+                    console.log(response)
+                }
+            });
+        }
+
+        messageCount();
     });
     // });
 </script>
