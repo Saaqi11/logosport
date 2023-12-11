@@ -158,6 +158,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('/notification/{id}',  [CustomerController::class, 'notifcation'])->name('notification.get');
+    Route::get('/notification/all/{id}',  [CustomerController::class, 'allNotification'])->name('notification.all');
 
 });
 

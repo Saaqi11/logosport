@@ -85,6 +85,17 @@
             notifications.forEach(function(notification) {
                 notificationList.append('<li>' + notification.message + '</li>');
             });
+
+
+            if (notifications.length > 0)
+            {
+                var url = "{{ route('notification.all', ['id' => '__id__']) }}";
+                url = url.replace('__id__', authUserId);
+
+                notificationList.append('<li class="border-0 text-center p-0" style="font-size: 13px">' +
+                    '<a href="' + url + '">See all Notification</a>' +
+                    '</li>');
+            }
         }
 
         // Show the notification modal when the icon is clicked
