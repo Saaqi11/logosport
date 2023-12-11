@@ -87,7 +87,7 @@
             });
 
 
-            if (notifications.length > 0)
+            if (notifications.length > 10)
             {
                 var url = "{{ route('notification.all', ['id' => '__id__']) }}";
                 url = url.replace('__id__', authUserId);
@@ -95,6 +95,8 @@
                 notificationList.append('<li class="border-0 text-center p-0" style="font-size: 13px">' +
                     '<a href="' + url + '">See all Notification</a>' +
                     '</li>');
+            } else {
+                notificationList.append('<li class="border-0 text-center p-0" style="font-size: 13px">No Notification</li>');
             }
         }
 
