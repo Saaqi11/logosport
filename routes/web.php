@@ -6,6 +6,7 @@ use App\Http\Controllers\ContestController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DesignerWorkController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\SupportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -132,21 +133,21 @@ Route::group(['middleware' => 'auth'], function () {
                         Route::post("/brief-save/{id}", [ContestController::class, 'briefSave'])->name('brief.save');
                         Route::get("/condition/{id}", [ContestController::class, 'condition'])->name('condition');
                         Route::post("/condition-save/{id}", [ContestController::class, 'conditionSave'])->name('condition.save');
-                        
+
                         Route::get("/invitaion/{contestId}/{userId}", [ChatController::class, 'invitaion'])->name('invitation.save');
                     });
                 });
             });
         });
 
-        
+
         Route::prefix('chat')->name('chat.')->group(function () {
             Route::get('/', [ChatController::class, 'getChatRooms'])->name('list');
             Route::post('/', [ChatController::class, 'sendMessage'])->name('save');
             Route::get("/count", [ChatController::class, 'messageCount'])->name('count');
             Route::get('/{conversationId}', [ChatController::class, 'getMessages'])->name('message');
             Route::get('/read/{conversationId}', [ChatController::class, 'readMessage'])->name('read');
-            
+
             Route::get("/accept-invitation/{id}", [ChatController::class, 'acceptInvitaion'])->name('invitation.accept');
             Route::get("/cancel-invitation/{id}", [ChatController::class, 'cancelInvitaion'])->name('invitation.cancel');
 
@@ -157,8 +158,14 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
 
-    Route::get('/notification/{id}',  [CustomerController::class, 'notifcation'])->name('notification.get');
-    Route::get('/notification/all/{id}',  [CustomerController::class, 'allNotification'])->name('notification.all');
+    Route::get('/notification/{id}', [CustomerController::class, 'notifcation'])->name('notification.get');
+    Route::get('/notification/all/{id}', [CustomerController::class, 'allNotification'])->name('notification.all');
+
+    Route::get('/support', function () {
+        return view('support');
+    })->name('support');
+
+    Route::post('/support/submit', [SupportController::class, 'submitForm'])->name('submit.support');
 
 });
 
@@ -166,3 +173,19 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/', function () {
     return view('index');
 })->name("home");
+
+Route::get('/terms-and-condition', function () {
+    return view('footer.terms_and_condition');
+})->name("terms");
+
+Route::get('/about', function () {
+    return view('footer.about');
+})->name("about");
+
+Route::get('/press', function () {
+    return view('footer.press');
+})->name("press");
+
+Route::get('/faq', function () {
+    return view('footer.faq');
+})->name("faq");

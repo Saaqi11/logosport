@@ -1,7 +1,7 @@
 @extends("layouts.competition-main")
 @section("content")
     <div class="container">
-        <div class="row row-cols-2" style="margin-top: -70px">
+        <div class="row row-cols-2">
             <div class="col">
                 <h1>
                     Contests

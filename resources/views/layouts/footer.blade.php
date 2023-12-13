@@ -19,13 +19,13 @@
                             </div>
                             <ul class="ft-list">
                                 <li class="ft-list__items">
-                                    <a href="" class="ft-list__link">Use of terms</a>
+                                    <a href="{{ route('terms')}}" class="ft-list__link">Use of terms</a>
                                 </li>
                                 <li class="ft-list__items">
-                                    <a href="" class="ft-list__link">About our company</a>
+                                    <a href="{{ route('about')}}" class="ft-list__link">About our company</a>
                                 </li>
                                 <li class="ft-list__items">
-                                    <a href="" class="ft-list__link">Press</a>
+                                    <a href="{{ route('press')}}" class="ft-list__link">Press</a>
                                 </li>
                             </ul>
                         </div>
@@ -38,7 +38,7 @@
                                     <a href="" class="ft-list__link">News</a>
                                 </li>
                                 <li class="ft-list__items">
-                                    <a href="" class="ft-list__link">FAQ</a>
+                                    <a href="{{ route('faq')}}" class="ft-list__link">FAQ</a>
                                 </li>
                             </ul>
                         </div>

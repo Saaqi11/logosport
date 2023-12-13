@@ -1,0 +1,386 @@
+@media all and (max-width : 998px) {
+	.content {
+		margin-top: 5px
+	}
+
+	.general {
+		width: 700px;
+	}
+
+	.specific {
+		width: 700px;
+	}
+
+	.contractual {
+		width: 700px;
+	}
+}
+
+@media all and (max-width : 800px) {
+	.introduction-1 {
+		width: 700px;
+	}
+
+	.information {
+		width: 700px;
+	}
+
+	.founders {
+		width: 700px;
+	}
+
+	.designer img {
+		margin-left: 410px;
+
+	}
+
+	.designer p {
+		margin-left: 495px;
+	}
+
+	.designer span {
+		margin-left: 495px;
+	}
+}
+
+
+@media all and (max-width : 776px) {
+	.container .img {
+		
+		width: 700px;
+
+	}
+
+	.img img {
+		width: 100%;
+		height: 350px;
+		border-top-left-radius: 10px;
+		border-bottom-left-radius: 0px;
+		border-top-right-radius: 10px;
+	}
+
+	.text {
+		margin-left: 0px;
+		margin-top: 350px;
+		position: none;
+	}
+
+	.text-title {
+		margin-top: 350px;
+	}
+
+	.mb-p {
+		margin-top: 350px;
+		margin-bottom: 90px;
+	}
+
+	.general {
+		width: 600px;
+	}
+
+	.specific {
+		width: 600px;
+	}
+
+	.contractual {
+		width: 600px;
+	}
+
+	.introduction-1 {
+		width: 650px;
+	}
+
+	.information {
+		width: 650px;
+	}
+
+	.founders {
+		width: 650px;
+	}
+
+	.designer img {
+		margin-left: 360px;
+
+	}
+
+	.designer p {
+		margin-left: 445px;
+	}
+
+	.designer span {
+		margin-left: 445px;
+	}
+
+	.filter {
+		padding: 10px;
+	}
+
+	.filter li {
+		margin-right: 10px;
+	}
+
+	.filter li:last-child {
+		margin-right: 0px;
+	}
+
+	.cnt {
+		width: 550px;
+	}
+
+	.cnt img {
+		width: 550px;
+		height: 250px;
+	}
+
+	.description {
+		width: 407px;
+		margin-left: 0px;
+	}
+
+	.description h3 {
+		margin-top: 10px;
+	}
+
+	.dol {
+		width: 240px;
+	}
+
+	.icons .fas {
+		margin-left: 260px;
+		margin-top: 18px;
+	}
+
+	.icons .far {
+		margin-top: 16px;
+		margin-left: 280px;
+	}
+
+	.lmt {
+		margin-top: 22px;
+	}
+
+	.mt {
+		margin-top: 56px;
+	}
+
+	.wallet-title button {
+		display: none;
+	}
+
+	#one-bill {
+		display: none;
+	}
+
+}
+
+@media all and (max-width : 480px) {
+	.container .img {
+		
+		width: 450px;
+
+	}
+
+	.img img {
+		width: 100%;
+		height: 200px;
+		border-top-left-radius: 10px;
+		border-bottom-left-radius: 0px;
+		border-top-right-radius: 10px;
+	}
+
+	.text {
+		margin-left: 0px;
+		margin-top: 200px;
+		position: none;
+	}
+
+	.text-title {
+		margin-top: 200px;
+	}
+
+	.mb-p {
+		margin-top: 200px;
+		margin-bottom: 90px;
+	}
+
+	.general {
+		width: 400px;
+	}
+
+	.specific {
+		width: 400px;
+	}
+
+	.contractual {
+		width: 400px;
+	}
+
+	.introduction-1 {
+		width: 400px;
+	}
+
+	.information {
+		width: 400px;
+	}
+
+	.founders {
+		width: 400px;
+	}
+
+	.designer img {
+		margin-left: 0px;
+		margin-top: 0px;
+
+	}
+
+	.designer p {
+		margin-left: 90px;
+		margin-top: 100px;
+	}
+
+	.designer span {
+		margin-left: 90px;
+		margin-top: 100px;
+	}
+
+/*	фильтр*/
+
+.buton button {
+	float: left;
+	margin-top: 90px;
+	margin-left: -240px;
+}
+
+.filter {
+	padding: 10px;
+	background: none;
+}
+
+.filter span {
+	font-size: 10px;
+
+}
+
+.filter ul {
+	display: inline-block;
+	float: left;
+}
+
+.filter li {
+	display: inline-block;
+	
+}
+
+.filter li {
+	margin-right: 10px;
+}
+
+.filter li a {
+	font-size: 12px;
+}
+
+.filter li:last-child {
+	margin-right: 0px;
+	display: none;
+}
+
+.cnt {
+	width: 400px;
+}
+
+.cnt img {
+	width: 400px;
+	height: 200px;
+}
+
+.description {
+	width: 300px;
+	margin-left: 0px;
+	height: 200px;
+}
+
+.description h3 {
+	margin-top: 10px;
+	font-size: 15px;
+}
+
+.dol {
+	width: 140px;
+	height: 200px;
+}
+
+.dol h2 {
+	margin-top: 130px;
+}
+
+.dol p {
+	margin-top: 160px;
+}
+
+.icons .fas {
+	margin-left: 200px;
+	margin-top: 15px;
+}
+
+.icons .far {
+	margin-top: 14px;
+	margin-left: 220px;
+}
+
+.lmt {
+	margin-top: 22px;
+}
+
+.mt {
+	margin-top: 56px;
+}
+
+.fltr-item button {
+	width: 400px;
+	margin-top: 19px;
+}
+
+.fltr-down {
+	
+}
+
+.default button {
+	margin-left: -50px;
+}
+
+.min {
+	width: 170px;
+}
+
+.max {
+	margin-left: -10px;
+	width: 170px;
+}
+
+.dubble-btn {
+	width: 400px;
+}
+
+.dubble-btn .open {
+	width: 200px;
+	display: inline-block;
+	float: left;
+}
+
+.dubble-btn .finish {
+	width: 200px;
+	display: inline-block;
+	float: left;
+	margin-left: 200px;
+	margin-top: -44px;
+}
+
+.limit {
+	display: inline-block;
+}
+
+.customer {
+	display: inline-block;
+	margin-left: 0px;
+}
+}

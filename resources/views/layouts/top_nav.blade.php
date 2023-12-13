@@ -7,7 +7,7 @@
                 <div id="test" class="overlay ">
                     <div class="overlayMenu my-d-flex">
                         <div class="logo">
-                            <a href="" class="logo__link">
+                            <a href="/" class="logo__link">
                                 <img src="{{ asset("images/logo.png") }}" alt="LogoSporte" class="logo__img">
                             </a>
                         </div>
@@ -64,6 +64,7 @@
                                     <ul>
                                       <li><a href="{{ route("user.general") }}">Profile</a></li>
                                       @php if(auth()->user()->hasRole('Designer')){ @endphp <li><a href="{{ route("user.cabinet.my-all-works") }}">Personal Cabinet</a></li> @php } @endphp
+                                      <li><a href="{{ route("support") }}">Support</a></li>
                                       <li><a href="{{ route("user.logout") }}">Logout</a></li>
                                     </ul>
                                 </details>

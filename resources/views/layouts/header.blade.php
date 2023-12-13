@@ -22,4 +22,6 @@
         <link rel="stylesheet" href="{{ asset("assets/css/dropzone-custom.css") }}">
         <link rel="stylesheet" href="{{ asset("assets/css/custom.css") }}">
     @endif
+
+    @stack('style')
 </head>
