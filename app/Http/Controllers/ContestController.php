@@ -135,7 +135,7 @@ class ContestController extends Controller
                 $imageType = $imageTypeAux[1];
                 $imageBase64 = base64_decode($imageParts[1]);
                 $fileName = "contest_" . Auth::id() . "_" . time() . '.' . $imageType;
-                $imagePath = public_path() . "/" .$userAdsImagesBasePath . $fileName;
+                $imagePath = public_path() . "/" . $userAdsImagesBasePath . $fileName;
 
                 File::put($imagePath, $imageBase64);
                 $media->src = $userAdsImagesBasePath . $fileName;
@@ -207,7 +207,7 @@ class ContestController extends Controller
         $inputs = [];
         $inputs['style_json'] = json_encode($request->only(['style']));
         $inputs["user_id"] = \auth()->user()->id;
-        $inputs["contest_id"] = (int)$id;
+        $inputs["contest_id"] = (int) $id;
         ContestStyle::create($inputs);
         $this->updateContestScore($id, 60);
         return redirect()->route("customer.contest.brief", $id)->with("success", "The style of contest has been saved!");
@@ -250,7 +250,7 @@ class ContestController extends Controller
                     File::makeDirectory($userAttachmentPublicPath, 0755, true);
                 }
                 $userAttachmentPath = "/contests-attachments/" . Auth::id() . "/" . $request->doc_file->getClientOriginalName();
-//                dd($request->doc_file->getClientOriginalName());
+                //                dd($request->doc_file->getClientOriginalName());
 //                $filePath = Storage::disk('local')->put($userAttachmentPath, $request->doc_file);
                 File::put($userAttachmentPublicPath . $request->doc_file->getClientOriginalName(), $request->doc_file);
                 $inputs["doc_file"] = $userAttachmentPath;
@@ -268,16 +268,39 @@ class ContestController extends Controller
      * @param $id
      * @return View
      */
-    public function condition($id): View
+    public function condition($id, Request $request): View
     {
-        $users = User::with("works.reactions", "reactions")->whereHas(
-            'roles', function ($q) {
-            $q->where('name', 'Designer');
-        })->orderBy("id", "Desc")->take(5)->get();
+        $place = $request->input('place') ?? '';
+        $search = $request->input('name_search') ?? '';
+
+        $users = User::with([
+            'works' => function ($query) use ($place) {
+                // Add your condition for the works
+                if ($place != '') {
+                    $query->where('place', $place);
+                }
+            },
+            "getPositionWorks.reactions",
+            "reactions"
+        ])->whereHas(
+                'roles',
+                function ($q) {
+                    $q->where('name', 'Designer');
+                }
+            );
+
+        if ($search != '') {
+            $users->where(function ($query) use ($search) {
+                $query->where('first_name', 'like', '%' . $search . '%')
+                    ->orWhere('last_name', 'like', '%' . $search . '%');
+            });
+        }
+
+        $users = $users->orderBy("id", "Desc")->take(5)->get();
 
         $contest = Contest::find($id);
 
-        return \view($this->contestSteps . "condition", compact("id", "users", "contest"));
+        return \view($this->contestSteps . "condition", compact("id", "users", "contest", "place", "search"));
     }
 
     /**
@@ -386,7 +409,7 @@ class ContestController extends Controller
             DB::raw('(SELECT COUNT(*) FROM works WHERE contest_id = contests.id) as total_works'),
             DB::raw('(SELECT COUNT(*) FROM works WHERE contest_id = contests.id AND status = 1) as selected_works')
         )
-            ->where('user_id',$user_id)
+            ->where('user_id', $user_id)
             ->where('status', '!=', 3)
             ->where('status', '!=', 4)
             ->get();
@@ -435,8 +458,8 @@ class ContestController extends Controller
                 'contests.is_paid',
                 'media.src as contest_image',
                 DB::raw('(SELECT COUNT(*) FROM work_participants WHERE work_participants.contest_id = contests.id) as participants'),
-                DB::raw('(SELECT COUNT(*) FROM work_participants WHERE work_participants.designer_user_id = '.Auth::id().' AND work_participants.contest_id = contests.id) as is_participated'),
-                DB::raw('(SELECT COUNT(*) FROM favourite_contests WHERE favourite_contests.user_id = '.Auth::id().' AND favourite_contests.contest_id = contests.id AND favourite_contests.status = 1) as is_favourite')
+                DB::raw('(SELECT COUNT(*) FROM work_participants WHERE work_participants.designer_user_id = ' . Auth::id() . ' AND work_participants.contest_id = contests.id) as is_participated'),
+                DB::raw('(SELECT COUNT(*) FROM favourite_contests WHERE favourite_contests.user_id = ' . Auth::id() . ' AND favourite_contests.contest_id = contests.id AND favourite_contests.status = 1) as is_favourite')
             )
                 ->selectRaw("CONCAT(users.first_name,  ' ', users.last_name) as name")
                 ->join("users", 'contests.user_id', 'users.id')
@@ -456,13 +479,13 @@ class ContestController extends Controller
                 $query->where('contests.business_level', 'like', '%' . $request->get('business_level') . '%');
             }
             if (!empty($request->get('contest_price'))) {
-                $query->where('contests.contest_price', '>',  (float)$request->get('contest_price'));
+                $query->where('contests.contest_price', '>', (float) $request->get('contest_price'));
             }
             if (!empty($request->get('status'))) {
-                if ((int)$request->get('status') === 2 ) {
-                    $query->where('contests.status', '<=',(int)$request->get('status'));
+                if ((int) $request->get('status') === 2) {
+                    $query->where('contests.status', '<=', (int) $request->get('status'));
                 } else {
-                    $query->where('contests.status', (int)$request->get('status'));
+                    $query->where('contests.status', (int) $request->get('status'));
                 }
             }
             $query->where('contests.status', '!=', 3);
@@ -483,39 +506,39 @@ class ContestController extends Controller
             );
 
             return DataTables::of($query)
-                ->addColumn("html", function($row) {
+                ->addColumn("html", function ($row) {
                     $paymentStatus = $row->is_paid ? "Paid" : "Unpaid";
-                    $participatedHtml = $row->is_participated ? "<span class='participated-span'>Participated</span>" : '<a href="'.route('contest.participate', ['contest_id' => $row->contest_id]).'" class="button" >Participate</a>';
+                    $participatedHtml = $row->is_participated ? "<span class='participated-span'>Participated</span>" : '<a href="' . route('contest.participate', ['contest_id' => $row->contest_id]) . '" class="button" >Participate</a>';
                     $isFavourite = $row->is_favourite ? "fas" : "far";
                     return '
                     <div class="row">
                         <div class="col">
-                            <img src="'.$row->contest_image.'" alt="">
+                            <img src="' . $row->contest_image . '" alt="">
                         </div>
                         <div class="col-6">
                             <div class="description">
                                 <div class="contest-heading">
                                     <div class="contest-title">
                                         <h3>
-                                            <a href="'.route("competition.show", [$row->contest_id]).'">'.$row->company_name.'</a>
-                                             &nbsp; <i class="'.$isFavourite.' fa-star" data-id="'.$row->contest_id.'"></i>
+                                            <a href="' . route("competition.show", [$row->contest_id]) . '">' . $row->company_name . '</a>
+                                             &nbsp; <i class="' . $isFavourite . ' fa-star" data-id="' . $row->contest_id . '"></i>
                                         </h3>
                                     </div>
                                 </div>
                                 <div class="lmt">
                                     <p class="limit">
-                                        Time limit: <span>'.$row->duration.' day(s)</span>
+                                        Time limit: <span>' . $row->duration . ' day(s)</span>
                                     </p>
                                     <p class="customer">
-                                        Customer: <span>'.$row->name.'</span>
+                                        Customer: <span>' . $row->name . '</span>
                                     </p>
                                     <p class="customer">
-                                        Participants: <span>'.$row->participants.'</span>
+                                        Participants: <span>' . $row->participants . '</span>
                                     </p>
                                 </div>
                                 <div class="ftr">
                                     <p class="smal">
-                                        '.$row->business_level.'
+                                        ' . $row->business_level . '
                                     </p>
                                 </div>
                             </div>
@@ -523,12 +546,12 @@ class ContestController extends Controller
                         <div class="col">
                             <div class="dol">
                                 <h2>
-                                    $'.$row->contest_price.'
+                                    $' . $row->contest_price . '
                                 </h2>
                                 <p class="payment-status">
-                                    Price('.$paymentStatus.')
+                                    Price(' . $paymentStatus . ')
                                 </p>
-                                <p class="participation-para">'.$participatedHtml.'</p>
+                                <p class="participation-para">' . $participatedHtml . '</p>
                             </div>
                         </div>
                     </div>
@@ -580,8 +603,8 @@ class ContestController extends Controller
         if (!empty($favouriteContest)) {
             $favouriteContest->status = $status;
             $favouriteContest->update();
-            $response['status'] = (int)$status === 1 ? 1 : 0;
-            $response['message'] = (int)$status === 1 ? "Contest marked as a favourite" : "Contest unmarked as a favourite";
+            $response['status'] = (int) $status === 1 ? 1 : 0;
+            $response['message'] = (int) $status === 1 ? "Contest marked as a favourite" : "Contest unmarked as a favourite";
         } else {
             $newFavouriteContest = new FavouriteContest();
             $newFavouriteContest->user_id = Auth::id();

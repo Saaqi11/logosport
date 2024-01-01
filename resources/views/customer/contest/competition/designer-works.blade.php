@@ -156,7 +156,10 @@
                         {{--                            </a> --}}
                         {{--                        </div> --}}
                     </div>
+                    <div class="slider-info"></div>
                 </div>
+
+                
                 <!-- Bootstrap Modal for Confirmation -->
                 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
                     aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">

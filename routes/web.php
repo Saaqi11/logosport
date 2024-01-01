@@ -46,6 +46,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get("/user-logout", [UserController::class, 'logout'])->name("user.logout");
 
     Route::group(['middleware' => 'verified-user'], function () {
+        Route::get("/works", [CustomerController::class, 'getWorks'])->name('get.works');
+        Route::get("/designers", [CustomerController::class, 'getDesignerWorks'])->name('get.designers');
+
         //User
         Route::prefix('user')->name('user.')->group(function () {
             Route::post("/type", [UserController::class, 'userType'])->name("type");

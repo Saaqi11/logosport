@@ -70,6 +70,11 @@ return [
             'root'   => public_path() . '/message/',
         ],
 
+        'support_uploads' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/support/',
+        ],
+
     ],
 
     /*

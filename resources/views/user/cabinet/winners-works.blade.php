@@ -76,6 +76,10 @@
             </div>
         @endforelse
     </div>
+
+    <div class="slider-info"></div>
+
+    
     {{-- <div class="row mb-p">
         <div class="col-lg-12 d-flex justify-content-center align-items-center">
             <div class="page">
@@ -98,7 +102,7 @@
             </div>
         </div>
     </div> --}}
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -149,5 +153,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection

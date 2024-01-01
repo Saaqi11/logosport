@@ -350,8 +350,12 @@ class CompetitionController extends Controller
     {
         $work = Work::with("files", "reactions", "totalWorks", "designer", "contest.customer")->where("id", $id)->first();
         if (!empty($work)) {
-            return response()->json($work);
+            $sliderContent = view('user.cabinet.slider-info', compact('work'))->render();
+            return response()->json(
+                ['sliderContent' => $sliderContent]
+            );
         }
+
         return response()->json(null);
     }
 

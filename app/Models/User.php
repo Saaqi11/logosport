@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->hasMany(Work::class, "designer_user_id", "id")->take(5);
     }
 
+    public function getPositionWorks (): HasMany
+    {
+        return $this->hasMany(Work::class, "designer_user_id", "id")->whereIn('place', [1,2,3]);
+    }
+
     /**
      * count all reactions
      * @return HasMany

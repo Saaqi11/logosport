@@ -82,10 +82,10 @@
             </div>
         </div>
     </div> --}}
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="slider-info"></div>
+        {{-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <!-- Modal Header -->
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Work Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -93,18 +93,15 @@
                     </button>
                 </div>
 
-                <!-- Modal Body -->
                 <div class="modal-body">
                     <div class="container">
                         <div class="row">
                             <div class="col-8">
                                 <input type="hidden" id="appURL" value="{{ env("APP_URL") }}">
-                                <!-- Carousel -->
                                 <div id="workCarousel" class="carousel slide" data-ride="carousel">
                                 </div>
                             </div>
                             <div class="col-4">
-                                <!-- Card -->
                                 <div class="card">
                                     <div class="card-header">Designer Detail</div>
                                     <div class="card-body">
@@ -130,8 +127,9 @@
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection

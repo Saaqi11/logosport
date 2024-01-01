@@ -70,25 +70,9 @@
                 </span>
             </div>
         </div>
-        <form class="row mb">
+        <form class="row mb" action="{{ route('customer.contest.condition', ['id' => $id]) }}" method="GET">
             @csrf
-            <div class="col-6 col-lg-2 col-md-6 col-sm-6">
-                <div class="wrp-brief">
-                    <span class="title-brief">
-                        Works
-                    </span>
-                    <div class="select-wrapper">
-                        <i class="fas fa-angle-down"></i>
-                        <select name="works" class="select-brief" id="works">
-                            <option selected disabled>Select any option</option>
-                            <option value="1">1+</option>
-                            <option value="10">10+</option>
-                            <option value="50">50+</option>
-                            <option value="100">100+</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+            
             <div class="col-6 col-lg-3 col-md-6 col-sm-6">
                 <div class="wrp-brief">
                     <span class="title-brief">
@@ -96,33 +80,16 @@
                     </span>
                     <div class="select-wrapper">
                         <i class="fas fa-angle-down"></i>
-                        <select name="winners" class="select-brief" id="winners">
-                            <option selected disabled>Select any option</option>
-                            <option value="1">1+</option>
-                            <option value="10">10+</option>
-                            <option value="50">50+</option>
-                            <option value="100">100+</option>
+                        <select name="place" class="select-brief" id="winners">
+                            <option value="" {{ $place == '' ? 'selected' : '' }}>Select any option</option>
+                            <option value="1" {{ $place == 1 ? 'selected' : '' }}>1st</option>
+                            <option value="2" {{ $place == 2 ? 'selected' : '' }}>2nd</option>
+                            <option value="3" {{ $place == 3 ? 'selected' : '' }}>3rd</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-lg-3 col-md-6 col-sm-6">
-                <div class="wrp-brief">
-                    <span class="title-brief">
-                        Liked
-                    </span>
-                    <div class="select-wrapper">
-                        <i class="fas fa-angle-down"></i>
-                        <select name="likes" class="select-brief" id="likes">
-                            <option selected disabled>Select any option</option>
-                            <option value="1">1+</option>
-                            <option value="10">10+</option>
-                            <option value="50">50+</option>
-                            <option value="100">100+</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+            
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="wrp-brief">
                     <span class="title-brief">
@@ -131,11 +98,16 @@
                     <div class="select-wrapper">
                         <i class="fas fa-search"></i>
                         <input type="text" name="name_search" class="input-brief input-brief--search"
-                            placeholder="Search designer by name" id="designer_name">
+                            placeholder="Search designer by name" id="designer_name" value="{{ $search }}">
                     </div>
                 </div>
             </div>
+        
+            <div class="col-lg-5" style="margin-top: 19px; text-align: end">
+                <button type="submit" class="btn btn-success" style="padding: 10px 28px;">Search</button>
+            </div>
         </form>
+        
     
         <!-- User detail -->
         @if (!empty($users))

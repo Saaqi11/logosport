@@ -97,7 +97,11 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="slider-info"></div>
+
+
+    {{-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -148,5 +152,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
