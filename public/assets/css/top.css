@@ -406,3 +406,10 @@ input[type=range]:focus {
 .pagination .active {
     @apply bg-blue-500 text-white;
 }
+
+.medal-count {
+    position: absolute;
+    top: -5px;
+    color: green;
+    font-size: 12px;
+}

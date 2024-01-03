@@ -30,6 +30,45 @@
             <section class="container">
                 <div class="brief__container">
                     <div class="brief__round">
+                        <div class="brief__card-grid-layout mt-30  grid">
+                            @if (!empty($works))
+                                @foreach ($works as $work)
+                                    @php
+                                        $imagePath = '';
+                                        foreach ($work->files as $file) {
+                                            if (!empty($file->favWork) && $file->favWork->work_media_file_id === $file->id) {
+                                                $imagePath = asset($file->src);
+                                            }
+                                        }
+                                    @endphp
+                                    <div class="card-view">
+                                        <div class="card-view__top">
+                                            <a class="card-view__image-ibg winners-slider-images-view"
+                                                data-id="{{ $work->id }}">
+                                                <picture>
+                                                    <img src="{{ $imagePath !== '' ? $imagePath : asset($work->files[0]->src) }}"
+                                                        alt="">
+                                                </picture>
+                                            </a>
+                                        </div>
+                                        <div class="card-view__info">
+                                            <div class="card-view__info-author">
+                                                <div class="card-view__name">
+                                                    {{ $work->contest->company_name }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                @endforeach
+                            @else
+                                <h2>There is not winners available right now.</h2>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="brief__container">
+                    {{-- <div class="brief__round">
                         <br>
                         <div class="brief__sliders sliders-brief">
                             @if (count($works) > 0)
@@ -57,7 +96,7 @@
                                 <h2>There is not any work. </h2>
                             @endif
                         </div>
-                    </div>
+                    </div> --}}
 
                     <br>
                     <br>

@@ -45,9 +45,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/contest-listing', [ContestController::class, 'contestListing'])->name('contest.listing');
     Route::get("/user-logout", [UserController::class, 'logout'])->name("user.logout");
 
+   
     Route::group(['middleware' => 'verified-user'], function () {
-        Route::get("/works", [CustomerController::class, 'getWorks'])->name('get.works');
-        Route::get("/designers", [CustomerController::class, 'getDesignerWorks'])->name('get.designers');
 
         //User
         Route::prefix('user')->name('user.')->group(function () {
@@ -164,12 +163,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/notification/{id}', [CustomerController::class, 'notifcation'])->name('notification.get');
     Route::get('/notification/all/{id}', [CustomerController::class, 'allNotification'])->name('notification.all');
 
-    Route::get('/support', function () {
+    
+    Route::get('/contact-us', function () {
         return view('support');
     })->name('support');
 
     Route::post('/support/submit', [SupportController::class, 'submitForm'])->name('submit.support');
-
 });
 
 
@@ -192,3 +191,6 @@ Route::get('/press', function () {
 Route::get('/faq', function () {
     return view('footer.faq');
 })->name("faq");
+
+Route::get("/works", [CustomerController::class, 'getWorks'])->name('get.works');
+Route::get("/designers", [CustomerController::class, 'getDesignerWorks'])->name('get.designers');

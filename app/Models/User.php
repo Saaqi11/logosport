@@ -57,6 +57,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(Work::class, "designer_user_id", "id")->whereIn('place', [1,2,3]);
     }
+    
+    public function firstPosition()
+    {
+        return $this->hasMany(Work::class, "designer_user_id", "id")->where('place', 1);
+    }
+
+    public function secondPosition()
+    {
+        return $this->hasMany(Work::class, "designer_user_id", "id")->where('place', 2);
+    }
+
+    public function thirdPosition()
+    {
+        return $this->hasMany(Work::class, "designer_user_id", "id")->where('place', 3);
+    }
 
     /**
      * count all reactions

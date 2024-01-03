@@ -13,11 +13,11 @@
                         </div>
                         <nav class="menu">
                             <ul class="menu__list">
-                                <li class="menu__items">
-                                    <a href="{{ auth()->user() && route("get.works") ? route("get.works") : ''  }}" class="menu__link">works</a>
+                                <li class="menu__items active">
+                                    <a href="{{ route("get.works") }}" class="menu__link">works</a>
                                 </li>
                                 <li class="menu__items">
-                                    <a href="{{ auth()->user() && route("get.designers") ? route("get.designers") : '' }}" class="menu__link">designers</a>
+                                    <a href="{{ route("get.designers")}}" class="menu__link">designers</a>
                                 </li>
                                 <li class="menu__items">
                                     <a href="{{ auth()->user() && auth()->user()->hasRole("Customer") ? route("customer.contest.view") : route("contest.listing") }}" class="menu__link">contests</a>

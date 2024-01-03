@@ -68,7 +68,7 @@ class UserController extends Controller
             "user_type" => "required",
             "first_name" => "required",
             "last_name" => "required",
-            "email"     => "required|email|unique:users",
+            "email" => "required|email|unique:users",
             "username" => "unique:users,username",
             "password" => "required_with:confirm_password|same:confirm_password",
             "confirm_password" => "required",
@@ -85,7 +85,7 @@ class UserController extends Controller
             $user->dribble = $request->dribble;
             $user->other = $request->other;
         }
-        $user->code = rand(1000,9999);
+        $user->code = rand(1000, 9999);
         $user->code_expires_at = Carbon::now()->addHour();
         $this->sendVerificationEmail($user);
         $user->save();
@@ -94,7 +94,7 @@ class UserController extends Controller
         Auth::attempt($credentials);
         if ($request->user_type === "Designer") {
             $user->assignRole("Designer");
-        } else if($request->user_type === "Customer") {
+        } else if ($request->user_type === "Customer") {
             $user->assignRole("Customer");
         }
         return redirect()->route("verify-user")->with("success", "Your account has been created!");
@@ -141,7 +141,7 @@ class UserController extends Controller
             $user->assignRole("Designer");
             $user->user_type = "Designer";
             $route = "designer.dashboard";
-        } else if($request->user_type === "Customer") {
+        } else if ($request->user_type === "Customer") {
             $user->assignRole("Customer");
             $user->user_type = "Customer";
             $route = "customer.contest.price";
@@ -155,12 +155,12 @@ class UserController extends Controller
      * @param $type
      * @return RedirectResponse | View
      */
-    public function handleSocialCallback($type): RedirectResponse | View
+    public function handleSocialCallback($type): RedirectResponse|View
     {
         try {
             $user = Socialite::driver($type)->user();
             $findUser = User::where('email', $user->email)->first();
-            if($findUser){
+            if ($findUser) {
                 Auth::login($findUser);
             } else {
                 $name = explode(" ", $user->name);
@@ -221,7 +221,7 @@ class UserController extends Controller
         ];
         if (!empty($id)) {
             $cities = City::where("country_id", $id)->get();
-            if ($cities->count() > 0){
+            if ($cities->count() > 0) {
                 $response = [
                     "message" => "Cities found for this country",
                     "cities" => $cities
@@ -244,10 +244,11 @@ class UserController extends Controller
     public function updateGeneral(Request $request): RedirectResponse
     {
         $request->validate([
-            'email' => 'unique:users,email,'.Auth::id(),
-            'username' => 'unique:users,username,'.Auth::id(),
+            'email' => 'unique:users,email,' . Auth::id(),
+            'username' => 'unique:users,username,' . Auth::id(),
             "first_name" => "required",
             "last_name" => "required",
+            "profile_image" => "image|mimes:jpeg,png,jpg,gif|max:2048",
         ]);
         $inputs = $request->all();
         unset($inputs["_token"]);
@@ -256,15 +257,30 @@ class UserController extends Controller
             $user->first_name = $inputs['first_name'];
             $user->last_name = $inputs['last_name'];
             $user->username = $inputs['username'];
-            $user->country = $inputs['country'];
-            $user->city = $inputs['city'];
+            $user->country = $inputs['country'] ?? '';
+            $user->city = $inputs['city'] ?? '';
             $user->behance = @$inputs['behance'];
-            $user->about_me = $inputs['about_me'];
-            $user->gender = $inputs['gender'];
-            $user->telephone = $inputs['telephone'];
+            $user->about_me = $inputs['about_me'] ?? '';
+            $user->gender = $inputs['gender'] ?? '';
+            $user->telephone = $inputs['telephone'] ?? '';
             $user->email = $inputs['email'];
             $user->dribble = @$inputs['dribble'];
             $user->other = @$inputs['other'];
+
+            if ($request->hasFile('profile_image')) {
+                $profileImage = $request->file('profile_image');
+
+                // Store the image and update the user's profile_image field
+                $profileAttachment = public_path("/profile_image/");
+
+                //create dynamic directory
+                if (!File::isDirectory($profileAttachment)) {
+                    File::makeDirectory($profileAttachment, 0755, true);
+                }
+                $user->profile_image = Storage::disk('profile_upload')->put($request->id, $profileImage);
+
+            }
+
             $user->update();
         }
 
@@ -306,15 +322,16 @@ class UserController extends Controller
      * show user notifications
      * @return View
      */
-    public function notification(): View {
+    public function notification(): View
+    {
         $notification = Notification::where("user_id", Auth::id())->first();
         $notificationArray = [];
         if (!empty($notification)) {
             $notificationArray = json_decode($notification->notifications, true);
-            $notificationArray["active"] = explode(",",$notificationArray["active"]);
-            $notificationArray["inactive"] = explode(",",$notificationArray["inactive"]);
-            unset($notificationArray["active"][count($notificationArray["active"])-1]);
-            unset($notificationArray["inactive"][count($notificationArray["inactive"])-1]);
+            $notificationArray["active"] = explode(",", $notificationArray["active"]);
+            $notificationArray["inactive"] = explode(",", $notificationArray["inactive"]);
+            unset($notificationArray["active"][count($notificationArray["active"]) - 1]);
+            unset($notificationArray["inactive"][count($notificationArray["inactive"]) - 1]);
         }
         return \view("user.notification", compact("notificationArray"));
     }
@@ -324,7 +341,8 @@ class UserController extends Controller
      * @param Request $request
      * @return string
      */
-    public function updateNotification(Request $request): string {
+    public function updateNotification(Request $request): string
+    {
         $notification = Notification::where("user_id", Auth::id())->first();
         $response = "";
         if (!empty($notification) && $notification->count() > 0) {
@@ -345,7 +363,8 @@ class UserController extends Controller
      * Show verification module
      * @return View
      */
-    public function verification(): View {
+    public function verification(): View
+    {
         $countries = Country::all();
         $verification = Verification::where("user_id", Auth::id())->first();
         return \view("user.verification", compact("verification", "countries"));
@@ -378,7 +397,7 @@ class UserController extends Controller
         $verification->document_type = $inputs["document_type"];
         $verification->document_file_json = json_encode($documentArr);
         $verification->save();
-        return  redirect()->route("user.general")->with("success", "Your documents has been submitted for approval");
+        return redirect()->route("user.general")->with("success", "Your documents has been submitted for approval");
     }
 
     /**
@@ -388,13 +407,13 @@ class UserController extends Controller
      */
     private function imageUpload($image): string
     {
-        $userAdsImagesBasePath = "/storage/app/public/images/verification/".Auth::id()."/";
+        $userAdsImagesBasePath = "/storage/app/public/images/verification/" . Auth::id() . "/";
         //create dynamic directory
         if (!File::isDirectory($userAdsImagesBasePath)) {
             File::makeDirectory($userAdsImagesBasePath, 0755, true);
         }
-        $fileName = "contest_".Auth::id()."_".time().'.'.$image->getClientOriginalName();
-        $imagePath = $userAdsImagesBasePath.$fileName;
+        $fileName = "contest_" . Auth::id() . "_" . time() . '.' . $image->getClientOriginalName();
+        $imagePath = $userAdsImagesBasePath . $fileName;
         Storage::disk('local')->put($imagePath, $image);
         return $imagePath;
     }
@@ -404,9 +423,10 @@ class UserController extends Controller
     /**
      * @param $user
      */
-    private function sendVerificationEmail($user) {
+    private function sendVerificationEmail($user)
+    {
         $user = json_decode(json_encode($user), true);
-        $user['name'] = $user['first_name']." ".$user['last_name'];
+        $user['name'] = $user['first_name'] . " " . $user['last_name'];
         // send email with the template
         try {
             Mail::send('emails.user-verification', $user, function ($message) use ($user) {
@@ -441,7 +461,7 @@ class UserController extends Controller
         if (Auth::check()) {
             $user = User::where('email', Auth::user()->email)->first();
             if (!Auth::user()->email_verified_at) {
-                if ($user->code_expires_at > Carbon::now()){
+                if ($user->code_expires_at > Carbon::now()) {
                     if ($user->code === $request->code) {
                         $user->email_verified_at = date('Y-m-d H:i:s');
                         $user->code = null;

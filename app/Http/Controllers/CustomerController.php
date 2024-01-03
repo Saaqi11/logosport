@@ -41,7 +41,7 @@ class CustomerController extends Controller
      */
     public function getWorks(): View|RedirectResponse
     {
-        $works = Work::with("files.favWork", "reactions", "totalWorks")->whereIn('place', [1, 2, 3])->paginate(3);
+        $works = Work::with("files.favWork", "reactions", "totalWorks")->whereIn('place', [1, 2, 3])->paginate(8);
         return \view("customer.works.index", compact("works"));
 
     }
@@ -65,7 +65,7 @@ class CustomerController extends Controller
                 function ($q) {
                     $q->where('name', 'Designer');
                 }
-            )->orderBy("id", "Desc")->paginate(3);
+            )->orderBy("id", "Desc")->paginate(8);
 
         return \view("designer.works.index", compact("users"));
 

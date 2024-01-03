@@ -22,3 +22,4 @@ yarn-error.log
 /public/images/contests/*
 fileupload.text
 /public/message/
+/public/profile_image/

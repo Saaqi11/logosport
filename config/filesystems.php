@@ -75,6 +75,11 @@ return [
             'root'   => public_path() . '/support/',
         ],
 
+        'profile_upload' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/profile_image/',
+        ],
+
     ],
 
     /*

@@ -1,7 +1,7 @@
 @php
-    $sectionClass = str_contains(url()->current(), 'cabinet') ? 'profile' : '';
-    $sectionClass = str_contains(url()->current(), 'contest') ? 'contest' : $sectionClass;
+    $sectionClass = str_contains(url()->current(), 'contest') ? 'contest' : '';
     $sectionClass = str_contains(url()->current(), 'designer-works') ? 'profile' : $sectionClass;
+    $sectionClass = str_contains(url()->current(), 'cabinet') ? 'profile' : $sectionClass;
 @endphp
 <!DOCTYPE html>
 <html>

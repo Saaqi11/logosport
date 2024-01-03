@@ -13,8 +13,16 @@
         </span>
         </div>
     </div>
-    <form action="{{ route("user.general.update") }}" class="setting-gnr row" method="post">
+    <form action="{{ route("user.general.update") }}" class="setting-gnr row" method="post" enctype="multipart/form-data">
         @csrf
+        <div class="col-lg-12 col-md-12 col-sm-12 d-flex ">
+            <div class="col-lg-8 col-md-6 col-sm-12 d-flex text-center">
+                <label for="profile-image" style="cursor: pointer">
+                    <img src="{{ $user->profile_image ? asset('profile_image/' . $user->profile_image) : asset('images/img/other-img/avatar.jpg') }}" alt="profile" style="width: 40%;">
+                    <input type="file" name="profile_image" id="profile-image" hidden>
+                </label>
+            </div>
+        </div>
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="wrp-brief">
                 <span class="title-brief">
