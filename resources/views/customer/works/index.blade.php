@@ -54,7 +54,10 @@
                                         <div class="card-view__info">
                                             <div class="card-view__info-author">
                                                 <div class="card-view__name">
-                                                    {{ $work->contest->company_name }}
+                                                    <a
+                                                        href="{{ route('designer-works', ['position' => 'all', 'user' => $work->designer->username]) }}">
+                                                        {{ $work->contest->company_name }}
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>

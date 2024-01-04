@@ -1,25 +1,26 @@
-@extends("layouts.main")
-@section("content")
+@extends('layouts.main')
+@section('content')
     <style>
         .form-check {
             left: 15px;
         }
     </style>
-    @include("user.header")
+    @include('user.header')
     <div class="row">
         <div class="col-12">
-        <span class="cnst-subtitle">
-            General
-        </span>
+            <span class="cnst-subtitle">
+                General
+            </span>
         </div>
     </div>
-    <form action="{{ route("user.general.update") }}" class="setting-gnr row" method="post" enctype="multipart/form-data">
+    <form action="{{ route('user.general.update') }}" class="setting-gnr row" method="post" enctype="multipart/form-data">
         @csrf
         <div class="col-lg-12 col-md-12 col-sm-12 d-flex ">
-            <div class="col-lg-8 col-md-6 col-sm-12 d-flex text-center">
+            <div class="col-lg-8 col-md-6 col-sm-12 d-flex text-center justify-content-center">
                 <label for="profile-image" style="cursor: pointer">
-                    <img src="{{ $user->profile_image ? asset('profile_image/' . $user->profile_image) : asset('images/img/other-img/avatar.jpg') }}" alt="profile" style="width: 40%;">
-                    <input type="file" name="profile_image" id="profile-image" hidden>
+                    <img id="profile-image-preview" src="{{ $user->profile_image ? asset('profile_image/' . $user->profile_image) : asset('images/img/other-img/avatar.jpg') }}"
+                        alt="profile">
+                    <input type="file" name="profile_image" id="profile-image" hidden onchange="previewImage()">
                 </label>
             </div>
         </div>
@@ -50,9 +51,10 @@
                     <i class="fas fa-angle-down"></i>
                     <select name="country" class="select-brief" id="country">
                         <option value="" selected="" disabled="" hidden="">Please select any</option>
-                        @if(!empty($countries))
-                            @foreach($countries as $country)
-                                <option value="{{ $country->id }}" {{ $country->id == $user->country ? "selected" : "" }}>{{ $country->name }}</option>
+                        @if (!empty($countries))
+                            @foreach ($countries as $country)
+                                <option value="{{ $country->id }}" {{ $country->id == $user->country ? 'selected' : '' }}>
+                                    {{ $country->name }}</option>
                             @endforeach
                         @endif
                     </select>
@@ -65,15 +67,16 @@
                 <div class="select-wrapper">
                     <i class="fas fa-angle-down"></i>
                     <select name="city" class="select-brief" id="city">
-                        @if(!empty($user->city) && !empty($cities) && count($cities) > 0)
-                            @foreach($cities as $city)
-                                <option value="{{ $city->id }}" {{ $city->id == $user->city ? "selected" : ""}}>{{ $city->name }}</option>
+                        @if (!empty($user->city) && !empty($cities) && count($cities) > 0)
+                            @foreach ($cities as $city)
+                                <option value="{{ $city->id }}" {{ $city->id == $user->city ? 'selected' : '' }}>
+                                    {{ $city->name }}</option>
                             @endforeach
                         @endif
                     </select>
                 </div>
             </div>
-            @if(auth()->user()->hasRole("Designer"))
+            @if (auth()->user()->hasRole('Designer'))
                 <div class="wrp-brief">
                     <span class="title-brief">
                         Behance
@@ -95,19 +98,22 @@
                     Gender
                 </span>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gender" value="Male" {{ $user->gender === "Male" ? "checked" : "" }}>
+                    <input class="form-check-input" type="radio" name="gender" value="Male"
+                        {{ $user->gender === 'Male' ? 'checked' : '' }}>
                     <label class="form-check-label" for="flexRadioDefault1">
                         Male
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gender" value="Female" {{ $user->gender === "Female" ? "checked" : "" }}>
+                    <input class="form-check-input" type="radio" name="gender" value="Female"
+                        {{ $user->gender === 'Female' ? 'checked' : '' }}>
                     <label class="form-check-label" for="gender">
                         Female
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gender" value="I can not specified" {{ $user->gender === "I can not specified" ? "checked" : "" }}>
+                    <input class="form-check-input" type="radio" name="gender" value="I can not specified"
+                        {{ $user->gender === 'I can not specified' ? 'checked' : '' }}>
                     <label class="form-check-label" for="gender">
                         I can not specified
                     </label>
@@ -125,19 +131,21 @@
                 </span>
                 <input type="email" name="email" class="input-brief" value="{{ $user->email }}">
             </div>
-            @if(auth()->user()->hasRole("Designer"))
+            @if (auth()->user()->hasRole('Designer'))
                 <div class="wrp-brief">
                     <span class="title-brief">
                         Dribble
                     </span>
-                    <input type="text" name="dribble" class="designer-fields input-brief" value="{{ $user->dribble }}">
+                    <input type="text" name="dribble" class="designer-fields input-brief"
+                        value="{{ $user->dribble }}">
                     <span style="color: red" class="error-message"></span>
                 </div>
                 <div class="wrp-brief">
                     <span class="title-brief">
                         Other
                     </span>
-                    <input type="text" name="other" class="designer-fields input-brief" value="{{ $user->other }}">
+                    <input type="text" name="other" class="designer-fields input-brief"
+                        value="{{ $user->other }}">
                     <span style="color: red" class="error-message"></span>
                 </div>
             @endif
@@ -164,7 +172,7 @@
                     </p>
                     <div class="wrp-btn">
                         <button class="btn-cansel close-modal">Cancel</button>
-                        <form action="{{ route("user.delete") }}">
+                        <form action="{{ route('user.delete') }}">
                             <button class="btn-ok" type="submit">OK</button>
                         </form>
                     </div>
@@ -173,3 +181,26 @@
         </div>
     </div>
 @endsection
+
+@push('script')
+    <script>
+        function previewImage() {
+            var input = document.getElementById('profile-image');
+            console.log({ input });
+            var preview = document.getElementById('profile-image-preview');
+            var file = input.files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function() {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src =
+                    "{{ $user->profile_image ? asset('profile_image/' . $user->profile_image) : asset('images/img/other-img/avatar.jpg') }}";
+            }
+        }
+    </script>
+@endpush

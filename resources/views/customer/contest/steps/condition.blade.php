@@ -114,7 +114,9 @@
             @foreach ($users as $user)
                 <div class="row mb-p designer-block">
                     <div class="col-8 d-flex align-items-center justify-content-start">
-                        <img src="{{ asset('default-images/avatar.png') }}" alt="" class="profile-img">
+                        <img src="{{ asset('default-images/avatar.png') }}" alt="">
+                        <img src="{{ $user->profile_image ? asset('profile_image/' . $user->profile_image) : asset('images/img/other-img/avatar.jpg') }}"
+                                                alt="" class="profile-img">
                         <div class="profile-content">
                             <span class="profile-name" data-name="{{ $user->first_name . ' ' . $user->last_name }}">
                                 <a href="{{ route('designer-works', ['position' => 'all', 'user' => $user->username]) }}">

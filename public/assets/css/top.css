@@ -417,3 +417,11 @@ input[type=range]:focus {
 .nav_active a{
     color: green !important;
 }
+
+#profile-image-preview {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}

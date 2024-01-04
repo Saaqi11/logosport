@@ -12,7 +12,8 @@
                                 <div class="card-view__top">
                                     <a class="card-view__image-ibg winners-slider-images-view">
                                         <picture>
-                                            <img src="{{ $user->profile_image ? asset('profile_image/' . $user->profile_image) : asset('images/img/other-img/avatar.jpg') }}" alt="">
+                                            <img src="{{ $user->profile_image ? asset('profile_image/' . $user->profile_image) : asset('images/img/other-img/avatar.jpg') }}"
+                                                alt="">
                                         </picture>
                                     </a>
                                 </div>
@@ -20,7 +21,10 @@
 
                                     <div class="card-view__info-author">
                                         <div class="card-view__name">
-                                            {{ $user->first_name . ' ' . $user->last_name }}
+                                            <a
+                                                href="{{ route('designer-works', ['position' => 'all', 'user' => $user->username]) }}">
+                                                {{ $user->first_name . ' ' . $user->last_name }}
+                                            </a>
                                         </div>
 
                                     </div>

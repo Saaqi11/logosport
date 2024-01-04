@@ -39,9 +39,9 @@
                                         <div class=" avatar-info">
                                             <div class="avatar-info__image-ibg">
                                                 <picture>
-                                                    <source srcset="{{ asset('images/img/other-img/avatar.webp') }}"
+                                                    <source srcset="{{ $work->designer->profile_image ? asset('profile_image/' . $work->designer->profile_image) : asset('images/img/other-img/avatar.jpg') }}"
                                                         type="image/webp">
-                                                    <img src="{{ asset('images/img/other-img/avatar.png') }}"
+                                                    <img src="{{ $work->designer->profile_image ? asset('profile_image/' . $work->designer->profile_image) : asset('images/img/other-img/avatar.jpg') }}"
                                                         alt="">
                                                 </picture>
                                             </div>
@@ -102,10 +102,13 @@
                                                         @if (auth()->user()->user_type == 'Designer' && !$work->place && $work->designer_user_id == auth()->id())
                                                             <div class="prf-icon profile">
                                                                 <a class="icon">
-                                                                    <i class="fas fa-pencil-alt edit-file-work" data-item-id="{{ $file->id }}" data-toggle="modal" data-target="#update-image"></i>
+                                                                    <i class="fas fa-pencil-alt edit-file-work"
+                                                                        data-item-id="{{ $file->id }}"
+                                                                        data-toggle="modal" data-target="#update-image"></i>
                                                                 </a>
                                                                 <a class="icon">
-                                                                    <i class="fas fa-times delete-work" data-item-id="{{$file->id}}"></i>
+                                                                    <i class="fas fa-times delete-work"
+                                                                        data-item-id="{{ $file->id }}"></i>
                                                                 </a>
                                                             </div>
                                                         @endif
@@ -159,7 +162,7 @@
                     <div class="slider-info"></div>
                 </div>
 
-                
+
                 <!-- Bootstrap Modal for Confirmation -->
                 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
                     aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
@@ -197,19 +200,21 @@
                                             example
                                         </span>
                                         <span class="tippy-popup__example">
-                                            <img src="{{ asset("images/img/svg/logo2.svg") }}" alt="">
+                                            <img src="{{ asset('images/img/svg/logo2.svg') }}" alt="">
                                         </span>
                                     </span>
                                 </p>
                             </div>
-                            <form url="{{ url('/competition/update-work/1') }}" id="update-image-form" class="popup__form" method="post" enctype="multipart/form-data" data-action="{{ url('/competition/update-work/FILE_ID_PLACEHOLDER') }}">
+                            <form url="{{ url('/competition/update-work/1') }}" id="update-image-form" class="popup__form"
+                                method="post" enctype="multipart/form-data"
+                                data-action="{{ url('/competition/update-work/FILE_ID_PLACEHOLDER') }}">
                                 @csrf
                                 <div id="upload-image-div">
                                     <label for="upload" class="block-brief__download-link popup-upload">
                                         <input type="file" id="upload-work" name="work" required
                                             class="popup-upload__input" style="width: 90px">
                                         <svg class="block-brief__download-icon">
-                                            <use href="{{ asset("images/img/icons/icons.svg#arrow-down") }}"></use>
+                                            <use href="{{ asset('images/img/icons/icons.svg#arrow-down') }}"></use>
                                         </svg>
                                         <span id="show-name">Upload file <br>
                                             (.png)</span>

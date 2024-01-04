@@ -30,9 +30,9 @@
                                         <div class="card-view__info">
                                             <div class="card-view__avatar-ibg">
                                                 <picture>
-                                                    <source srcset="{{ asset('images/img/other-img/avatar.webp') }}"
+                                                    <source srcset="{{ $work->designer->profile_image ? asset('profile_image/' . $work->designer->profile_image) : asset('images/img/other-img/avatar.jpg') }}"
                                                         type="image/webp">
-                                                    <img src="{{ asset('images/img/other-img/avatar.png') }}"
+                                                        <img src="{{ $work->designer->profile_image ? asset('profile_image/' . $work->designer->profile_image) : asset('images/img/other-img/avatar.jpg') }}"
                                                         alt="">
                                                 </picture>
                                             </div>
