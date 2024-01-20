@@ -1,0 +1,166 @@
+h1 {
+	
+	font-size: 36px;
+	font-family: Montserrat;
+	font-weight: bold;
+
+}
+
+h3 {
+	font-family: Monserrat;
+}
+
+p {
+	font-family: Montserrat;
+}
+
+.wallet-title {
+	/* margin-top: 90px; */
+	position: relative;
+}
+
+
+
+.wallet-title button {
+	display: inline-block;
+	float: right;
+	margin-right: 10px;
+	margin-top: -44px;
+	padding: 15px 25px;
+	background: none;
+	border: 1px solid #E6E6E6;
+	border-radius: 5px;
+}
+
+.wallet-title button p {
+	font-family: Montserrat;
+	font-size: 14px;
+	font-weight: bold;
+	color: #3B3B3B;
+}
+
+.wallet-table {
+	margin-top: 20px;
+}
+
+.wallet-table h3 {
+	font-size: 26px;
+	font-weight: bold;
+	color: #6A6A6A;
+}
+
+.wallet-table table {
+	width: 100%;
+	border: 1px solid #E6E6E6;
+	margin-top: 15px;
+	margin-bottom: 40px;
+}
+
+.wallet-table table, tbody, th {
+	padding-top: 15px;
+	
+	padding-bottom: 15px;
+	border: 1px solid #E6E6E6;
+}
+
+.wallet-table button {
+	width: 100%;
+	padding: 15px;
+	
+	background: none;
+	border: none;
+}
+
+.wallet-table .fas {
+	color: #BBBBBB;
+}
+
+.wallet-table table, tbody, th:last-child {
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.wallet-table table tbody th p {
+	padding-left: 15px;
+	color: #6A6A6A;
+	padding: 15px;
+}
+
+.wallet-table table tbody td p {
+	color: #BBBBBB;
+	padding: 15px;
+}
+
+.wallet-table table, tbody, th, td {
+	padding-left: 15px;
+	border: 1px solid #E6E6E6;
+}
+
+.wallet-table table, tbody, th, td:last-child {
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+
+
+.kurs h5 {
+	display: inline-block;
+	margin: 15px;
+	color: #707070;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.kurs h5 span {
+	color: #BBBBBB;
+}
+
+
+
+.modal-withdraw {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-withdraw .modal-content {
+    position: absolute;
+	width: 568px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.modal-withdraw .close-withdraw {
+    color: #aaa;
+    float: right;
+	text-align: end;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-withdraw .close-withdraw:hover {
+    color: black;
+}
+
+.modal-withdraw button {
+	display: inline-block;
+	margin-right: 10px;
+	padding: 15px 25px;
+	background: none;
+	border: 1px solid #E6E6E6;
+	border-radius: 5px;
+}

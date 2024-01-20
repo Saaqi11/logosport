@@ -141,6 +141,28 @@
         }
 
         messageCount();
+
+
+        function rewardCount() {
+            $.ajax({
+                type: "GET",
+                url: "/wallet/count",
+                dataType: "JSON",
+                cache: false,
+                contentType: false,
+                success: (response) => {
+                    if (response.status) {
+                        console.log('response.data', response.data);
+                        $('.const__prise').text(response.data+"$");
+                    }
+                },
+                error: (response) => {
+                    console.log(response)
+                }
+            });
+        }
+
+        rewardCount();
     });
     // });
 </script>

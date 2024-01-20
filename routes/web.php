@@ -149,7 +149,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get("/count", [ChatController::class, 'messageCount'])->name('count');
             Route::get('/{conversationId}', [ChatController::class, 'getMessages'])->name('message');
             Route::get('/read/{conversationId}', [ChatController::class, 'readMessage'])->name('read');
-
+            
             Route::get("/accept-invitation/{id}", [ChatController::class, 'acceptInvitaion'])->name('invitation.accept');
             Route::get("/cancel-invitation/{id}", [ChatController::class, 'cancelInvitaion'])->name('invitation.cancel');
 
@@ -157,9 +157,15 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
 
+        //wallet
+        Route::get("/wallet/count", [PaymentController::class, 'walletCount'])->name('wallet.count');
+
+        Route::get('/wallet', [PaymentController::class, 'walletIndex'])->name('wallet.index');
+        Route::post('/withdraw-request', [PaymentController::class, 'withdrawRequest'])->name('withdraw.request');
+        Route::get('/withdraw-request', [PaymentController::class, 'withdrawRequestList'])->name('withdraw-list.request');
     });
-
-
+    
+    
     Route::get('/notification/{id}', [CustomerController::class, 'notifcation'])->name('notification.get');
     Route::get('/notification/all/{id}', [CustomerController::class, 'allNotification'])->name('notification.all');
 
@@ -171,6 +177,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/support/submit', [SupportController::class, 'submitForm'])->name('submit.support');
 });
 
+Route::post("/customer/payment/responseurl", [PaymentController::class, 'responseCloudIpsp'])->name('response-cloudipsp')->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 Route::get('/', function () {
     return view('index');

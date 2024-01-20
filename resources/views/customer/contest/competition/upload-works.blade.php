@@ -21,32 +21,35 @@
                                         {{ $diff->days }} day{{ $diff->days != 1 ? 's' : '' }},
                                         {{ $diff->h }} hour{{ $diff->h != 1 ? 's' : '' }} to deadline
                                     </span>
-                                    <a href="{{ route('chat.checkConverstaion', ['contestId' => $work->contest_id, 'designerId' => $work->designer->id, 'userId' => $work->contest->user_id])}}" class="btn btn-design">Write to customer</a>
+                                    <a href="{{ route('chat.checkConverstaion', ['contestId' => $work->contest_id, 'designerId' => $work->designer->id, 'userId' => $work->contest->user_id]) }}"
+                                        class="btn btn-design">Write to customer</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     @if (auth()->user()->id == $work->contest->user_id)
-                        <div class="row">
-                            <div class="col col-lg-12">
-                                <div class="wrp-contest justify-content-between">
-                                    <span>
-                                        <a href="{{ route('competition.distribute-reward.work', [$work->contest_id]) }}"
-                                            class="btn-lg btn-success px-5">Confirm</a>
-                                    </span>
-                                    <span class="d-flex align-items-center" style="gap:20px;">
-                                        <span style="font-weight: 900"> No of Request:
-                                            {{ $winnerFiles->no_of_request ?? 0 }}
+                        @if ($work->contest->is_completed == 0)
+                            <div class="row">
+                                <div class="col col-lg-12">
+                                    <div class="wrp-contest justify-content-between">
+                                        <span>
+                                            <a href="{{ route('competition.distribute-reward.work', [$work->contest_id]) }}"
+                                                class="btn-lg btn-success px-5">Confirm</a>
                                         </span>
-                                        @if (isset($winnerFiles) && ($winnerFiles->no_of_request ?? 0) < 3)
-                                            <a href="#" class="btn-lg btn-info" data-toggle="modal"
-                                                data-target="#sendRequestWorkModal">Change Request</a>
-                                        @endif
-                                    </span>
+                                        <span class="d-flex align-items-center" style="gap:20px;">
+                                            <span style="font-weight: 900"> No of Request:
+                                                {{ $winnerFiles->no_of_request ?? 0 }}
+                                            </span>
+                                            @if (isset($winnerFiles) && ($winnerFiles->no_of_request ?? 0) < 3)
+                                                <a href="#" class="btn-lg btn-info" data-toggle="modal"
+                                                    data-target="#sendRequestWorkModal">Change Request</a>
+                                            @endif
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     @else
                         <div class="row">
                             <div class="col col-lg-12">

@@ -31,9 +31,11 @@
             @if(!empty(auth()->user()))
                 <div class="col-lg-4 col-md-4 col-sm-8 d-flex justify-content-end">
                     <div class="wrp-const">
-                    <span class="const__prise">
-                        0$
-                    </span>
+                        <a href="{{ route('wallet.index')}}">
+                            <span class="const__prise">
+                                0$
+                            </span>
+                        </a>
                         <a href="{{ route('chat.list')}}" class="wrp-message position-relative">
                             <div class="bg-color-message">
                                 <span>0</span>

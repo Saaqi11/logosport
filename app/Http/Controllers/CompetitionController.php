@@ -6,6 +6,7 @@ use App\Models\Contest;
 use App\Models\CustomerFavouriteWork;
 use App\Models\Notification;
 use App\Models\NotificationMessage;
+use App\Models\Reward;
 use App\Models\UserWorkReaction;
 use App\Models\WinnerMediaFile;
 use App\Models\Work;
@@ -654,6 +655,10 @@ class CompetitionController extends Controller
 
     public function distributeReward($id)
     {
+        $contest = Contest::find($id);
+        $contest->is_completed = 1;
+        $contest->save();
+
         $works = Work::where('contest_id', $id)->get();
 
         foreach ($works as $work) {
@@ -662,14 +667,17 @@ class CompetitionController extends Controller
             switch ($work->place) {
                 case 1:
                     $work->reward = 0.85 * $contestPrice;
+                    $this->saveReward($work);
                     $this->eventNotification($work);
                     break;
                 case 2:
                     $work->reward = 0.1 * $contestPrice;
+                    $this->saveReward($work);
                     $this->eventNotification($work);
                     break;
                 case 3:
                     $work->reward = 0.05 * $contestPrice;
+                    $this->saveReward($work);
                     $this->eventNotification($work);
                     break;
                 default:
@@ -703,6 +711,23 @@ class CompetitionController extends Controller
                 $newNotification->save();
                 broadcast(new \App\Events\NewNotification($message, $customerId));
             }
+        }
+    }
+
+    public function saveReward($work)
+    {
+        $reward = Reward::where('user_id', $work->designer_user_id)->first();
+
+        if (!$reward) {
+            $newReward = new Reward();
+            $newReward->user_id = $work->designer_user_id;
+            $newReward->remaining = $work->reward;
+            $newReward->total_reward = $work->reward;
+            $newReward->save();
+        } else {
+            $reward->remaining = $reward->remaining + $work->reward;
+            $reward->total_reward = $reward->total_reward + $work->reward;
+            $reward->save();
         }
     }
 }

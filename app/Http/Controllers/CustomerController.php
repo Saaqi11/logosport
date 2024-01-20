@@ -13,7 +13,7 @@ class CustomerController extends Controller
 {
     public function notifcation($id)
     {
-        $notifications = NotificationMessage::where('user_id', $id)->orderBy('created_at', 'desc')->get();
+        $notifications = NotificationMessage::where('user_id', $id)->orderBy('created_at', 'desc')->latest()->take(11)->get();
 
         return response()->json(['notifications' => $notifications]);
     }
