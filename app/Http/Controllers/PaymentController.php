@@ -240,8 +240,10 @@ class PaymentController extends Controller
     public function walletIndex()
     {
         $transactions = Transaction::where('user_id', Auth::id())->get();
+        $setting = CmsSetting::where('code', 'commission_rate')->first();
 
-        return view('wallet.transaction', compact('transactions'));
+
+        return view('wallet.transaction', compact('transactions', 'setting'));
     }
 
     public function walletCount()
@@ -280,7 +282,7 @@ class PaymentController extends Controller
         }
 
 
-        $setting = CmsSetting::where('code', 'comission_rate')->first();
+        $setting = CmsSetting::where('code', 'commission_rate')->first();
         $withdrawRequest = new WithdrawRequest();
 
         $withdrawRequest->user_id = Auth::id();

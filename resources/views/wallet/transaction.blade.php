@@ -119,7 +119,7 @@
                         <div class="form-group">
     
                             <label for="">Commision Rate %</label>
-                            <input type="text" name="commission" class="form-control" value="10" readonly>
+                            <input type="text" name="commission" class="form-control" value="{{$setting->value ?? 10}}" readonly>
                         </div>
                     </div>
 
