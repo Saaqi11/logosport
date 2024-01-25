@@ -333,7 +333,11 @@ class ContestController extends Controller
             $inputs["score"] = 100;
             $contest->update($inputs);
         }
-        return redirect()->route("customer.contest.view")->with("success", "The Contest has been saved Successfully!");
+
+        if (!$request->is_payment) {
+            return redirect()->route("customer.contest.view")->with("success", "The Contest has been saved Successfully!");
+        } 
+        return redirect()->route('customer.contest.payment.paypal-checkout', $id);
     }
 
     /**

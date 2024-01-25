@@ -142,14 +142,14 @@
 
                         @csrf
                         <div class="popup__total-sum" id="total-sum">
-
                         </div>
+                        <input type="hidden" name="payment_contest_id" id="payment_contest_id">
                         <br>
                         <div class="popup__buttons ">
-                            <button class="popup__button button button_border">
+                            <button type="button" class="popup__button button button_border">
                                 Cancel
                             </button>
-                            <button type="submit" class="popup__button button ">
+                            <button type="button" class="popup__button button payment-btn">
                                 OK
                             </button>
                         </div>
@@ -161,10 +161,20 @@
 @endsection
 @push("script")
     <script>
+        
+        $(".payment-btn").on("click", (e) => {
+	        const contestId = $("#payment_contest_id").val();
+            console.log({ contestId });
+
+            window.location.href = "/customer/contest/payment/paypal-checkout/" + contestId;
+        })
+
         $(".cancel-popup").on("click", (e) => {
 	        $("#cancel-button").attr("href", "/customer/contest/cancel/"+$(e.target).data("id"))
         })
         $(".payment-popup").on("click", (e) => {
+            console.log('id =>>>', $(e.target).data("id"));
+            $("#payment_contest_id").val($(e.target).data("id"));
 	        $("#payment-form").attr("action", "/customer/contest/payment/paypal-checkout/"+$(e.target).data("id"))
 	        $("#total-sum").html(`Total: <span> ${$(e.target).data("price")} $</span>`)
         })

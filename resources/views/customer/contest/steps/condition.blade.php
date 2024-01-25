@@ -51,6 +51,7 @@
                 </div>
             </div>
             <input type="hidden" id="selected-designers-json" name="selected_designers_json">
+            <input type="hidden" id="is-payment" name="is_payment">
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <div class="wrp-brief">
                     <span class="title-brief">
@@ -114,7 +115,6 @@
             @foreach ($users as $user)
                 <div class="row mb-p designer-block">
                     <div class="col-8 d-flex align-items-center justify-content-start">
-                        <img src="{{ asset('default-images/avatar.png') }}" alt="">
                         <img src="{{ $user->profile_image ? asset('profile_image/' . $user->profile_image) : asset('images/img/other-img/avatar.jpg') }}"
                                                 alt="" class="profile-img">
                         <div class="profile-content">
@@ -206,7 +206,7 @@
             <div class="col-12 d-flex justify-content-end align-items-center">
                 <button class="brf-file" id="condition-save-skip">Skip payment</button>
                 <a href="#" data-popup='#popup-transaction' data-id="{{ $contest->id }}" data-price="{{ $contest->contest_price }}" class="cnstr-next payment-popup" style="color: #fff">
-                    Payment
+                    PaymentPayment
                 </a>
                 {{-- <button class="cnstr-next" disabled title="This feature is coming soon">Payment</button> --}}
             </div>
@@ -234,7 +234,7 @@
                             <button class="popup__button button button_border">
                                 Cancel
                             </button>
-                            <button type="submit" class="popup__button button ">
+                            <button type="button" class="popup__button button " id="payment-btn">
                                 OK
                             </button>
                         </div>
@@ -247,8 +247,25 @@
 
 @push("script")
     <script>
+        $("#payment-btn").on("click", function() {
+            $("#is-payment").val(1);
+            let limit = $('[name="duration"]').val()
+            if (parseInt(limit) < 7 || parseInt(limit) > 21) {
+                toastr.error("Please add duration between 7-21 days!");
+                return;
+            }
+
+            let today = contest.getTodayDate();
+            let startDate = $('[name="start_date"]').val();
+
+            if (contest.compareDate(today, startDate)){
+                toastr.error("Please add date current or future date!");
+                return;
+            }
+            $("#condition-form").submit();
+        })
         $(".payment-popup").on("click", (e) => {
-	        $("#payment-form").attr("action", "/customer/contest/payment/paypal-checkout/"+$(e.target).data("id"))
+	        // $("#payment-form").attr("action", "/customer/contest/payment/paypal-checkout/"+$(e.target).data("id"))
 	        $("#total-sum").html(`Total: <span> ${$(e.target).data("price")} $</span>`)
         })
     </script>

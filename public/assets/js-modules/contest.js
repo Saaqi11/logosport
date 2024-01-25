@@ -120,7 +120,8 @@ let contest = {
         })
 
         $("#condition-save-skip").on("click", () => {
-            let limit = $('[name="duration"]').val()
+            let limit = $('[name="duration"]').val();
+            $("#is-payment").val(0);
             if (parseInt(limit) < 7 || parseInt(limit) > 21) {
                 toastr.error("Please add duration between 7-21 days!");
                 return;

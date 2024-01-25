@@ -121,7 +121,7 @@ Route::group(['middleware' => 'auth'], function () {
                         Route::get("/cancel/{id}", [ContestController::class, 'cancel'])->name('cancel');
                         Route::get("/promote/{id}", [ContestController::class, 'promote'])->name('promote');
                         Route::prefix('payment')->name('payment.')->group(function () {
-                            Route::post("/paypal-checkout/{id}", [PaymentController::class, 'paypalCheckout'])->name('paypal-checkout');
+                            Route::get("/paypal-checkout/{id}", [PaymentController::class, 'paypalCheckout'])->name('paypal-checkout');
                             Route::get('/payment-success/{data}', [PaymentController::class, 'paypalSuccess'])->name('paypal-success');
                             Route::get('/payment-error/{data}', [PaymentController::class, 'paymentError'])->name('payment-error');
                         });
