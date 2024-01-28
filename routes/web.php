@@ -30,6 +30,10 @@ Route::prefix('auth')->name('auth.')->group(function () {
 Route::post("/login", [UserController::class, 'doLogin'])->name("user.login");
 Route::get("/signup", [UserController::class, 'signUp'])->name("user.signup");
 Route::post("/do-signup", [UserController::class, 'doSignUp'])->name("user.doSignup");
+Route::get("/forget-password", [UserController::class, 'forgetPassword'])->name("user.forget-password");
+Route::get("/reset-password/{email}", [UserController::class, 'resetPassword'])->name("user.resetPassword");
+Route::post("/do-forget-password", [UserController::class, 'doforgetPassword'])->name("user.doforgetPassword");
+Route::post("/do-reset-password", [UserController::class, 'doResetPassword'])->name("user.doResetPassword");
 
 Route::get("get-city/{id}", [UserController::class, 'getCities']);
 Route::get("states-city/{id}", [UserController::class, 'getStates']);

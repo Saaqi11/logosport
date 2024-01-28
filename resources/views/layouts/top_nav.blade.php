@@ -52,7 +52,9 @@
                             <ul id="notification-list"></ul>
                         </div>
                         <div class="wrp-img">
-                            <img src="{{ asset("images/user-icon.png") }}" alt="user icon">
+                            <img class="profile-image-icon" src="{{ Auth::user()->profile_image ? asset('profile_image/' . Auth::user()->profile_image) : asset('images/img/other-img/avatar.jpg') }}" />
+
+                            {{-- <img src="{{ asset("images/user-icon.png") }}" alt="user icon"> --}}
                         </div>
                         <div class="info">
                             <span class="user-name">
@@ -110,7 +112,7 @@
                                                     <button class="btn-start">Enter</button>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                                    <a href="#" class="input-text">Forget your password?</a>
+                                                    <a href="{{ route("user.forget-password") }}" class="input-text">Forget your password?</a>
                                                 </div>
                                             </div>
                                         </div>

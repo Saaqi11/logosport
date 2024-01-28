@@ -195,7 +195,7 @@ class ChatController extends Controller {
         }
 
         $conversation->payment_status = true;
-        $newConversation->update();
+        $conversation->update();
 
         return redirect('chat');
     }

@@ -58,6 +58,11 @@
                         console.error('Error handling notification:', error);
                     }
                 });
+
+            Echo.private(`chat.${authUserId}`)
+                .listen('SentMessage', (e) => {
+                    messageCount();
+                });
         }, 2000);
 
 
@@ -87,8 +92,7 @@
             });
 
 
-            if (notifications.length > 10)
-            {
+            if (notifications.length > 10) {
                 var url = "{{ route('notification.all', ['id' => '__id__']) }}";
                 url = url.replace('__id__', authUserId);
 
@@ -96,7 +100,8 @@
                     '<a href="' + url + '">See all Notification</a>' +
                     '</li>');
             } else {
-                notificationList.append('<li class="border-0 text-center p-0" style="font-size: 13px">No Notification</li>');
+                notificationList.append(
+                    '<li class="border-0 text-center p-0" style="font-size: 13px">No Notification</li>');
             }
         }
 
@@ -153,7 +158,7 @@
                 success: (response) => {
                     if (response.status) {
                         console.log('response.data', response.data);
-                        $('.const__prise').text(response.data+"$");
+                        $('.const__prise').text(response.data + "$");
                     }
                 },
                 error: (response) => {

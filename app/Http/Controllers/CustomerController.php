@@ -41,7 +41,10 @@ class CustomerController extends Controller
      */
     public function getWorks(): View|RedirectResponse
     {
-        $works = Work::with("files.favWork", "reactions", "totalWorks")->whereIn('place', [1, 2, 3])->paginate(8);
+        $works = Work::with("files.favWork", "reactions", "totalWorks")
+            ->whereIn('place', [1, 2, 3])
+            ->orderBy('id', 'desc')
+            ->paginate(8);
         return \view("customer.works.index", compact("works"));
 
     }

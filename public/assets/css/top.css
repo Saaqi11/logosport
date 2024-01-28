@@ -425,3 +425,10 @@ input[type=range]:focus {
     border-radius: 50%;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
+
+.profile-image-icon {
+    height: 34px;
+    width: 34px;
+    object-fit: cover;
+    border-radius: 50% !important;
+}

@@ -19,7 +19,9 @@
                 <div class="col-lg-3">
                     <div class="p-info">
                         <div class="wrp-img">
-                            <img src="{{ asset("default-images/avatar.png") }}" alt="" class="profile-img">
+                            <img class="profile-img" style="object-fit: contain" src="{{ Auth::user()->profile_image ? asset('profile_image/' . Auth::user()->profile_image) : asset('images/img/other-img/avatar.jpg') }}" />
+
+                            {{-- <img src="{{ asset("default-images/avatar.png") }}" alt="" > --}}
                         </div>
                         <div class="p-content">
                             <span class="p-username">
@@ -167,20 +169,20 @@
                                         <div class="wrp-few">
                                             <div class="first-image">
                                                 <a href="#">
-                                                    <img src="{{ asset(@$workList->files[0]->src ?? '/images/ex-1.png') }}"
+                                                    <img style="object-fit: cover" src="{{ asset(@$workList->files[0]->src ?? '/images/ex-1.png') }}"
                                                         alt="">
                                                 </a>
                                             </div>
                                             <div class="second-image">
                                                 <a href="#">
-                                                    <img src="{{ asset(@$workList->files[1]->src ?? '/images/ex-2.png') }}"
+                                                    <img style="object-fit: cover" src="{{ asset(@$workList->files[1]->src ?? '/images/ex-2.png') }}"
                                                         alt="">
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="third-image">
                                             <a href="#">
-                                                <img src="{{ asset(@$workList->files[2]->src ?? '/images/ex-3.png') }}"
+                                                <img style="object-fit: cover" src="{{ asset(@$workList->files[2]->src ?? '/images/ex-3.png') }}"
                                                     alt="">
                                             </a>
                                         </div>

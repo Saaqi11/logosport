@@ -483,4 +483,58 @@ class UserController extends Controller
             return redirect()->back()->with("error", "The OTP you entered is incorrect");
         }
     }
+
+    public function forgetPassword()
+    {
+        return view("forget-password");
+    }
+
+    public function resetPassword($email)
+    {
+        return view("reset-password", compact('email'));
+    }
+
+    public function doforgetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->firstOrFail();
+
+        if (!$user) {
+            return redirect()->backe()->with("error", "user not found");
+        }
+
+        $user->code = rand(1000, 9999);
+        $user->code_expires_at = Carbon::now()->addHour();
+        $this->sendVerificationEmail($user);
+        $user->save();
+
+        return redirect()->route("user.resetPassword", $request->email)->with("success", "verify and create new password!");
+    }
+
+    public function doResetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'code' => 'required',
+            "password" => "required_with:confirm_password|same:confirm_password",
+            "confirm_password" => "required",
+        ]);
+
+        $user = User::where('email', $request->email)->firstOrFail();
+
+        if (!$user) {
+            return redirect()->backe()->with("error", "user not found");
+        }
+
+        $user->code = null;
+        $user->code_expires_at = null;
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+
+        Session::flash('success', 'Password has been updated.');
+        return redirect("/");    }
 }

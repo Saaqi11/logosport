@@ -298,14 +298,8 @@ $(".cabinet-slider-images-view").click((e) => {
 	});
 });
 
-$(document).on('click', '.cancel-info-btn', function() {
-	$(".slider-info").html('');
-	// Add code to close the popup or modal here
- });
-
 $(".winners-slider-images-view").click((e) => {
-    $("#myModal").modal("show")
-	let dataId = $(e.target).parents(".card-view__top").find('.winners-slider-images-view').data("id");
+	let dataId = $(e.target).parents(".winners-slider-images-view").data("id")
 	$.ajax({
 		type: "GET",
 		url: "/competition/get-winner-works/"+dataId,
@@ -313,33 +307,59 @@ $(".winners-slider-images-view").click((e) => {
 		cache: false,
 		contentType: false,
 		success: (response) => {
-            let html = `<div class="carousel-inner">`;
-            let appURL = $("#appURL").val()+"/";
-            if (response.files.length > 0) {
-                response.files.map((file) => {
-                    html += `
-            <div class="carousel-item ${response.files[0].id === file.id ? "active" : ""}">
-                <img class="d-block w-100" src="${appURL+file.src}" alt="">
-            </div>
-        `;
-                });
-            }
-            html += `</div>`;
-            $("#workCarousel").html(html);
-            $("#customer-name").text(response.contest.customer.first_name + " " + response.contest.customer.last_name)
-            $("#company_about").text(response.contest.company_about)
-            $("#company_name").text(response.contest.company_name)
-            $("#designer-name").text(response.designer.first_name + " " + response.designer.last_name)
-            $("#behance").href(response.designer.behance)
-            $("#dribble").href(response.designer.dribble)
+        
+		$(".slider-info").html(response.sliderContent);
 
-            $('#workCarousel').carousel();
+
 		},
 		error: (response) => {
 			console.log(response)
 		}
 	});
 });
+
+$(document).on('click', '.cancel-info-btn', function() {
+	$(".slider-info").html('');
+	// Add code to close the popup or modal here
+ });
+
+// $(".winners-slider-images-view").click((e) => {
+//     $("#myModal").modal("show")
+// 	let dataId = $(e.target).parents(".card-view__top").find('.winners-slider-images-view').data("id");
+// 	$.ajax({
+// 		type: "GET",
+// 		url: "/competition/get-winner-works/"+dataId,
+// 		dataType: "JSON",
+// 		cache: false,
+// 		contentType: false,
+// 		success: (response) => {
+//             let html = `<div class="carousel-inner">`;
+//             let appURL = $("#appURL").val()+"/";
+//             if (response.files.length > 0) {
+//                 response.files.map((file) => {
+//                     html += `
+//             <div class="carousel-item ${response.files[0].id === file.id ? "active" : ""}">
+//                 <img class="d-block w-100" src="${appURL+file.src}" alt="">
+//             </div>
+//         `;
+//                 });
+//             }
+//             html += `</div>`;
+//             $("#workCarousel").html(html);
+//             $("#customer-name").text(response.contest.customer.first_name + " " + response.contest.customer.last_name)
+//             $("#company_about").text(response.contest.company_about)
+//             $("#company_name").text(response.contest.company_name)
+//             $("#designer-name").text(response.designer.first_name + " " + response.designer.last_name)
+//             $("#behance").href(response.designer.behance)
+//             $("#dribble").href(response.designer.dribble)
+
+//             $('#workCarousel').carousel();
+// 		},
+// 		error: (response) => {
+// 			console.log(response)
+// 		}
+// 	});
+// });
 $(document).ready(function(){
 	let winnersLength = $(".cabinet-slider-images-view").length
 	if (winnersLength < 1) {
