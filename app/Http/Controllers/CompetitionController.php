@@ -657,6 +657,7 @@ class CompetitionController extends Controller
     {
         $contest = Contest::find($id);
         $contest->is_completed = 1;
+        $contest->status = 4;
         $contest->save();
 
         $works = Work::where('contest_id', $id)->get();
