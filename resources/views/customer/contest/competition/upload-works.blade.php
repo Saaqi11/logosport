@@ -22,7 +22,7 @@
                                         {{ $diff->h }} hour{{ $diff->h != 1 ? 's' : '' }} to deadline
                                     </span>
                                     <a href="{{ route('chat.checkConverstaion', ['contestId' => $work->contest_id, 'designerId' => $work->designer->id, 'userId' => $work->contest->user_id]) }}"
-                                        class="btn btn-design">Write to customer</a>
+                                        class="btn btn-design">Write to creator</a>
                                 </div>
                             </div>
                         </div>

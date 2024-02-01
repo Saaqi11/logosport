@@ -1,5 +1,5 @@
-@extends("layouts.main")
-@section("content")
+@extends('layouts.main')
+@section('content')
     <div class="row">
         <div class="col col-lg-12">
             <div class="title">
@@ -14,7 +14,7 @@
                 <span id="cabinet-works-count">{{ $works->count() }} works</span>
             </div>
         </div>
-        @include("user.partials.personal-cabinet-bar")
+        @include('user.partials.personal-cabinet-bar')
     </div>
     <div class="row" id="cabinet-portal">
         @forelse ($works as $work)
@@ -24,7 +24,8 @@
                         continue;
                     @endphp
                 @endif
-                <div class="col-lg-3 col-md-6 col-sm-12 cabinet-slider-images-view" data-id={{ $work->contest->winnerWork->id }}>
+                <div class="col-lg-3 col-md-6 col-sm-12 cabinet-slider-images-view"
+                    data-id={{ $work->contest->winnerWork->id }}>
                     <div class="prf-block prf-block--win">
                         <div class="prf-image">
                             <div class="count-img count-img--3">
@@ -32,18 +33,21 @@
                                     <div class="wrp-few">
                                         <div class="first-image">
                                             <a href="#">
-                                                <img src="{{ asset(@$work->contest->winnerWork->files[0]->src ?? "/images/ex-1.png") }}"  alt="">
+                                                <img src="{{ asset(@$work->contest->winnerWork->files[0]->src ?? '/images/ex-1.png') }}"
+                                                    alt="">
                                             </a>
                                         </div>
                                         <div class="second-image">
                                             <a href="#">
-                                                <img src="{{ asset(@$work->contest->winnerWork->files[1]->src ?? "/images/ex-2.png" ) }}" alt="">
+                                                <img src="{{ asset(@$work->contest->winnerWork->files[1]->src ?? '/images/ex-2.png') }}"
+                                                    alt="">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="third-image">
                                         <a href="#">
-                                            <img src="{{ asset(@$work->contest->winnerWork->files[2]->src ?? "/images/ex-3.png")  }}" alt="">
+                                            <img src="{{ asset(@$work->contest->winnerWork->files[2]->src ?? '/images/ex-3.png') }}"
+                                                alt="">
                                         </a>
                                     </div>
                                 @else
@@ -54,15 +58,20 @@
                         <div class="prf-title">
                             <div class="row">
                                 <div class="col-10">
-                                    {{ $work->contest->company_name }}
+                                    <a href="{{ route('competition.show', [$work->contest->id]) }}">
+                                        {{ $work->contest->company_name }}
+                                    </a>
                                 </div>
                                 <div class="col-2">
-                                    @if($work->contest->winnerWork->place === "1")
-                                        <img src="{{ asset("images/img/svg/medal1.svg") }}" style="width: 20px; height: 20px" alt="">
-                                    @elseif($work->contest->winnerWork->place === "2")
-                                        <img src="{{ asset("images/img/svg/medal2.svg") }}" style="width: 20px; height: 20px" alt="">
-                                    @elseif($work->contest->winnerWork->place === "3")
-                                        <img src="{{ asset("images/img/svg/medal3.svg") }}" style="width: 20px; height: 20px" alt="">
+                                    @if ($work->contest->winnerWork->place === '1')
+                                        <img src="{{ asset('images/img/svg/medal1.svg') }}"
+                                            style="width: 20px; height: 20px" alt="">
+                                    @elseif($work->contest->winnerWork->place === '2')
+                                        <img src="{{ asset('images/img/svg/medal2.svg') }}"
+                                            style="width: 20px; height: 20px" alt="">
+                                    @elseif($work->contest->winnerWork->place === '3')
+                                        <img src="{{ asset('images/img/svg/medal3.svg') }}"
+                                            style="width: 20px; height: 20px" alt="">
                                     @endif
                                 </div>
                             </div>
@@ -79,7 +88,7 @@
 
     <div class="slider-info"></div>
 
-    
+
     {{-- <div class="row mb-p">
         <div class="col-lg-12 d-flex justify-content-center align-items-center">
             <div class="page">

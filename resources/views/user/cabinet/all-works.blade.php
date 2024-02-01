@@ -18,7 +18,7 @@
     </div>
     <div class="row">
         @forelse ($works as $work)
-            @if (!empty($work->contest))
+            @if (empty($work->contest))
                 <div class="col-lg-3 col-md-6 col-sm-12 cabinet-slider-images-view">
                     <div class="prf-block prf-block--win">
                         <div class="prf-image">
@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <div class="prf-title">
-                            <a href="#">
+                            <a href="{{ route('competition.show', [$work->contest->id]) }}">
                                 {{ $work->contest->company_name }}
                             </a>
                         </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="prf-title">
-                            <a href="#">
+                            <a href="{{ route('competition.show', [$work->contest->id]) }}">
                                 {{ $work->contest->company_name }}
                             </a>
                         </div>

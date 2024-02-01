@@ -517,7 +517,7 @@ class ContestController extends Controller
                     return '
                     <div class="row">
                         <div class="col">
-                            <img src="' . $row->contest_image . '" alt="">
+                            <img class="image-cover" src="' . $row->contest_image . '" alt="">
                         </div>
                         <div class="col-6">
                             <div class="description">

@@ -318,6 +318,13 @@ $(".winners-slider-images-view").click((e) => {
 	});
 });
 
+$('.prf-title a').click(function (e) {
+	e.preventDefault(); // Prevent the default action of the hyperlink
+	console.log('Hyperlink clicked!');
+	// If you want to redirect to the href of the clicked hyperlink, you can use window.location.href
+	window.location.href = $(this).attr('href');
+});
+
 $(document).on('click', '.cancel-info-btn', function() {
 	$(".slider-info").html('');
 	// Add code to close the popup or modal here

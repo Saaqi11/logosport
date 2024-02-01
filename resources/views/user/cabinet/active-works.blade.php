@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="prf-title">
-                            <a href="#">
+                            <a href="{{ route('competition.show', [$work->activeContest->id])}}">
                                 {{ $work->activeContest->company_name }}
                             </a>
                         </div>

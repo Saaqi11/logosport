@@ -432,3 +432,11 @@ input[type=range]:focus {
     object-fit: cover;
     border-radius: 50% !important;
 }
+
+.image-cover {
+    object-fit: cover;
+}
+
+.image-containt {
+    object-fit: contain;
+}
