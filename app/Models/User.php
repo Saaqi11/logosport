@@ -48,16 +48,16 @@ class User extends Authenticatable
     /**
      * @return HasMany
      */
-    public function works (): HasMany
+    public function works(): HasMany
     {
         return $this->hasMany(Work::class, "designer_user_id", "id")->take(5);
     }
 
-    public function getPositionWorks (): HasMany
+    public function getPositionWorks(): HasMany
     {
-        return $this->hasMany(Work::class, "designer_user_id", "id")->whereIn('place', [1,2,3]);
+        return $this->hasMany(Work::class, "designer_user_id", "id")->whereIn('place', [1, 2, 3]);
     }
-    
+
     public function firstPosition()
     {
         return $this->hasMany(Work::class, "designer_user_id", "id")->where('place', 1);
@@ -77,7 +77,7 @@ class User extends Authenticatable
      * count all reactions
      * @return HasMany
      */
-    public function reactions (): hasMany
+    public function reactions(): hasMany
     {
         return $this->hasMany(WorkReaction::class, "designer_user_id", "id");
     }
@@ -85,5 +85,26 @@ class User extends Authenticatable
     public function contests()
     {
         return $this->belongsTo(Contest::class);
+    }
+
+    public function allContest()
+    {
+        return $this->hasMany(Contest::class);
+    }
+
+    public function finishedContest()
+    {
+        return $this->hasMany(Contest::class)->where('status', 4);
+    }
+
+    public function canceledContest()
+    {
+        return $this->hasMany(Contest::class)->where('status', 3);
+    }
+
+    public function activeContest()
+    {
+        return $this->hasMany(Contest::class)->where('status', '!=', 3)
+            ->where('status', '!=', 4);
     }
 }
