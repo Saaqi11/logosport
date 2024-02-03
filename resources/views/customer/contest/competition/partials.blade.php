@@ -35,7 +35,7 @@
                                 </span>
                                 <picture>
                                     <source srcset="" type="image/webp"><img
-                                        src="{{ Auth::user()->profile_image ? asset('profile_image/' . Auth::user()->profile_image) : asset('images/img/other-img/avatar.jpg') }}"
+                                        src="{{ $contest->customer->profile_image ? asset('profile_image/' . $contest->customer->profile_image) : asset('images/img/other-img/avatar.jpg') }}"
                                         alt="">
 
                                 </picture>

@@ -34,7 +34,7 @@
                     </div>
                 </div>
             @else
-                <div class="col-lg-3 col-md-6 col-sm-12 cabinet-slider-images-view" data-id={{ $work->contest->designerWork->id }}>
+                <div class="col-lg-3 col-md-6 col-sm-12 cabinet-slider-images-view" data-id={{ $work->contest->designerWork->id ?? '' }}>
                     <div class="prf-block prf-block--win">
                         <div class="prf-image">
                             <div class="count-img count-img--3">
