@@ -42,18 +42,18 @@
                                     <div class="wrp-few">
                                         <div class="first-image">
                                             <a href="#">
-                                                <img src="{{ asset(@$work->contest->designerWork->files[0]->src ?? "/images/ex-1.png") }}"  alt="">
+                                                <img class="image-cover" src="{{ asset(@$work->contest->designerWork->files[0]->src ?? "/images/ex-1.png") }}"  alt="">
                                             </a>
                                         </div>
                                         <div class="second-image">
                                             <a href="#">
-                                                <img src="{{ asset(@$work->contest->designerWork->files[1]->src ?? "/images/ex-2.png" ) }}" alt="">
+                                                <img class="image-cover" src="{{ asset(@$work->contest->designerWork->files[1]->src ?? "/images/ex-2.png" ) }}" alt="">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="third-image">
                                         <a href="#">
-                                            <img src="{{ asset(@$work->contest->designerWork->files[2]->src ?? "/images/ex-3.png")  }}" alt="">
+                                            <img class="image-cover" src="{{ asset(@$work->contest->designerWork->files[2]->src ?? "/images/ex-3.png")  }}" alt="">
                                         </a>
                                     </div>
                                 @else
