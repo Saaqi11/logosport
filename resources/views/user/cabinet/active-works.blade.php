@@ -19,7 +19,7 @@
     <div class="row" id="cabinet-portal">
         @forelse ($works as $work)
             @if($work->activeContest)
-                <div class="col-lg-3 col-md-6 col-sm-12 cabinet-slider-images-view" data-id={{ $work->activeContest->designerWork->id }}>
+                <div class="col-lg-3 col-md-6 col-sm-12 cabinet-slider-images-view" data-id={{ $work->activeContest->designerWork->id ?? '' }}>
                     <div class="prf-block prf-block--win">
                         <div class="prf-image">
                             <div class="count-img count-img--3">
@@ -27,18 +27,18 @@
                                     <div class="wrp-few">
                                         <div class="first-image">
                                             <a href="#">
-                                                <img src="{{ asset(@$work->activeContest->designerWork->files[0]->src ?? "/images/ex-1.png") }}"  alt="">
+                                                <img class="image-cover" src="{{ asset(@$work->activeContest->designerWork->files[0]->src ?? "/images/ex-1.png") }}"  alt="">
                                             </a>
                                         </div>
                                         <div class="second-image">
                                             <a href="#">
-                                                <img src="{{ asset(@$work->activeContest->designerWork->files[1]->src ?? "/images/ex-2.png" ) }}" alt="">
+                                                <img class="image-cover" src="{{ asset(@$work->activeContest->designerWork->files[1]->src ?? "/images/ex-2.png" ) }}" alt="">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="third-image">
                                         <a href="#">
-                                            <img src="{{ asset(@$work->activeContest->designerWork->files[2]->src ?? "/images/ex-3.png")  }}" alt="">
+                                            <img class="image-cover" src="{{ asset(@$work->activeContest->designerWork->files[2]->src ?? "/images/ex-3.png")  }}" alt="">
                                         </a>
                                     </div>
                                 @else
