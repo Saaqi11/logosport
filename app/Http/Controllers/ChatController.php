@@ -192,10 +192,11 @@ class ChatController extends Controller {
             $newConversation->contest_id = $contestId;
             $newConversation->payment_status = true;
             $newConversation->save();
+        } else {
+            $conversation->payment_status = true;
+            $conversation->update();
         }
 
-        $conversation->payment_status = true;
-        $conversation->update();
 
         return redirect('chat');
     }
