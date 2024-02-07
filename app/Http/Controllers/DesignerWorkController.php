@@ -37,6 +37,18 @@ class DesignerWorkController extends Controller
     }
 
     /**
+     * My active works
+     * @return View
+     */
+    public function myFinishWorks(): View
+    {
+        $works = WorkParticipants::where("designer_user_id", Auth::id())
+            ->with("activeContest.designerWork.files")
+            ->paginate(10);
+        return view("user.cabinet.finished-works", compact("works"));
+    }
+
+    /**
      * My winner works
      * @return View
      */

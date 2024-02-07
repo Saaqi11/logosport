@@ -20,7 +20,7 @@
                 </div> --}}
             </li>
             <li class="prf__items">
-                <a href="" class="prf__link">edits</a>
+                <a href="{{ route("user.cabinet.my-finish-works") }}" class="prf__link">finished</a>
                 {{-- <div class="number">
                     <span>4</span>
                 </div> --}}

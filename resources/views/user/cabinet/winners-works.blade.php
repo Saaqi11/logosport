@@ -30,26 +30,27 @@
                         <div class="prf-image">
                             <div class="count-img count-img--3">
                                 @if (!empty($work->contest->winnerWork) && !empty($work->contest->winnerWork->files))
-                                    <div class="wrp-few">
-                                        <div class="first-image">
-                                            <a href="#">
-                                                <img class="image-cover" src="{{ asset(@$work->contest->winnerWork->files[0]->src ?? '/images/ex-1.png') }}"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <div class="second-image">
+                                    {{-- <div class="wrp-few"> --}}
+                                    {{-- <div class="first-image"> --}}
+                                    <a href="#">
+                                        <img class="image-cover"
+                                            src="{{ asset(@$work->contest->winnerWork->files[0]->src ?? '/images/ex-1.png') }}"
+                                            alt="">
+                                    </a>
+                                    {{-- </div> --}}
+                                    {{-- <div class="second-image">
                                             <a href="#">
                                                 <img class="image-cover" src="{{ asset(@$work->contest->winnerWork->files[1]->src ?? '/images/ex-2.png') }}"
                                                     alt="">
                                             </a>
-                                        </div>
-                                    </div>
-                                    <div class="third-image">
+                                        </div> --}}
+                                    {{-- </div> --}}
+                                    {{-- <div class="third-image">
                                         <a href="#">
                                             <img class="image-cover" src="{{ asset(@$work->contest->winnerWork->files[2]->src ?? '/images/ex-3.png') }}"
                                                 alt="">
                                         </a>
-                                    </div>
+                                    </div> --}}
                                 @else
                                     You didn't submit any work.
                                 @endif
@@ -76,6 +77,27 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="prf-title">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="icon border rounded-circle p-2" style="border: 1px solid #fff !important">
+                                        {{-- <i class="{{$work->contest->designerWork->is_reaction ? 'fa' : 'far' }} fa-heart user-work-reaction" data-id="{{$work->contest->designerWork->designer->id}}" data-workid="{{$work->contest->designerWork->id}}"></i> --}}
+                                    </div>
+
+                                </div>
+                                <div class="col-6 text-right">
+                                    @if (
+                                        $work->contest->winnerWork->place == 1 &&
+                                            ($work->contest->winnerWork->designer_user_id == auth()->id() || $contest->user_id === auth()->id()))
+                                        <a href="{{ route('competition.get-upload.work', $work->id) }}"
+                                            class="btn btn-info m-0 uploadfiles">
+                                            Upload
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             @endif
@@ -89,78 +111,10 @@
     <div class="slider-info"></div>
 
 
-    {{-- <div class="row mb-p">
-        <div class="col-lg-12 d-flex justify-content-center align-items-center">
-            <div class="page">
-                <ul class="page__list">
-                    <li class="page__items"><a href="#" class="page__link">
-                            <i class="fas fa-chevron-left"></i>
-                        </a>
-                    </li>
-                    <li class="page__items"><a href="#" class="page__link activ">1</a></li>
-                    <li class="page__items"><a href="#" class="page__link">2</a></li>
-                    <li class="page__items"><a href="#" class="page__link">3</a></li>
-                    <li class="page__items"><a href="#" class="page__link">...</a></li>
-                    <li class="page__items"><a href="#" class="page__link">24</a></li>
-                    <li class="page__items"><a href="#" class="page__link">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
 
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div> --}}
-    {{-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Work Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-8">
-                                <input type="hidden" id="appURL" value="{{ env("APP_URL") }}">
-                                <!-- Carousel -->
-                                <div id="workCarousel" class="carousel slide" data-ride="carousel">
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <!-- Card -->
-                                <div class="card">
-                                    <div class="card-header">Designer Detail</div>
-                                    <div class="card-body">
-                                        <h4 class="card-title" id="designer-name"></h4>
-                                        <a class="btn btn-primary" href="" id="dribble">Dribble</a>
-                                        <a class="btn btn-primary" href="" id="behance">Behance</a>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="card">
-                                    <div class="card-header">Contest Details:</div>
-                                    <div class="card-body">
-                                        <h4 class="card-title" >Customer Name</h4>
-                                        <p id="customer-name"></p>
-                                        <br>
-                                        <h6>Company About:</h6>
-                                        <p id="company_name"></p>
-                                        <br>
-                                        <h4>Company About:</h4>
-                                        <p id="company_about"></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 @endsection
+@push('script')
+    <script>
+        
+    </script>
+@endpush

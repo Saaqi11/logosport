@@ -278,25 +278,47 @@ $(".user-work-reaction").on("click", (e) => {
     });
 })
 
-$(".cabinet-slider-images-view").click((e) => {
-	let dataId = $(e.target).parents(".cabinet-slider-images-view").data("id")
-	$.ajax({
-		type: "GET",
-		url: "/competition/get-winner-works/"+dataId,
-		dataType: "JSON",
-		cache: false,
-		contentType: false,
-		success: (response) => {
+// $(".cabinet-slider-images-view").click((e) => {
+// 	e.preventDefault()
+
+// 	let dataId = $(e.target).parents(".cabinet-slider-images-view").data("id")
+// 	$.ajax({
+// 		type: "GET",
+// 		url: "/competition/get-winner-works/"+dataId,
+// 		dataType: "JSON",
+// 		cache: false,
+// 		contentType: false,
+// 		success: (response) => {
         
-		$(".slider-info").html(response.sliderContent);
+// 		$(".slider-info").html(response.sliderContent);
 
 
-		},
-		error: (response) => {
-			console.log(response)
-		}
-	});
+// 		},
+// 		error: (response) => {
+// 			console.log(response)
+// 		}
+// 	});
+// });
+
+$(document).on("click", ".cabinet-slider-images-view", function(e) {
+    e.preventDefault();
+
+    let dataId = $(this).data("id");
+    $.ajax({
+        type: "GET",
+        url: "/competition/get-winner-works/" + dataId,
+        dataType: "JSON",
+        cache: false,
+        contentType: false,
+        success: (response) => {
+            $(".slider-info").html(response.sliderContent);
+        },
+        error: (response) => {
+            console.log(response);
+        }
+    });
 });
+
 
 $(".winners-slider-images-view").click((e) => {
 	let dataId = $(e.target).parents(".winners-slider-images-view").data("id")
@@ -318,11 +340,15 @@ $(".winners-slider-images-view").click((e) => {
 	});
 });
 
-$('.prf-title a').click(function (e) {
-	e.preventDefault(); // Prevent the default action of the hyperlink
-	console.log('Hyperlink clicked!');
+
+$(document).on("click", ".prf-title a", function(e) {
+    e.preventDefault();
+
+    console.log('Hyperlink clicked!');
 	// If you want to redirect to the href of the clicked hyperlink, you can use window.location.href
 	window.location.href = $(this).attr('href');
+	e.stopPropagation();
+
 });
 
 $(document).on('click', '.cancel-info-btn', function() {

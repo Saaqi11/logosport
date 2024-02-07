@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get("/my-all-works", [DesignerWorkController::class, 'myAllWorks'])->name("my-all-works");
                 Route::get("/my-active-works", [DesignerWorkController::class, 'myActiveWorks'])->name("my-active-works");
                 Route::get("/my-winner-works", [DesignerWorkController::class, 'myWinnerWorks'])->name("my-winner-works");
+                Route::get("/my-finish-works", [DesignerWorkController::class, 'myFinishWorks'])->name("my-finish-works");
                 // designer work by id
             });
         });
