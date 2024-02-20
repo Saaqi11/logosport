@@ -19,7 +19,7 @@
                 <div class="col-lg-3">
                     <div class="p-info">
                         <div class="wrp-img">
-                            <img class="profile-img" style="object-fit: contain" src="{{ Auth::user()->profile_image ? asset('profile_image/' . Auth::user()->profile_image) : asset('images/img/other-img/avatar.jpg') }}" />
+                            <img class="profile-img" style="object-fit: contain" src="{{ $user->profile_image ? asset('profile_image/' . $user->profile_image) : asset('images/img/other-img/avatar.jpg') }}" />
 
                             {{-- <img src="{{ asset("default-images/avatar.png") }}" alt="" > --}}
                         </div>
