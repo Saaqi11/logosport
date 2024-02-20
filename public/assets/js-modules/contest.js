@@ -6,20 +6,17 @@ let contest = {
         $(".cnst-card").on("click", (e) => {
             $(".cnst-card").removeClass("activ")
             $(e.delegateTarget).addClass("activ")
-            if ($(e.delegateTarget).find('[name="business_name"]').val() === "Small")
-            {
+            if ($(e.delegateTarget).find('[name="business_name"]').val() === "Small") {
                 $(".price-label").text("Price (200$ to 599$)");
                 $("#contest-price").attr("min", 200);
                 $("#contest-price").val(200);
                 $("#contest-price").attr("max", 599);
-            } else if ($(e.delegateTarget).find('[name="business_name"]').val() === "Medium")
-            {
+            } else if ($(e.delegateTarget).find('[name="business_name"]').val() === "Medium") {
                 $(".price-label").text("Price (600$ to 1399$)");
                 $("#contest-price").attr("min", 600);
                 $("#contest-price").val(600);
                 $("#contest-price").attr("max", 1399);
-            } else if ($(e.delegateTarget).find('[name="business_name"]').val() === "Big")
-            {
+            } else if ($(e.delegateTarget).find('[name="business_name"]').val() === "Big") {
                 $(".price-label").text("Price (1400$+)");
                 $("#contest-price").attr("min", 1400);
                 $("#contest-price").val(1400);
@@ -40,13 +37,13 @@ let contest = {
             let imageElems = $(".dz-image-preview .dz-image img");
             if ($(imageElems).length > 0) {
                 $(imageElems).each(function (index, val) {
-                    if (!contest.validURL($(val).attr('src'))){
+                    if (!contest.validURL($(val).attr('src'))) {
                         imagesArray[index] = ($(val).attr('src'));
                     }
                 });
                 imagesArray = JSON.stringify(imagesArray);
                 $("#base64_images").val(imagesArray);
-            } else if ($(".wrp-block--like.activ").length < 0 ) {
+            } else if ($(".wrp-block--like.activ").length < 0) {
                 toastr.error('Please upload at least 1 image or select from list');
                 return;
             }
@@ -71,7 +68,7 @@ let contest = {
             $(e.target).prev().val($(e.target).val())
         })
 
-        $(document).on("click",".delete-color", (e) => {
+        $(document).on("click", ".delete-color", (e) => {
             $(e.target).parents(".col").remove();
         })
 
@@ -116,6 +113,11 @@ let contest = {
         });
 
         $(".brief-save-button").on("click", () => {
+            const companyNameField = $("#company_name");
+            if (!companyNameField.val()) {
+                toastr.error("Please enter a company name.");
+                return false; 
+            }
             $("#brief-form").submit();
         })
 
@@ -130,7 +132,7 @@ let contest = {
             let today = contest.getTodayDate();
             let startDate = $('[name="start_date"]').val();
 
-            if (contest.compareDate(today, startDate)){
+            if (contest.compareDate(today, startDate)) {
                 toastr.error("Please add date current or future date!");
                 return;
             }
@@ -147,7 +149,7 @@ let contest = {
 
         $(".wrp-block--like").on("click", () => {
             let defaultLogoArr = [];
-            $(".wrp-block--like.activ").each((index , node) => {
+            $(".wrp-block--like.activ").each((index, node) => {
                 defaultLogoArr[index] = $(node).find("[name='default_image_id']").val();
             });
             $("#default_logos").val(defaultLogoArr.join(","))
@@ -164,7 +166,7 @@ let contest = {
                 maxFiles: 3,
                 filesizeBase: 1000,
                 acceptedFiles: ".jpeg,.jpg,.png",
-                thumbnail: function(file, dataUrl) {
+                thumbnail: function (file, dataUrl) {
 
                     if (file.previewElement) {
                         file.previewElement.classList.remove("dz-file-preview");
@@ -174,7 +176,7 @@ let contest = {
                             thumbnailElement.alt = file.name;
                             thumbnailElement.src = dataUrl;
                         }
-                        setTimeout(function() { file.previewElement.classList.add("dz-image-preview"); }, 1);
+                        setTimeout(function () { file.previewElement.classList.add("dz-image-preview"); }, 1);
                     }
                     if ($(".dz-image-preview").length < 1) {
                         $(".tg-fileuploadlabel").html(`
@@ -186,14 +188,14 @@ let contest = {
                     }
                 },
 
-                maxfilesexceeded: function(file, response) {
+                maxfilesexceeded: function (file, response) {
                     toastr.error("You can only uploads 3 files at a time.");
                     this.removeFile(file);
                 },
 
                 error: function (file) {
                     if (file.size > 1000000) {
-                        toastr.error("File size is: "+file.previewElement.innerText+ " Allowed size is 1 MB");
+                        toastr.error("File size is: " + file.previewElement.innerText + " Allowed size is 1 MB");
                     }
                     if (file.previewElement) {
                         this.removeFile(file)
@@ -203,7 +205,7 @@ let contest = {
 
 
                 removedfile: function (file) {
-                    if (file.previewElement){
+                    if (file.previewElement) {
                         $(file.previewElement).remove();
                     }
                     if ($(".dz-image-preview").length < 1) {
@@ -225,7 +227,7 @@ let contest = {
                     console.log('here')
                 },
 
-                complete: function(file) {
+                complete: function (file) {
                     if ($(".dz-image-preview").length > 0) {
                         $(".append-area").html('');
                         $("#dropzone-area").css("height", "250px");
@@ -241,7 +243,7 @@ let contest = {
                 timeBetweenSteps = 100,
                 bytesPerStep = 100000;
 
-            dropzone.uploadFiles = function(files) {
+            dropzone.uploadFiles = function (files) {
                 var self = this;
 
                 for (var i = 0; i < files.length; i++) {
@@ -251,8 +253,8 @@ let contest = {
 
                     for (var step = 0; step < totalSteps; step++) {
                         var duration = timeBetweenSteps * (step + 1);
-                        setTimeout(function(file, totalSteps, step) {
-                            return function() {
+                        setTimeout(function (file, totalSteps, step) {
+                            return function () {
                                 file.upload = {
                                     progress: 100 * (step + 1) / totalSteps,
                                     total: file.size,
@@ -276,7 +278,7 @@ let contest = {
         $(".delete-image").on("click", function (e) {
             $(this).parent().parent().remove();
             let imageValues = [];
-            $('.delete-image').each(function(index, node) {
+            $('.delete-image').each(function (index, node) {
                 if (contest.validURL($(node).data('image_src'))) {
                     imageValues[index] = $(node).data('image_id');
                 }
@@ -297,12 +299,12 @@ let contest = {
         });
     },
     validURL: (str) => {
-        var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-            '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
         return !!pattern.test(str);
     },
     compareDate: (from, to) => {
@@ -331,7 +333,7 @@ $(document).ready(() => {
     contest.init();
 })
 
-$(".fa-check-circle").on("click", (e) =>{
+$(".fa-check-circle").on("click", (e) => {
     if ($(e.target).hasClass("activ")) {
         $(e.target).removeClass("activ");
     } else {
@@ -340,7 +342,7 @@ $(".fa-check-circle").on("click", (e) =>{
     let designers = [];
     $("#selected-designer").html("")
     setTimeout(() => {
-        $(".fa-check-circle.activ").each((index, item)=> {
+        $(".fa-check-circle.activ").each((index, item) => {
             designers[index] = $(item).data("id");
             $("#selected-designer").append(`
                 <div class="row">
@@ -348,13 +350,13 @@ $(".fa-check-circle").on("click", (e) =>{
                         <div id="owl-design" class="owl-carousel slider-designer">
                             <div class="design">
                                 <img src="{{ asset("images/design-photo.png") }}" alt="" class="design-img">
-                                <span class="profile-name">`+ $(item).parents(".designer-block").find(".profile-name").data("name") +`</span>
+                                <span class="profile-name">`+ $(item).parents(".designer-block").find(".profile-name").data("name") + `</span>
                                 <div class="wrp-info">
                                     <span class="profile-folowers">
-                                        `+ $(item).parents(".designer-block").find(".profile-folowers").data("reactions") +`
+                                        `+ $(item).parents(".designer-block").find(".profile-folowers").data("reactions") + `
                                     </span>
                                     <span class="profile-works">
-                                        `+ $(item).parents(".designer-block").find(".profile-works").data("works") +` Works
+                                        `+ $(item).parents(".designer-block").find(".profile-works").data("works") + ` Works
                                     </span>
                                 </div>
                             </div>

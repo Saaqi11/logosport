@@ -5,7 +5,7 @@
                 <div class="carousel-inner">
                     @foreach ($work->files as $file)
                         <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                            <img class="d-block w-100" style="height: 450px" src="{{ env('APP_URL') }}/{{ $file->src }}" alt="">
+                            <img class="d-block w-100" style="height: 450px; object-fit: contain; background: #fff; padding: 10px" src="{{ env('APP_URL') }}/{{ $file->src }}" alt="">
                         </div>
                     @endforeach
                 </div>
@@ -40,13 +40,15 @@
                             1st
                         @elseif ($work->place == 2)
                             2nd
-                        @else
+                        @elseif ($work->place == 3)
                             3rd
+                        @else
+                            No Position
                         @endif
                     </span>
                 </p>
                 <p class="creator-text mb-30">
-                    Reward: <span>{{$work->reward}}$</span>
+                    Reward: <span>{{$work->reward ? $work->reward.'$' : 'No Reward'}}</span>
                 </p>
                 <div class="title-slider">
                     <h4>Сustomer</h4>

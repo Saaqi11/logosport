@@ -39,9 +39,9 @@
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="wrp-brief">
 						<span class="title-brief">
-							Name of your company
+							Name of your company*
 						</span>
-                <input type="text" name="company_name" class="input-brief" >
+                <input type="text" name="company_name" class="input-brief" required>
             </div>
             <div class="wrp-brief">
 						<span class="title-brief">

@@ -497,6 +497,10 @@ class ContestController extends Controller
             if (!empty($request->get('participants')) && $request->get('participants') !== "All") {
                 $query->having('participants', '<', $request->get('participants'));
             }
+
+            $query->orderBy('contests.created_at', 'desc');
+
+
             $query->groupBy(
                 'contests.id',
                 'contests.company_name',
