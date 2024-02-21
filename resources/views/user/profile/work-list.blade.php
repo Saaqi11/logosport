@@ -7,10 +7,10 @@
                     <div class="title">
                         <h1>Profile</h1>
                     </div>
-                    <div class="contest-list">
+                    {{-- <div class="contest-list">
                         <button class="btn-work">Send message</button>
                         <button class="btn-add">Add to contest</button>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
