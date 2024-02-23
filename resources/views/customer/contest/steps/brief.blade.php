@@ -1,5 +1,5 @@
-@extends("layouts.main")
-@section("content")
+@extends('layouts.main')
+@section('content')
     <div class="row">
         <div class="col-12">
             <div class="title">
@@ -34,37 +34,41 @@
             </span>
         </div>
     </div>
-    <form action="{{ route("customer.contest.brief.save", $id) }}" id="brief-form" class="row mb" method="post" enctype="multipart/form-data">
+    <form action="{{ route('customer.contest.brief.save', $id) }}" id="brief-form" class="row mb" method="post"
+        enctype="multipart/form-data">
         @csrf
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="wrp-brief">
-						<span class="title-brief">
-							Name of your company*
-						</span>
-                <input type="text" name="company_name" class="input-brief" required>
+                <span class="title-brief">
+                    Name of your company*
+                </span>
+                <input type="text" name="company_name" id="company_name" class="input-brief" required>
             </div>
             <div class="wrp-brief">
-						<span class="title-brief">
-							Do you have slogan?
-						</span>
-                <textarea name="slogan" class="input-brief"></textarea>
+                <span class="title-brief">
+                    Describe any features of you company
+                </span>
+                <span class="my-tooltip">
+                    <i class="far fa-question-circle" data-title="Describe any features of you company"></i>
+                </span>
+                <textarea name="company_features" class="input-brief"></textarea>
             </div>
+            
             <div class="wrp-brief">
-						<span class="title-brief">
-							Do you have website?
-						</span>
+                <span class="title-brief">
+                    Do you have website?
+                </span>
                 <textarea name="website" class="input-brief"></textarea>
             </div>
         </div>
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="wrp-brief">
-						<span class="title-brief">
-							Choose your industry
-						</span>
+                <span class="title-brief">
+                    Choose your industry
+                </span>
                 <span class="my-tooltip">
-							<i class="far fa-question-circle"
-                               data-title="What type of industry do you have?"></i>
-						</span>
+                    <i class="far fa-question-circle" data-title="What type of industry do you have?"></i>
+                </span>
                 <div class="select-wrapper">
                     <i class="fas fa-angle-down"></i>
                     <select name="industry_type" class="select-brief" value="">
@@ -113,37 +117,42 @@
                 </div>
             </div>
             <div class="wrp-brief">
-						<span class="title-brief">
-							Describe any features of you company
-						</span>
-                <span class="my-tooltip">
-							<i class="far fa-question-circle"
-                               data-title="Describe any features of you company"></i>
-						</span>
-                <textarea name="company_features" class="input-brief"></textarea>
+                <span class="title-brief">
+                    Do you have slogan?
+                </span>
+                <textarea name="slogan" class="input-brief"></textarea>
             </div>
+            <div class="wrp-brief">
+                <span class="title-brief">
+                    What logotype you don’t like?
+                </span>
+                <span class="my-tooltip">
+                    <i class="far fa-question-circle" data-title="What logotype you don’t like?"></i>
+                </span>
+                <textarea name="logo_type_unlikes" class="input-brief"></textarea>
+            </div>
+            
         </div>
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="wrp-brief">
-						<span class="title-brief">
-							What logotype you like to get?
-						</span>
+                <span class="title-brief">
+                    Describe your company about
+                </span>
                 <span class="my-tooltip">
-							<i class="far fa-question-circle"
-                               data-title="What logotype you like to get?"></i>
-						</span>
-                <textarea name="logo_type_likes" class="input-brief"></textarea>
+                    <i class="far fa-question-circle" data-title="Describe your company about in few words"></i>
+                </span>
+                <textarea name="company_about" id="company_about" class="input-brief" required></textarea>
             </div>
             <div class="wrp-brief">
-						<span class="title-brief">
-							What logotype you don’t like?
-						</span>
+                <span class="title-brief">
+                    What logotype you like to get?
+                </span>
                 <span class="my-tooltip">
-							<i class="far fa-question-circle"
-                               data-title="What logotype you don’t like?"></i>
-						</span>
-                <textarea name="logo_type_unlikes" class="input-brief"></textarea>
+                    <i class="far fa-question-circle" data-title="What logotype you like to get?"></i>
+                </span>
+                <textarea name="logo_type_likes" class="input-brief"></textarea>
             </div>
+            
             <input type="file" name="doc_file" style="display: none" id="doc_file">
         </div>
     </form>

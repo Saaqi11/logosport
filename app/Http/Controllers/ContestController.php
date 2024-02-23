@@ -233,6 +233,7 @@ class ContestController extends Controller
     {
         $inputs = $request->only([
             "company_name",
+            "company_about",
             "slogan",
             "website",
             "industry_type",

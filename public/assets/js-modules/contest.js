@@ -114,8 +114,14 @@ let contest = {
 
         $(".brief-save-button").on("click", () => {
             const companyNameField = $("#company_name");
+            const companyAboutField = $("#company_about");
             if (!companyNameField.val()) {
+                console.log(companyNameField.val());
                 toastr.error("Please enter a company name.");
+                return false; 
+            }
+            if (!companyAboutField.val()) {
+                toastr.error("Please enter a company about.");
                 return false; 
             }
             $("#brief-form").submit();
