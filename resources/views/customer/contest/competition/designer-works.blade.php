@@ -95,7 +95,7 @@
                                                             : '' !!}
                                                         <a href="{{ asset($file->src) }}" data-gallery class="card-logo"
                                                             style="background-color: #6a6a6a;">
-                                                            <img src="{{ auth()->user() && (auth()->user()->id === $work->designer_user_id || auth()->user()->id === $contest->user_id) ? asset($file->src) : asset('images/img/icons/icons.svg#folder') }}"
+                                                            <img src="{{ auth()->user() && (auth()->user()->id === $work->designer_user_id || auth()->user()->id === $contest->user_id) ? asset($file->src) : asset('images/img/other-img/hide_image.jpg') }}"
                                                                 alt="">
                                                         </a>
 

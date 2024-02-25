@@ -28,10 +28,10 @@ $(".fa-check-circle").on("click", (e) => {
 	}
 	updateWorkStatus(status, $(e.target).parent().attr("data-id"));
 });
-function updateWorkStatus (status, id) {
+function updateWorkStatus(status, id) {
 	$.ajax({
 		type: "GET",
-		url: "/competition/change-work-status/"+id+"/"+status,
+		url: "/competition/change-work-status/" + id + "/" + status,
 		dataType: "JSON",
 		cache: false,
 		contentType: false,
@@ -58,11 +58,10 @@ $(".choose-position").on("click", (e) => {
 	let position = $(e.target).data('position');
 	let id = $(e.target).data('work_id');
 	let contest_id = $(e.target).data('contest_id');
-	if(window.confirm('Do you confirm?'))
-	{
+	if (window.confirm('Do you confirm?')) {
 		$.ajax({
 			type: "GET",
-			url: "/competition/declare-position/"+id+"/"+position+"/"+contest_id,
+			url: "/competition/declare-position/" + id + "/" + position + "/" + contest_id,
 			cache: false,
 			contentType: false,
 			success: (response) => {
@@ -81,7 +80,7 @@ $(".choose-position").on("click", (e) => {
 });
 $.ajax({
 	type: "GET",
-	url: "/competition/get-current-user-works/"+window.location.href.split('/')[window.location.href.split('/').length - 1],
+	url: "/competition/get-current-user-works/" + window.location.href.split('/')[window.location.href.split('/').length - 1],
 	cache: false,
 	contentType: false,
 	success: (response) => {
@@ -101,7 +100,7 @@ $.ajax({
 $("#all-works").on("click", (e) => {
 	$.ajax({
 		type: "GET",
-		url: "/competition/get-all-works/"+$(e.target).data("id"),
+		url: "/competition/get-all-works/" + $(e.target).data("id"),
 		cache: false,
 		dataType: "json",
 		contentType: false,
@@ -117,7 +116,7 @@ $("#all-works").on("click", (e) => {
 $("#declined-works").on("click", (e) => {
 	$.ajax({
 		type: "GET",
-		url: "/competition/get-declined-works/"+$(e.target).data("id"),
+		url: "/competition/get-declined-works/" + $(e.target).data("id"),
 		cache: false,
 		dataType: "json",
 		contentType: false,
@@ -130,10 +129,10 @@ $("#declined-works").on("click", (e) => {
 	});
 });
 
-function manageResponse (response, e) {
+function manageResponse(response, e) {
 	if (response.status && response.works.length > 0) {
 		let html = "";
-		Object.values(response.works).map((work,key) => {
+		Object.values(response.works).map((work, key) => {
 			html += `
                         <div class="card-view">
                             <div class="card-view__top">
@@ -159,7 +158,7 @@ function manageResponse (response, e) {
                                 </div>
                                 <div class="card-view__info-author">
                                     <div class="card-view__name">
-                                        ${work.designer.first_name+" "+work.designer.last_name}
+                                        ${work.designer.first_name + " " + work.designer.last_name}
                                     </div>
                                     <div class="card-view__items">
                                         <div class="card-view__item">
@@ -179,7 +178,7 @@ function manageResponse (response, e) {
 					`
 							<div class="card-view__item" data-id="${work.id}" style="cursor: pointer; display: flex; position: absolute; left: 250px; font-size: 28px; color: #e6e6e6;">
 								<i class="far fa-check-circle ${work.status === 1 ? "activ" : ""}"></i>
-								<i class="far fa-times-circle ${ work.status === 2 ? "active" : "" }"></i>
+								<i class="far fa-times-circle ${work.status === 2 ? "active" : ""}"></i>
 							</div> `;
 			}
 
@@ -197,7 +196,7 @@ $('.sort-by').on("click", (e) => {
 	if ($(e.target).val()) {
 		$.ajax({
 			type: "GET",
-			url: "/competition/sort-works/"+$(e.target).data("id"),
+			url: "/competition/sort-works/" + $(e.target).data("id"),
 			cache: false,
 			dataType: "json",
 			contentType: false,
@@ -216,51 +215,51 @@ $('.sort-by').on("click", (e) => {
 })
 
 $(".customer-heart-icon").on("click", (e) => {
-    e.preventDefault()
-    let status = 0;
-    if ($(e.target).hasClass("far")) {
-        status = 1
-    }
-    let dataId = $(e.target).data("id")
-    $.ajax({
-        type: "GET",
-        url: "/competition/save-customer-favourite-work/"+dataId+"/"+status,
-        dataType: "JSON",
-        cache: false,
-        contentType: false,
-        success: (response) => {
-            if (status === 1) {
-                let $slidersBriefSlider = $(e.target).closest('.sliders-brief__slider');
-                let $farFaHeartElements = $slidersBriefSlider.find('.far.fa-heart');
-                $farFaHeartElements.removeClass('fa');
-                $farFaHeartElements.addClass('far');
-                $(e.target).addClass("fa")
-            } else {
-                $(e.target).removeClass("fa")
-                $(e.target).addClass("far")
-            }
-        },
-        error: (response) => {
-            console.log(response)
-        }
-    });
+	e.preventDefault()
+	let status = 0;
+	if ($(e.target).hasClass("far")) {
+		status = 1
+	}
+	let dataId = $(e.target).data("id")
+	$.ajax({
+		type: "GET",
+		url: "/competition/save-customer-favourite-work/" + dataId + "/" + status,
+		dataType: "JSON",
+		cache: false,
+		contentType: false,
+		success: (response) => {
+			if (status === 1) {
+				let $slidersBriefSlider = $(e.target).closest('.sliders-brief__slider');
+				let $farFaHeartElements = $slidersBriefSlider.find('.far.fa-heart');
+				$farFaHeartElements.removeClass('fa');
+				$farFaHeartElements.addClass('far');
+				$(e.target).addClass("fa")
+			} else {
+				$(e.target).removeClass("fa")
+				$(e.target).addClass("far")
+			}
+		},
+		error: (response) => {
+			console.log(response)
+		}
+	});
 })
 
 $(".user-work-reaction").on("click", (e) => {
-    e.preventDefault()
-    let dataId = $(e.target).data("id")
-    let workId = $(e.target).data("workid")
-    $.ajax({
-        type: "GET",
-        url: "/competition/work-reaction/"+dataId+"/"+workId,
-        dataType: "JSON",
-        cache: false,
-        contentType: false,
-        success: (response) => {
+	e.preventDefault()
+	let dataId = $(e.target).data("id")
+	let workId = $(e.target).data("workid")
+	$.ajax({
+		type: "GET",
+		url: "/competition/work-reaction/" + dataId + "/" + workId,
+		dataType: "JSON",
+		cache: false,
+		contentType: false,
+		success: (response) => {
 			var currentReactionCount = parseInt($(".reaction-count span").text());
 			if ($(e.target).hasClass("far")) {
 				$(e.target).removeClass("far")
-                $(e.target).addClass("fa")
+				$(e.target).addClass("fa")
 
 				var newReactionCount = currentReactionCount + 1;
 				$(".reaction-count span").text(newReactionCount);
@@ -269,14 +268,47 @@ $(".user-work-reaction").on("click", (e) => {
 				$(".reaction-count span").text(newReactionCount);
 
 				$(e.target).removeClass("fa")
-                $(e.target).addClass("far")
+				$(e.target).addClass("far")
 			}
-        },
-        error: (response) => {
-            console.log(response)
-        }
-    });
+		},
+		error: (response) => {
+			console.log(response)
+		}
+	});
 })
+
+$(".exclamation-circle").on("click", (e) => {
+	let dataId = $(e.target).data("id")
+	let workId = $(e.target).data("workid")
+
+	$('input[name="report_user_id"]').val(dataId);
+	$('input[name="report_work_id"]').val(workId);
+
+	$('#exampleModal').modal('show');
+
+})
+
+$('input[name="options"]').change(function () {
+	if ($(this).attr('id') === 'other') {
+		$('#inputField').show();
+	} else {
+		$('#inputField').hide();
+	}
+});
+
+$('#reportSubmitBtn').click(function () {
+	// Retrieve the selected option
+	var selectedOption = $('input[name="options"]:checked').val();
+	// If the selected option is option3, also retrieve the custom input value
+	if (selectedOption !== 'other') {
+		$('input[name="custom_option"]').val('');
+	}
+	// Perform further processing here (e.g., send data to server)
+	console.log('Selected option:', selectedOption);
+	// Close the modal
+	$('#reportForm').submit();
+	// $('#exampleModal').modal('hide');
+});
 
 // $(".cabinet-slider-images-view").click((e) => {
 // 	e.preventDefault()
@@ -289,7 +321,7 @@ $(".user-work-reaction").on("click", (e) => {
 // 		cache: false,
 // 		contentType: false,
 // 		success: (response) => {
-        
+
 // 		$(".slider-info").html(response.sliderContent);
 
 
@@ -300,23 +332,23 @@ $(".user-work-reaction").on("click", (e) => {
 // 	});
 // });
 
-$(document).on("click", ".cabinet-slider-images-view", function(e) {
-    e.preventDefault();
+$(document).on("click", ".cabinet-slider-images-view", function (e) {
+	e.preventDefault();
 
-    let dataId = $(this).data("id");
-    $.ajax({
-        type: "GET",
-        url: "/competition/get-winner-works/" + dataId,
-        dataType: "JSON",
-        cache: false,
-        contentType: false,
-        success: (response) => {
-            $(".slider-info").html(response.sliderContent);
-        },
-        error: (response) => {
-            console.log(response);
-        }
-    });
+	let dataId = $(this).data("id");
+	$.ajax({
+		type: "GET",
+		url: "/competition/get-winner-works/" + dataId,
+		dataType: "JSON",
+		cache: false,
+		contentType: false,
+		success: (response) => {
+			$(".slider-info").html(response.sliderContent);
+		},
+		error: (response) => {
+			console.log(response);
+		}
+	});
 });
 
 
@@ -324,13 +356,13 @@ $(".winners-slider-images-view").click((e) => {
 	let dataId = $(e.target).parents(".winners-slider-images-view").data("id")
 	$.ajax({
 		type: "GET",
-		url: "/competition/get-winner-works/"+dataId,
+		url: "/competition/get-winner-works/" + dataId,
 		dataType: "JSON",
 		cache: false,
 		contentType: false,
 		success: (response) => {
-        
-		$(".slider-info").html(response.sliderContent);
+
+			$(".slider-info").html(response.sliderContent);
 
 
 		},
@@ -341,20 +373,20 @@ $(".winners-slider-images-view").click((e) => {
 });
 
 
-$(document).on("click", ".prf-title a", function(e) {
-    e.preventDefault();
+$(document).on("click", ".prf-title a", function (e) {
+	e.preventDefault();
 
-    console.log('Hyperlink clicked!');
+	console.log('Hyperlink clicked!');
 	// If you want to redirect to the href of the clicked hyperlink, you can use window.location.href
 	window.location.href = $(this).attr('href');
 	e.stopPropagation();
 
 });
 
-$(document).on('click', '.cancel-info-btn', function() {
+$(document).on('click', '.cancel-info-btn', function () {
 	$(".slider-info").html('');
 	// Add code to close the popup or modal here
- });
+});
 
 // $(".winners-slider-images-view").click((e) => {
 //     $("#myModal").modal("show")
@@ -393,7 +425,7 @@ $(document).on('click', '.cancel-info-btn', function() {
 // 		}
 // 	});
 // });
-$(document).ready(function(){
+$(document).ready(function () {
 	let winnersLength = $(".cabinet-slider-images-view").length
 	if (winnersLength < 1) {
 		$("#cabinet-portal").html("<p>There is not any work available.</p>")
@@ -416,21 +448,21 @@ $(document).ready(function(){
 	});
 
 	$('#update-image-form').submit(function (e) {
-        e.preventDefault(); // Prevent the default form submission
+		e.preventDefault(); // Prevent the default form submission
 
-        var form = $(this);
+		var form = $(this);
 		console.log(form.data('action'));
 		var formAction = $(this).attr('url');
 		var formData = new FormData(form[0]);
 
-        $.ajax({
-            type: 'POST',
-            url: formAction,
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                var fileId = response.fileId;
+		$.ajax({
+			type: 'POST',
+			url: formAction,
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function (response) {
+				var fileId = response.fileId;
 				var updatedImageUrl = response.updatedImageUrl;
 
 				// Close the modal or handle the response as needed
@@ -440,17 +472,17 @@ $(document).ready(function(){
 				$('.sliders-brief__slide[data-item-id="' + fileId + '"] img').attr('src', updatedImageUrl);
 				$('#update-image-form')[0].reset();
 				$("#show-name").html('Upload file <br>(.png)');
-            },
-            error: function (error) {
-                // Handle error response
-                console.error('Error updating work:', error.responseText);
-            }
-        });
-    });
+			},
+			error: function (error) {
+				// Handle error response
+				console.error('Error updating work:', error.responseText);
+			}
+		});
+	});
 
 	$('#confirmDeleteWork').on('click', function () {
 
-		
+
 		$.ajaxSetup({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -459,7 +491,7 @@ $(document).ready(function(){
 		// Make Ajax call to delete the item
 		$.ajax({
 			type: 'DELETE',
-			url: '/competition/delete-work-file/'+itemIdToDelete, // Replace with your server-side script
+			url: '/competition/delete-work-file/' + itemIdToDelete, // Replace with your server-side script
 			dataType: "JSON",
 			cache: false,
 			contentType: false,
@@ -499,16 +531,16 @@ $(document).ready(function(){
 		});
 	});
 
-	$(document).ready(function() {
-        $('.winner-file').change(function() {
-            var inputId = $(this).attr('id');
-            uploadWorkFile(inputId);
-        });
-    });
+	$(document).ready(function () {
+		$('.winner-file').change(function () {
+			var inputId = $(this).attr('id');
+			uploadWorkFile(inputId);
+		});
+	});
 
 	function uploadWorkFile(inputId) {
-        const fileInput = $('#' + inputId);
-        const file = fileInput[0].files[0];
+		const fileInput = $('#' + inputId);
+		const file = fileInput[0].files[0];
 
 		const id = window.location.pathname.split('/')[3];
 		console.log({ file });
@@ -516,39 +548,39 @@ $(document).ready(function(){
 		const closestParent = fileInput.closest('[class]').attr('class').split(' ');
 		const keyClass = closestParent[1];
 		const indexClass = closestParent[2];
-        var formData = new FormData();
-        formData.append('file', file);
-        formData.append('id', id);
-        formData.append('key_class', keyClass);
-        formData.append('index_class', indexClass);
+		var formData = new FormData();
+		formData.append('file', file);
+		formData.append('id', id);
+		formData.append('key_class', keyClass);
+		formData.append('index_class', indexClass);
 
 		$.ajaxSetup({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			}
 		});
-        $.ajax({
-            url: '/competition/upload-work', // Replace with your actual endpoint
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                // Assuming your server returns the file name
-                var fileName = data.file_name;
+		$.ajax({
+			url: '/competition/upload-work', // Replace with your actual endpoint
+			type: 'POST',
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function (data) {
+				// Assuming your server returns the file name
+				var fileName = data.file_name;
 
 				window.location.reload();
-                // // Update the text inside the span with the file name
-                // $('#' + inputId).siblings('span').text(fileName);
+				// // Update the text inside the span with the file name
+				// $('#' + inputId).siblings('span').text(fileName);
 				// $(this).parent().contents().filter(function() {
 				// 	return this.nodeType === 3; // Filter out text nodes
 				// }).remove();
-            },
-            error: function (error) {
-                console.log('Error uploading file: ', error);
-            }
-        });
-    }
+			},
+			error: function (error) {
+				console.log('Error uploading file: ', error);
+			}
+		});
+	}
 
 	$('.request-work').on('click', function () {
 		// const id = $(this).data('id');
@@ -561,13 +593,13 @@ $(document).ready(function(){
 	});
 
 
-	$(".invite-designer").on("click", function() {
+	$(".invite-designer").on("click", function () {
 		const userId = $(this).data('userid');
 		const contestId = $(this).data('contestid');
 
 		$.ajax({
 			type: "GET",
-			url: "/customer/contest/invitaion/"+contestId+"/"+userId,
+			url: "/customer/contest/invitaion/" + contestId + "/" + userId,
 			dataType: "JSON",
 			cache: false,
 			contentType: false,

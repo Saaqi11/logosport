@@ -6,6 +6,7 @@ use App\Http\Requests\SignUpRequest;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Notification;
+use App\Models\Report;
 use App\Models\User;
 use App\Models\Verification;
 use Carbon\Carbon;
@@ -536,5 +537,21 @@ class UserController extends Controller
         $user->save();
 
         Session::flash('success', 'Password has been updated.');
-        return redirect("/");    }
+        return redirect("/");
+    }
+
+    public function reportContent(Request $request)
+    {
+        $messgae = $request->options;
+        if ($request->options == 'other') {
+            $messgae = $request->custom_option;
+        }
+        $report = new Report();
+        $report->user_id = $request->report_user_id;   
+        $report->work_id = $request->report_work_id;
+        $report->message = $messgae;
+        $report->save();
+
+        return redirect()->back()->with("success", "reported successfuly");
+    }
 }

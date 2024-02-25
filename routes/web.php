@@ -168,6 +168,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/wallet', [PaymentController::class, 'walletIndex'])->name('wallet.index');
         Route::post('/withdraw-request', [PaymentController::class, 'withdrawRequest'])->name('withdraw.request');
         Route::get('/withdraw-request', [PaymentController::class, 'withdrawRequestList'])->name('withdraw-list.request');
+
+        Route::post('/report', [UserController::class, 'reportContent'])->name('report.content');
     });
     
     
