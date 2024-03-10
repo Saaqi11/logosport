@@ -15,13 +15,14 @@ class SupportController extends Controller
     {
         // Validate the form data, including file uploads
         $request->validate([
-            'theme' => 'required|string',
-            'message' => 'required|string',
+            'message' => 'required',
+            'category' => 'required',
         ]);
 
         $support = new Support();
-        $support->theme = $request->theme;
         $support->message = $request->message;
+        $support->category = $request->category;
+        $support->user_id = Auth::id();
         $support->save();
 
         $userAttachmentPublicPath = public_path("/support/" . $request->id . "/");
@@ -30,23 +31,20 @@ class SupportController extends Controller
         if (!File::isDirectory($userAttachmentPublicPath)) {
             File::makeDirectory($userAttachmentPublicPath, 0755, true);
         }
-        $uploadedFiles = $request->input('uploaded_files', []);
-
         // Handle file uploads
         $uploadedFileObjects = $request->file('file');
 
-        if ($uploadedFileObjects && count($uploadedFiles) > 0) {
+        if ($uploadedFileObjects && count($uploadedFileObjects) > 0) {
             foreach ($uploadedFileObjects as $uploadedFile) {
+            
                 // Check if the file is in the list of uploaded_files
-                if (in_array($uploadedFile->getClientOriginalName(), $uploadedFiles)) {
                     
-                    $file = Storage::disk('support_uploads')->put(Auth::id(), $uploadedFile);
-                    $supportMedia = new SupportMedia();
-                    $supportMedia->name = $uploadedFile->getClientOriginalName();
-                    $supportMedia->path = $file;
-                    $supportMedia->support_id = $support->id;
-                    $supportMedia->save();
-                }
+                $file = Storage::disk('support_uploads')->put(Auth::id(), $uploadedFile);
+                $supportMedia = new SupportMedia();
+                $supportMedia->name = $uploadedFile->getClientOriginalName();
+                $supportMedia->path = $file;
+                $supportMedia->support_id = $support->id;
+                $supportMedia->save();
             }
         }
         return redirect()->back()->with('success', 'Form submitted successfully!');

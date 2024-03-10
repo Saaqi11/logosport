@@ -9,18 +9,28 @@
                         <h2>
                             Support
                         </h2>
-                    </div>
-                    <label for="theme" class="sprt-label">Theme</label>
-                    <input type="text" class="sprt-input" name="theme">
+                    </div> 
+                    <label class="sprt-label">Category</label>
+                    <select class="sprt-input" aria-placeholder="Please select the category" type="select" class="form-control"  name="category">
+                        <option value="" disabled selected>Please select the category</option>
+                        <option class="sprt-input" >Contest</option>
+                        <option class="sprt-input" >Messages</option>
+                        <option class="sprt-input" >Other</option>
+                    </select>
                     <label for="sprt-message" class="sprt-label">Message</label>
+                    <textarea name="message" id="sprt-message" class="sprt-message"></textarea>
+                </div>
+                </div>
                     <div class="wrp-textarea">
-                        <textarea name="message" id="sprt-message" class="sprt-message"></textarea>
                         <label for="upload-files" class="attach-file">
                             <input type="file" name="file[]" id="upload-files" multiple hidden>
                             <i class="fas fa-paperclip"></i>
                         </label>
                     </div>
-                    <div class="file-attach">
+                    <div class="file-attach" style="    display: flex;
+                    position: relative;
+                    left: 264px;
+                    bottom: 50px;">
                         <ul class="list-a">
 
                         </ul>
