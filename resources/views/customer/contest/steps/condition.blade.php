@@ -206,7 +206,7 @@
             <div class="col-12 d-flex justify-content-end align-items-center">
                 <button class="brf-file" id="condition-save-skip">Skip payment</button>
                 <a href="#" data-popup='#popup-transaction' data-id="{{ $contest->id }}" data-price="{{ $contest->contest_price }}" class="cnstr-next payment-popup" style="color: #fff">
-                    PaymentPayment
+                    Pay Now
                 </a>
                 {{-- <button class="cnstr-next" disabled title="This feature is coming soon">Payment</button> --}}
             </div>
