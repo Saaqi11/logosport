@@ -104,7 +104,7 @@ class PaymentController extends Controller
             ]
         );
 
-        $payment = Payment::insert([
+        $payment = Payment::create([
             'contest_id' => $additionalInfo['contest_id'],
             'user_id' => $additionalInfo['user_id'],
             'amount' => ($data['amount'] / 100),
